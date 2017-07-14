@@ -13,13 +13,22 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package graphql.datetime.sample;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
-rootProject.name = projectName
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class GraphqlDatetimeSampleAppApplicationTests {
 
-include ':graphql-java-datetime'
-include ':graphql-datetime-autoconfigure'
-include ':graphql-datetime-spring-boot-starter'
-include ':graphql-datetime-sample-app'
+    @Test
+    public void contextLoads() {
+    }
+
+}
