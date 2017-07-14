@@ -13,13 +13,19 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package graphql.datetime.sample;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
-rootProject.name = projectName
+@SpringBootApplication
+public class GraphqlDatetimeSampleAppApplication {
 
-include ':graphql-java-datetime'
-include ':graphql-datetime-autoconfigure'
-include ':graphql-datetime-spring-boot-starter'
-include ':graphql-datetime-sample-app'
+    public static void main(String[] args) {
+        SpringApplication.run(GraphqlDatetimeSampleAppApplication.class, args);
+    }
+
+}

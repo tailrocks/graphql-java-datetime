@@ -13,13 +13,21 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+package graphql.datetime.sample.schema;
+
+import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
-rootProject.name = projectName
+@Component
+public class Mutation implements GraphQLMutationResolver {
 
-include ':graphql-java-datetime'
-include ':graphql-datetime-autoconfigure'
-include ':graphql-datetime-spring-boot-starter'
-include ':graphql-datetime-sample-app'
+    public LocalDateTime plusDay(LocalDateTime input) {
+        return input.plusDays(1);
+    }
+
+}
