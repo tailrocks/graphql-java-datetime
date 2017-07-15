@@ -30,19 +30,12 @@ import spock.lang.Specification
  */
 class GraphQLServletSpec extends Specification {
 
-    public static final String CONTENT_TYPE_JSON_UTF8 = 'application/json;charset=UTF-8'
-
-    @Shared
-    ObjectMapper mapper = new ObjectMapper()
+    @Shared ObjectMapper mapper = new ObjectMapper()
 
     AbstractApplicationContext context
-    MockHttpServletRequest request
-    MockHttpServletResponse response
 
     def setup() {
         context = ContextHelper.load()
-        request = new MockHttpServletRequest()
-        response = new MockHttpServletResponse()
     }
 
     def cleanup() {
@@ -52,7 +45,7 @@ class GraphQLServletSpec extends Specification {
         }
     }
 
-    def "test"() {
+    def "test GraphQLServlet"() {
         given:
         GraphQLSchema graphQLSchema = context.getBean(GraphQLSchema.class)
         GraphQLServlet servlet = new SimpleGraphQLServlet(graphQLSchema)
@@ -69,23 +62,23 @@ class GraphQLServletSpec extends Specification {
 """
 
         when:
-        servlet.executeQuery(query)
+        String result = servlet.executeQuery(query)
 
         then:
-        response.getStatus() == 200
-        response.getContentType() == CONTENT_TYPE_JSON_UTF8
-        responseContent.data == [
-                echo: [
-                        date         : '2017-07-10T06:12:46.754Z',
-                        localDate    : '2017-01-01',
-                        localDateTime: '2017-01-01T00:00:00Z',
-                        localTime    : '00:00:00'
+        getResponseContent(result) == [
+                data: [
+                        echo: [
+                                date         : '2017-07-10T06:12:46.754Z',
+                                localDate    : '2017-01-01',
+                                localDateTime: '2017-01-01T00:00:00Z',
+                                localTime    : '00:00:00'
+                        ]
                 ]
         ]
     }
 
-    private Map<String, Object> getResponseContent() {
-        mapper.readValue(response.getContentAsByteArray(), Map)
+    private Map<String, Object> getResponseContent(String content) {
+        mapper.readValue(content, Map)
     }
 
 }
