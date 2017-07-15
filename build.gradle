@@ -28,7 +28,9 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
-    apply plugin: 'com.jfrog.artifactory'
+    if (System.getenv('ARTIFACTORY_CONTEXT_URL')) {
+        apply plugin: 'com.jfrog.artifactory'
+    }
     apply plugin: 'groovy'
 
     version = projectVersion
@@ -81,7 +83,7 @@ subprojects {
         publishing {
             publications {
                 mainProjectPublication(MavenPublication) {
-                    version version
+                    version project.version
                     from components.java
 
                     artifact sourcesJar {
@@ -92,6 +94,15 @@ subprojects {
                     }
 
                     pom.withXml {
+                        // Fix dependency scoping.
+                        asNode().dependencies.'*'.findAll() {
+                            it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
+                                dep.name == it.artifactId.text()
+                            }
+                        }.each() {
+                            it.scope*.value = 'compile'
+                        }
+
                         asNode().children().last() + {
                             resolveStrategy = Closure.DELEGATE_FIRST
                             name projectName
@@ -121,10 +132,9 @@ subprojects {
             }
         }
 
-        /*
         bintray {
-            user = System.env.BINTRAY_USER ?: project.findProperty('BINTRAY_USER') ?: ''
-            key = System.env.BINTRAY_KEY ?: project.findProperty('BINTRAY_KEY') ?: ''
+            user = System.getenv('BINTRAY_USER') ?: project.findProperty('BINTRAY_USER') ?: ''
+            key = System.getenv('BINTRAY_KEY') ?: project.findProperty('BINTRAY_KEY') ?: ''
             publications = ['mainProjectPublication']
             publish = true
             pkg {
@@ -138,7 +148,6 @@ subprojects {
                 }
             }
         }
-        */
 
         if (System.getenv('ARTIFACTORY_CONTEXT_URL')) {
             artifactory {
