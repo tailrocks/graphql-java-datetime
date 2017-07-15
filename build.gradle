@@ -17,16 +17,9 @@
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
-buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-        maven { url 'https://plugins.gradle.org/m2/' }
-        maven { url 'http://repo.spring.io/plugins-release' }
-    }
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-    }
+plugins {
+    id 'com.jfrog.bintray' version '1.7.3'
+    id 'com.jfrog.artifactory' version '4.4.18'
 }
 
 subprojects {
@@ -35,6 +28,7 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
+    apply plugin: 'com.jfrog.artifactory'
     apply plugin: 'groovy'
 
     version = projectVersion
@@ -145,6 +139,26 @@ subprojects {
             }
         }
         */
+
+        if (System.getenv('ARTIFACTORY_CONTEXT_URL')) {
+            artifactory {
+                contextUrl = System.getenv('ARTIFACTORY_CONTEXT_URL')
+
+                publish {
+                    defaults {
+                        publications('mainProjectPublication')
+                        publishArtifacts = true
+                        publishPom = true
+
+                    }
+                    repository {
+                        repoKey = "${version.contains('SNAPSHOT') ? (System.getenv('ARTIFACTORY_SNAPSHOT_REPO_KEY') ?: 'libs-snapshot-local') : (System.getenv('ARTIFACTORY_RELEASE_REPO_KEY') ?: 'libs-release-local')}"
+                        username = System.getenv('ARTIFACTORY_USERNAME') ?: 'admin'
+                        password = System.getenv('ARTIFACTORY_PASSWORD') ?: 'password'
+                    }
+                }
+            }
+        }
     }
 }
 
