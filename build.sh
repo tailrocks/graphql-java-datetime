@@ -19,11 +19,12 @@ printf "\n# Checking for failed dependencies\n\n"
 
 if [ -n "${ARTIFACTORY_CONTEXT_URL}" ]; then
     printf "\n# Publishing plugin to Artifactory\n\n"
-    ./gradlew clean jar sourcesJar generatePomFileForMainProjectPublicationPublication artifactoryPublish
+    ./gradlew -PprojectVersion=${appVersion} clean jar sourcesJar generatePomFileForMainProjectPublicationPublication artifactoryPublish
 elif [ -n "${BINTRAY_KEY}" ]; then
     printf "\n# Publishing plugin to Bintray\n\n"
-    ./gradlew clean jar sourcesJar generatePomFileForMainProjectPublicationPublication bintrayUpload
+    ./gradlew -PprojectVersion=${appVersion} clean jar sourcesJar javadoc generatePomFileForMainProjectPublicationPublication
+    ./gradlew -PprojectVersion=${appVersion} bintrayUpload
 else
     printf "# Installing locally\n\n"
-    ./gradlew clean install -x javadoc -x test
+    ./gradlew -PprojectVersion=${appVersion} clean install -x javadoc -x test
 fi

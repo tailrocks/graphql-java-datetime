@@ -6,4 +6,10 @@ cd $ABSOLUTE_PATH
 appVersion="$(grep 'projectVersion=' gradle.properties | egrep -v ^[[:blank:]]*\/\/)"
 appVersion="${appVersion#*=}"
 appVersion="${appVersion//[[:blank:]\'\"]/}"
-echo $appVersion;
+
+if [ -n "${BINTRAY_KEY}" ]; then
+    appVersion=`date +%Y-%m-%dT%H-%M-%S`
+    echo $appVersion;
+else
+    echo $appVersion;
+fi
