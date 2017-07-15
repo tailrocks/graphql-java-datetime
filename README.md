@@ -19,7 +19,7 @@ A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java imple
 | yyyy-MM-dd'T'HH:MM:ss        | 2017-07-09T11:54:42'     |
 | yyyy-MM-dd                   | 2017-07-09               |
 
-**java.util.Date**, **java.time.LocalDate**, **java.time.LocalDateTime**
+**java.time.LocalTime**
 
 | Format       | JSON String  |
 |:-------------|:-------------|
