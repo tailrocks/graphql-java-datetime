@@ -32,7 +32,8 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 repositories {
-    mavenCentral()
+    mavenLocal()
+    jcenter()
 }
 
 dependencies {
