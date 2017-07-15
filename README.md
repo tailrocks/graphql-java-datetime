@@ -15,7 +15,7 @@ Add folowing to your `pom.xml`:
 ```xml
 <dependency>
   <groupId>com.graphql-java</groupId>
-  <artifactId>graphql-datetime-autoconfigure</artifactId>
+  <artifactId>graphql-datetime-spring-boot-starter</artifactId>
   <version>2017-07-15T18-08-56</version>
 </dependency>
 ```
@@ -25,7 +25,7 @@ Add folowing to your `pom.xml`:
 Add folowing to your `build.gradle`:
 
 ```groovy
-compile 'com.graphql-java:graphql-datetime-autoconfigure:2017-07-15T18-08-56'
+compile 'com.graphql-java:graphql-datetime-spring-boot-starter:2017-07-15T18-08-56'
 ```
 
 ## Bugs
