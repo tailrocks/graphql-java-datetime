@@ -33,7 +33,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 public class ContextHelper {
 
     @Configuration
-    @ComponentScan("graphql.datetime.boot")
+    @ComponentScan("com.zhokhov.graphql.datetime.boot")
     static class BaseConfiguration {
 
         // initialize date time types here
