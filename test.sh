@@ -10,7 +10,7 @@ cd $ABSOLUTE_PATH
 
 appVersion=$(./version.sh)
 
-printf "\n# Project version \e[1;37m$appVersion\e[0m"
+printf "\n# Project version \e[1;37m$appVersion\e[0m\n"
 
 rm -rf build
 
