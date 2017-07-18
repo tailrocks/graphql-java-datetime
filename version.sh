@@ -8,7 +8,9 @@ appVersion="${appVersion#*=}"
 appVersion="${appVersion//[[:blank:]\'\"]/}"
 
 if [ -n "${BINTRAY_KEY}" ]; then
-    appVersion=`date +%Y-%m-%dT%H-%M-%S`
+    if [[ "$appVersion" == *"SNAPSHOT"* ]]; then
+        appVersion=`date +%Y-%m-%dT%H-%M-%S`
+    fi
     echo $appVersion;
 else
     echo $appVersion;
