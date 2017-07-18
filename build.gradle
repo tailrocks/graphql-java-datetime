@@ -34,7 +34,7 @@ subprojects {
     apply plugin: 'groovy'
 
     version = projectVersion
-    group = 'com.graphql-java'
+    group = 'com.zhokhov.graphql'
 
     repositories {
         mavenLocal()

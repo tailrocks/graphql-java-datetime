@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-graphql.datetime.boot.GraphQLDateTimeAutoConfiguration
+com.zhokhov.graphql.datetime.boot.GraphQLDateTimeAutoConfiguration
