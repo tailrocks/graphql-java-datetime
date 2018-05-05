@@ -20,6 +20,7 @@
 dependencies {
     compile "com.graphql-java:graphql-spring-boot-autoconfigure:$graphqlSpringBootVersion"
     compile "com.graphql-java:graphql-spring-boot-starter:$graphqlSpringBootVersion"
+    compile "com.graphql-java:graphql-java-servlet:$graphqlJavaServletVersion"
     compile "com.graphql-java:graphql-java-tools:$graphqlJavaToolsVersion"
     compile(project(':graphql-java-datetime'))
 

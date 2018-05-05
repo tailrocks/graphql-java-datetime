@@ -15,14 +15,14 @@
  */
 package com.zhokhov.graphql.datetime.boot.test.resolvers;
 
-import com.coxautodev.graphql.tools.GraphQLRootResolver;
+import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 @Component
-public class Query implements GraphQLRootResolver {
+public class Query implements GraphQLQueryResolver {
 
     public ResponseType echo() {
         return new ResponseType();
