@@ -76,6 +76,7 @@ subprojects {
         }
 
         artifacts {
+            archives jar
             archives sourcesJar
             archives javadocJar
         }
@@ -137,7 +138,7 @@ subprojects {
             key = System.getenv('BINTRAY_KEY') ?: project.findProperty('BINTRAY_KEY') ?: ''
             publications = ['mainProjectPublication']
             publish = true
-            override = true
+            override = false
             pkg {
                 repo = 'maven'
                 name = projectName
@@ -146,6 +147,9 @@ subprojects {
                 vcsUrl = projectGitRepoUrl
                 version {
                     name = project.version
+                    gpg {
+                        sign = true
+                    }
                 }
             }
         }
