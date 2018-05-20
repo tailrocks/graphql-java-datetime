@@ -43,7 +43,7 @@ Add folowing to your `pom.xml`:
 <dependency>
   <groupId>com.zhokhov.graphql</groupId>
   <artifactId>graphql-datetime-spring-boot-starter</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ Add folowing to your `pom.xml`:
 Add folowing to your `build.gradle`:
 
 ```groovy
-compile 'com.zhokhov.graphql:graphql-datetime-spring-boot-starter:1.0.0'
+compile 'com.zhokhov.graphql:graphql-datetime-spring-boot-starter:1.1.0'
 ```
 
 ### Scalars
