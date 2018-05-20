@@ -87,6 +87,6 @@ Please contribute using [Github Flow](https://guides.github.com/introduction/flo
 
 ## License
 
-Copyright © 2017 Alexey Zhokhov. All rights reserved.
+Copyright © 2017-2018 Alexey Zhokhov. All rights reserved.
 
 This project is licensed under the Apache License, Version 2.0 - see the [LICENSE](LICENSE) file for details.
