@@ -18,8 +18,8 @@
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 plugins {
-    id 'com.jfrog.bintray' version '1.7.3'
-    id 'com.jfrog.artifactory' version '4.4.18'
+    id 'com.jfrog.bintray' version '1.8.0'
+    id 'com.jfrog.artifactory' version '4.7.2'
 }
 
 subprojects {
