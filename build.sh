@@ -22,7 +22,7 @@ if [ -n "${ARTIFACTORY_CONTEXT_URL}" ]; then
     ./gradlew -PprojectVersion=${appVersion} clean jar sourcesJar generatePomFileForMainProjectPublicationPublication artifactoryPublish
 elif [ -n "${BINTRAY_KEY}" ]; then
     printf "\n# Publishing plugin to Bintray\n\n"
-    ./gradlew -PprojectVersion=${appVersion} clean jar sourcesJar javadoc generatePomFileForMainProjectPublicationPublication
+    ./gradlew -PprojectVersion=${appVersion} clean jar sourcesJar javadocJar generatePomFileForMainProjectPublicationPublication
     ./gradlew -PprojectVersion=${appVersion} bintrayUpload
 else
     printf "# Installing locally\n\n"
