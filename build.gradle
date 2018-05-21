@@ -138,7 +138,7 @@ subprojects {
             key = System.getenv('BINTRAY_KEY') ?: project.findProperty('BINTRAY_KEY') ?: ''
             publications = ['mainProjectPublication']
             publish = true
-            override = true
+            override = false
             pkg {
                 repo = 'maven'
                 name = projectName
@@ -154,6 +154,7 @@ subprojects {
                         sync = true
                         user = System.getenv('SONATYPE_USER')
                         password = System.getenv('SONATYPE_PASSWORD')
+                        close = '1'
                     }
                 }
             }
