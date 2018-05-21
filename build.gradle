@@ -137,7 +137,7 @@ subprojects {
             user = System.getenv('BINTRAY_USER') ?: project.findProperty('BINTRAY_USER') ?: ''
             key = System.getenv('BINTRAY_KEY') ?: project.findProperty('BINTRAY_KEY') ?: ''
             publications = ['mainProjectPublication']
-            publish = true
+            publish = !projectVersion.contains('SNAPSHOT')
             override = false
             pkg {
                 repo = 'maven'
@@ -151,7 +151,7 @@ subprojects {
                         sign = true
                     }
                     mavenCentralSync {
-                        sync = true
+                        sync = !projectVersion.contains('SNAPSHOT')
                         user = System.getenv('SONATYPE_USER')
                         password = System.getenv('SONATYPE_PASSWORD')
                         close = '1'
