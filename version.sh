@@ -7,11 +7,4 @@ appVersion="$(grep 'projectVersion=' gradle.properties | egrep -v ^[[:blank:]]*\
 appVersion="${appVersion#*=}"
 appVersion="${appVersion//[[:blank:]\'\"]/}"
 
-if [ -n "${BINTRAY_KEY}" ]; then
-    if [[ "$appVersion" == *"SNAPSHOT"* ]]; then
-        appVersion=`date +%Y-%m-%dT%H-%M-%S`
-    fi
-    echo $appVersion;
-else
-    echo $appVersion;
-fi
+echo $appVersion;
