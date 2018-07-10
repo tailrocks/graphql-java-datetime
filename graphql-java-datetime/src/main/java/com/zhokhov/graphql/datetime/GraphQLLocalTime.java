@@ -31,10 +31,16 @@ import java.time.format.DateTimeParseException;
  */
 public class GraphQLLocalTime extends GraphQLScalarType {
 
+    private static final String DEFAULT_NAME = "LocalTime";
+
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME.withZone(ZoneOffset.UTC);
 
     public GraphQLLocalTime() {
-        super("LocalTime", "Local Time type", new Coercing<LocalTime, String>() {
+        this(DEFAULT_NAME);
+    }
+
+    public GraphQLLocalTime(final String name) {
+        super(name, "Local Time type", new Coercing<LocalTime, String>() {
             private LocalTime convertImpl(Object input) {
                 if (input instanceof String) {
                     try {

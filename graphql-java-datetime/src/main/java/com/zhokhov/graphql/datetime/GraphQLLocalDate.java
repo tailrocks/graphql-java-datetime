@@ -29,8 +29,14 @@ import java.time.LocalDateTime;
  */
 public class GraphQLLocalDate extends GraphQLScalarType {
 
+    private static final String DEFAULT_NAME = "LocalDate";
+
     public GraphQLLocalDate() {
-        super("LocalDate", "Local Date type", new Coercing<LocalDate, String>() {
+        this(DEFAULT_NAME);
+    }
+
+    public GraphQLLocalDate(final String name) {
+        super(name, "Local Date type", new Coercing<LocalDate, String>() {
             private LocalDate convertImpl(Object input) {
                 if (input instanceof String) {
                     LocalDateTime localDateTime = DateTimeHelper.parseDate((String) input);

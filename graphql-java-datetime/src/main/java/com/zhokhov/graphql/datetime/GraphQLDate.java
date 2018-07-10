@@ -29,8 +29,14 @@ import java.util.Date;
  */
 public class GraphQLDate extends GraphQLScalarType {
 
+    private static final String DEFAULT_NAME = "Date";
+
     public GraphQLDate() {
-        super("Date", "Date type", new Coercing<Date, String>() {
+        this(DEFAULT_NAME);
+    }
+
+    public GraphQLDate(final String name) {
+        super(name, "Date type", new Coercing<Date, String>() {
             private Date convertImpl(Object input) {
                 if (input instanceof String) {
                     LocalDateTime localDateTime = DateTimeHelper.parseDate((String) input);
