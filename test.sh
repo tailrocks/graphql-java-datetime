@@ -15,4 +15,4 @@ printf "\n# Project version \e[1;37m$appVersion\e[0m\n"
 rm -rf build
 
 ./gradlew --stop
-./gradlew clean test
+./gradlew clean test --info --stacktrace

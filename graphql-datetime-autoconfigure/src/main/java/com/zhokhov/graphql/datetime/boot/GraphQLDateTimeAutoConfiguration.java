@@ -34,8 +34,7 @@ public class GraphQLDateTimeAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLDate graphQLDate(
-            GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLDate graphQLDate(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getDate().getScalarName();
         if (name == null) {
             return new GraphQLDate();
@@ -46,8 +45,7 @@ public class GraphQLDateTimeAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLLocalDate graphQLLocalDate(
-            GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLLocalDate graphQLLocalDate(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDate().getScalarName();
         if (name == null) {
             return new GraphQLLocalDate();
@@ -58,8 +56,7 @@ public class GraphQLDateTimeAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLLocalDateTime graphQLLocalDateTime(
-            GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLLocalDateTime graphQLLocalDateTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDateTime().getScalarName();
         if (name == null) {
             return new GraphQLLocalDateTime();
@@ -70,8 +67,7 @@ public class GraphQLDateTimeAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLLocalTime graphQLLocalTime(
-            GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLLocalTime graphQLLocalTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalTime().getScalarName();
         if (name == null) {
             return new GraphQLLocalTime();
