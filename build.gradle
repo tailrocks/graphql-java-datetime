@@ -17,9 +17,19 @@
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
-plugins {
-    id 'com.jfrog.bintray' version '1.8.0'
-    id 'com.jfrog.artifactory' version '4.7.2'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        mavenCentral()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath "com.github.ben-manes:gradle-versions-plugin:$gradleVersionsPluginVersion"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$gradleArtifactoryPluginVersion"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradleBintrayPluginVersion"
+    }
 }
 
 subprojects {
@@ -32,6 +42,9 @@ subprojects {
         apply plugin: 'com.jfrog.artifactory'
     }
     apply plugin: 'groovy'
+    apply plugin: 'com.github.ben-manes.versions'
+    apply plugin: 'com.jfrog.artifactory'
+    apply plugin: 'com.jfrog.bintray'
 
     version = projectVersion
     group = 'com.zhokhov.graphql'
@@ -44,7 +57,7 @@ subprojects {
 
     dependencies {
         testCompile 'org.spockframework:spock-core:1.1-groovy-2.4'
-        testCompile 'org.codehaus.groovy:groovy-all:2.4.15'
+        testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
     }
 
     idea {
