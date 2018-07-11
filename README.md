@@ -73,6 +73,22 @@ scalar LocalDateTime
 scalar LocalTime
 ```
 
+You can rename the scalar however you want with by simply adding the following properties to you application.yaml:
+
+```yaml
+graphql:
+  datetime:
+    scalars:
+      date:
+        scalarName: MyDate
+      localDate:
+        scalarName: MyLocalDate
+      localDateTime:
+        scalarName: MyLocalDateTime
+      localTime:
+        scalarName: MyLocalTime
+```
+
 ### Sample
 
 Now you can use these scalars in your application. Here is a graphql-datetime spring boot sample application, https://github.com/donbeave/graphql-java-datetime/tree/master/graphql-datetime-sample-app.
