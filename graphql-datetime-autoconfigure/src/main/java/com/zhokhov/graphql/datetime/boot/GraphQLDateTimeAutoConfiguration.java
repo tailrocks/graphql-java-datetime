@@ -34,26 +34,50 @@ public class GraphQLDateTimeAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLDate graphQLDate() {
-        return new GraphQLDate();
+    public GraphQLDate graphQLDate(
+            GraphQLDateTimeProperties configurationProperties) {
+        final String name = configurationProperties.getDate().getScalarName();
+        if (name == null) {
+            return new GraphQLDate();
+        } else {
+            return new GraphQLDate(name);
+        }
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLLocalDate graphQLLocalDate() {
-        return new GraphQLLocalDate();
+    public GraphQLLocalDate graphQLLocalDate(
+            GraphQLDateTimeProperties configurationProperties) {
+        final String name = configurationProperties.getLocalDate().getScalarName();
+        if (name == null) {
+            return new GraphQLLocalDate();
+        } else {
+            return new GraphQLLocalDate(name);
+        }
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLLocalDateTime graphQLLocalDateTime() {
-        return new GraphQLLocalDateTime();
+    public GraphQLLocalDateTime graphQLLocalDateTime(
+            GraphQLDateTimeProperties configurationProperties) {
+        final String name = configurationProperties.getLocalDateTime().getScalarName();
+        if (name == null) {
+            return new GraphQLLocalDateTime();
+        } else {
+            return new GraphQLLocalDateTime(name);
+        }
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLLocalTime graphQLLocalTime() {
-        return new GraphQLLocalTime();
+    public GraphQLLocalTime graphQLLocalTime(
+            GraphQLDateTimeProperties configurationProperties) {
+        final String name = configurationProperties.getLocalTime().getScalarName();
+        if (name == null) {
+            return new GraphQLLocalTime();
+        } else {
+            return new GraphQLLocalTime(name);
+        }
     }
 
 }
