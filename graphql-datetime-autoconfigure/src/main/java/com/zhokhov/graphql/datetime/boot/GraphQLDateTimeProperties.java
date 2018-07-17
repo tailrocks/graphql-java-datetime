@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author <a href='mailto:dgmneto@gmail.com'>Divino G. de Menezes Neto</a>
  */
-@Configuration
 @ConfigurationProperties(prefix = "graphql.datetime.scalars")
 public class GraphQLDateTimeProperties {
 
