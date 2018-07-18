@@ -34,5 +34,12 @@ graphql:
     inputObjectNamePrefix: Input
     schemaMutationObjectName: Mutation
 
+  datetime:
+    scalars:
+      date:
+        scalarName: MyDate
+      localDate:
+        scalarName: MyLocalDate
+
 spring.devtools.restart.enabled: true
 spring.devtools.livereload.enabled: false
