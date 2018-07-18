@@ -15,9 +15,9 @@
 #
 
 # Date implementation
-scalar Date
+scalar MyDate
 # LocalDate implementation
-scalar LocalDate
+scalar MyLocalDate
 # LocalDateTime implementation
 scalar LocalDateTime
 # LocalTime implementation
@@ -28,10 +28,10 @@ type Query {
     emperors: [Emperor]
 
     # date and time now
-    now: Date
+    now: MyDate
 
     # date yesterday
-    yesterday: LocalDate
+    yesterday: MyLocalDate
 
     # date and time tomorrow midnight
     tomorrowMidnight: LocalDateTime
@@ -52,7 +52,7 @@ type Mutation {
 type Emperor {
     givenName: String!
     title: String!
-    reignStart: LocalDate!
-    reignStop: LocalDate!
+    reignStart: MyLocalDate!
+    reignStop: MyLocalDate!
     name: String! @doc(d: "Given name") @deprecated(reason: "Use givenName instead")
 }
