@@ -31,69 +31,69 @@ class GraphQLLocalDateTest extends Specification {
     @Unroll
     def "Date parse literal #literal.value as #result"() {
         expect:
-        new GraphQLLocalDate().getCoercing().parseLiteral(literal) == result
+            new GraphQLLocalDate().getCoercing().parseLiteral(literal) == result
 
         where:
-        literal                       | result
-        new StringValue('2017-07-09') | LocalDate.of(2017, 7, 9)
+            literal                       | result
+            new StringValue('2017-07-09') | LocalDate.of(2017, 7, 9)
     }
 
     @Unroll
     def "Date returns null for invalid #literal"() {
         expect:
-        new GraphQLLocalDate().getCoercing().parseLiteral(literal) == null
+            new GraphQLLocalDate().getCoercing().parseLiteral(literal) == null
 
         where:
-        literal                       | _
-        new StringValue("not a date") | _
+            literal                       | _
+            new StringValue("not a date") | _
     }
 
     @Unroll
     def "Date serialize #value into #result (#result.class)"() {
         expect:
-        new GraphQLLocalDate().getCoercing().serialize(value) == result
+            new GraphQLLocalDate().getCoercing().serialize(value) == result
 
         where:
-        value                    | result
-        LocalDate.of(2017, 7, 9) | '2017-07-09'
+            value                    | result
+            LocalDate.of(2017, 7, 9) | '2017-07-09'
     }
 
     @Unroll
     def "serialize throws exception for invalid input #value"() {
         when:
-        new GraphQLLocalDate().getCoercing().serialize(value)
+            new GraphQLLocalDate().getCoercing().serialize(value)
         then:
-        thrown(CoercingSerializeException)
+            thrown(CoercingSerializeException)
 
         where:
-        value        | _
-        ''           | _
-        'not a date' | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a date' | _
+            new Object() | _
     }
 
     @Unroll
     def "Date parse #value into #result (#result.class)"() {
         expect:
-        new GraphQLLocalDate().getCoercing().parseValue(value) == result
+            new GraphQLLocalDate().getCoercing().parseValue(value) == result
 
         where:
-        value        | result
-        '2017-07-09' | LocalDate.of(2017, 7, 9)
+            value        | result
+            '2017-07-09' | LocalDate.of(2017, 7, 9)
     }
 
     @Unroll
     def "parseValue throws exception for invalid input #value"() {
         when:
-        new GraphQLLocalDate().getCoercing().parseValue(value)
+            new GraphQLLocalDate().getCoercing().parseValue(value)
         then:
-        thrown(CoercingParseValueException)
+            thrown(CoercingParseValueException)
 
         where:
-        value        | _
-        ''           | _
-        'not a date' | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a date' | _
+            new Object() | _
     }
 
 }

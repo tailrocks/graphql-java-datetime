@@ -32,77 +32,77 @@ class GraphQLLocalTimeTest extends Specification {
     @Unroll
     def "Date parse literal #literal.value as #result"() {
         expect:
-        new GraphQLLocalTime().getCoercing().parseLiteral(literal) == result
+            new GraphQLLocalTime().getCoercing().parseLiteral(literal) == result
 
         where:
-        literal                     | result
-        new StringValue('00:00:00') | LocalTime.MIDNIGHT
-        new StringValue('10:15:30') | LocalTime.of(10, 15, 30)
-        new StringValue('17:59:59') | LocalTime.of(17, 59, 59)
+            literal                     | result
+            new StringValue('00:00:00') | LocalTime.MIDNIGHT
+            new StringValue('10:15:30') | LocalTime.of(10, 15, 30)
+            new StringValue('17:59:59') | LocalTime.of(17, 59, 59)
     }
 
     @Unroll
     def "Date returns null for invalid #literal"() {
         expect:
-        new GraphQLLocalTime().getCoercing().parseLiteral(literal) == null
+            new GraphQLLocalTime().getCoercing().parseLiteral(literal) == null
 
         where:
-        literal                       | _
-        new StringValue("not a time") | _
+            literal                       | _
+            new StringValue("not a time") | _
     }
 
     @Unroll
     def "Date serialize #value into #result (#result.class)"() {
         expect:
-        new GraphQLLocalTime().getCoercing().serialize(value) == result
+            new GraphQLLocalTime().getCoercing().serialize(value) == result
 
         where:
-        value                                                              | result
-        LocalTime.MIDNIGHT                                                 | '00:00:00'
-        LocalTime.of(10, 15, 30)                                           | '10:15:30'
-        LocalTime.of(17, 59, 59)                                           | '17:59:59'
-        LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277)) | '17:59:59.277'
+            value                                                              | result
+            LocalTime.MIDNIGHT                                                 | '00:00:00'
+            LocalTime.of(10, 15, 30)                                           | '10:15:30'
+            LocalTime.of(17, 59, 59)                                           | '17:59:59'
+            LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277)) | '17:59:59.277'
     }
 
     @Unroll
     def "serialize throws exception for invalid input #value"() {
         when:
-        new GraphQLLocalTime().getCoercing().serialize(value)
+            new GraphQLLocalTime().getCoercing().serialize(value)
         then:
-        thrown(CoercingSerializeException)
+            thrown(CoercingSerializeException)
 
         where:
-        value        | _
-        ''           | _
-        'not a time' | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a time' | _
+            new Object() | _
     }
 
     @Unroll
     def "Date parse #value into #result (#result.class)"() {
         expect:
-        new GraphQLLocalTime().getCoercing().parseValue(value) == result
+            new GraphQLLocalTime().getCoercing().parseValue(value) == result
 
         where:
-        value          | result
-        '00:00:00'     | LocalTime.MIDNIGHT
-        '10:15:30'     | LocalTime.of(10, 15, 30)
-        '17:59:59'     | LocalTime.of(17, 59, 59)
-        '17:59:59.277' | LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277))
+            value          | result
+            '00:00:00'     | LocalTime.MIDNIGHT
+            '10:15:30'     | LocalTime.of(10, 15, 30)
+            '17:59:59'     | LocalTime.of(17, 59, 59)
+            '17:59:59.277' | LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277))
     }
 
     @Unroll
     def "parseValue throws exception for invalid input #value"() {
         when:
-        new GraphQLLocalTime().getCoercing().parseValue(value)
+            new GraphQLLocalTime().getCoercing().parseValue(value)
         then:
-        thrown(CoercingParseValueException)
+            thrown(CoercingParseValueException)
 
         where:
-        value        | _
-        ''           | _
-        'not a time' | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a time' | _
+            new Object() | _
     }
 
 }

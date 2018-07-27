@@ -31,78 +31,78 @@ class GraphQLDateTest extends Specification {
     @Unroll
     def "Date parse literal #literal.value as #result"() {
         expect:
-        new GraphQLDate().getCoercing().parseLiteral(literal) == result
+            new GraphQLDate().getCoercing().parseLiteral(literal) == result
 
         where:
-        literal                                     | result
-        new StringValue('2017-07-09T11:54:42.277Z') | createDate(2017, 7, 9, 11, 54, 42, 277)
-        new StringValue('2017-07-09T13:14:45.947Z') | createDate(2017, 7, 9, 13, 14, 45, 947)
-        new StringValue('2017-07-09T11:54:42Z')     | createDate(2017, 7, 9, 11, 54, 42)
-        new StringValue('2017-07-09')               | createDate(2017, 7, 9)
+            literal                                     | result
+            new StringValue('2017-07-09T11:54:42.277Z') | createDate(2017, 7, 9, 11, 54, 42, 277)
+            new StringValue('2017-07-09T13:14:45.947Z') | createDate(2017, 7, 9, 13, 14, 45, 947)
+            new StringValue('2017-07-09T11:54:42Z')     | createDate(2017, 7, 9, 11, 54, 42)
+            new StringValue('2017-07-09')               | createDate(2017, 7, 9)
     }
 
     @Unroll
     def "Date returns null for invalid #literal"() {
         expect:
-        new GraphQLDate().getCoercing().parseLiteral(literal) == null
+            new GraphQLDate().getCoercing().parseLiteral(literal) == null
 
         where:
-        literal                       | _
-        new StringValue("not a date") | _
+            literal                       | _
+            new StringValue("not a date") | _
     }
 
     @Unroll
     def "Date serialize #value into #result (#result.class)"() {
         expect:
-        new GraphQLDate().getCoercing().serialize(value) == result
+            new GraphQLDate().getCoercing().serialize(value) == result
 
         where:
-        value                                   | result
-        createDate(2017, 7, 9, 11, 54, 42, 277) | '2017-07-09T11:54:42.277Z'
-        createDate(2017, 7, 9, 13, 14, 45, 947) | '2017-07-09T13:14:45.947Z'
-        createDate(2017, 7, 9, 11, 54, 42)      | '2017-07-09T11:54:42Z'
-        createDate(2017, 7, 9)                  | '2017-07-09T00:00:00Z'
+            value                                   | result
+            createDate(2017, 7, 9, 11, 54, 42, 277) | '2017-07-09T11:54:42.277Z'
+            createDate(2017, 7, 9, 13, 14, 45, 947) | '2017-07-09T13:14:45.947Z'
+            createDate(2017, 7, 9, 11, 54, 42)      | '2017-07-09T11:54:42Z'
+            createDate(2017, 7, 9)                  | '2017-07-09T00:00:00Z'
     }
 
     @Unroll
     def "serialize throws exception for invalid input #value"() {
         when:
-        new GraphQLDate().getCoercing().serialize(value)
+            new GraphQLDate().getCoercing().serialize(value)
         then:
-        thrown(CoercingSerializeException)
+            thrown(CoercingSerializeException)
 
         where:
-        value        | _
-        ''           | _
-        'not a date' | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a date' | _
+            new Object() | _
     }
 
     @Unroll
     def "Date parse #value into #result (#result.class)"() {
         expect:
-        new GraphQLDate().getCoercing().parseValue(value) == result
+            new GraphQLDate().getCoercing().parseValue(value) == result
 
         where:
-        value                      | result
-        '2017-07-09T11:54:42.277Z' | createDate(2017, 7, 9, 11, 54, 42, 277)
-        '2017-07-09T13:14:45.947Z' | createDate(2017, 7, 9, 13, 14, 45, 947)
-        '2017-07-09T11:54:42Z'     | createDate(2017, 7, 9, 11, 54, 42)
-        '2017-07-09'               | createDate(2017, 7, 9)
+            value                      | result
+            '2017-07-09T11:54:42.277Z' | createDate(2017, 7, 9, 11, 54, 42, 277)
+            '2017-07-09T13:14:45.947Z' | createDate(2017, 7, 9, 13, 14, 45, 947)
+            '2017-07-09T11:54:42Z'     | createDate(2017, 7, 9, 11, 54, 42)
+            '2017-07-09'               | createDate(2017, 7, 9)
     }
 
     @Unroll
     def "parseValue throws exception for invalid input #value"() {
         when:
-        new GraphQLDate().getCoercing().parseValue(value)
+            new GraphQLDate().getCoercing().parseValue(value)
         then:
-        thrown(CoercingParseValueException)
+            thrown(CoercingParseValueException)
 
         where:
-        value        | _
-        ''           | _
-        'not a date' | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a date' | _
+            new Object() | _
     }
 
 }

@@ -25,6 +25,8 @@ dependencies {
     compile(project(':graphql-java-datetime'))
 
     testCompile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    testCompile "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testCompile "org.springframework.boot:spring-boot-test:$springBootVersion"
+    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
 }

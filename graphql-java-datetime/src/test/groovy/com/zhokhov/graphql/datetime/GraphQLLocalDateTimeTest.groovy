@@ -35,78 +35,78 @@ class GraphQLLocalDateTimeTest extends Specification {
     @Unroll
     def "Date parse literal #literal.value as #result"() {
         expect:
-        new GraphQLLocalDateTime().getCoercing().parseLiteral(literal) == result
+            new GraphQLLocalDateTime().getCoercing().parseLiteral(literal) == result
 
         where:
-        literal                                     | result
-        new StringValue('2017-07-09T11:54:42.277Z') | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
-        new StringValue('2017-07-09T13:14:45.947Z') | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
-        new StringValue('2017-07-09T11:54:42Z')     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
-        new StringValue('2017-07-09')               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+            literal                                     | result
+            new StringValue('2017-07-09T11:54:42.277Z') | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
+            new StringValue('2017-07-09T13:14:45.947Z') | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
+            new StringValue('2017-07-09T11:54:42Z')     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
+            new StringValue('2017-07-09')               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
     }
 
     @Unroll
     def "Date returns null for invalid #literal"() {
         expect:
-        new GraphQLLocalDateTime().getCoercing().parseLiteral(literal) == null
+            new GraphQLLocalDateTime().getCoercing().parseLiteral(literal) == null
 
         where:
-        literal                       | _
-        new StringValue("not a date") | _
+            literal                       | _
+            new StringValue("not a date") | _
     }
 
     @Unroll
     def "Date serialize #value into #result (#result.class)"() {
         expect:
-        new GraphQLLocalDateTime().getCoercing().serialize(value) == result
+            new GraphQLLocalDateTime().getCoercing().serialize(value) == result
 
         where:
-        value                                                                     | result
-        LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277)) | '2017-07-09T11:54:42.277Z'
-        LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947)) | '2017-07-09T13:14:45.947Z'
-        LocalDateTime.of(2017, 7, 9, 11, 54, 42)                                  | '2017-07-09T11:54:42Z'
-        LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)            | '2017-07-09T00:00:00Z'
+            value                                                                     | result
+            LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277)) | '2017-07-09T11:54:42.277Z'
+            LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947)) | '2017-07-09T13:14:45.947Z'
+            LocalDateTime.of(2017, 7, 9, 11, 54, 42)                                  | '2017-07-09T11:54:42Z'
+            LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)            | '2017-07-09T00:00:00Z'
     }
 
     @Unroll
     def "serialize throws exception for invalid input #value"() {
         when:
-        new GraphQLLocalDateTime().getCoercing().serialize(value)
+            new GraphQLLocalDateTime().getCoercing().serialize(value)
         then:
-        thrown(CoercingSerializeException)
+            thrown(CoercingSerializeException)
 
         where:
-        value        | _
-        ''           | _
-        'not a date' | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a date' | _
+            new Object() | _
     }
 
     @Unroll
     def "Date parse #value into #result (#result.class)"() {
         expect:
-        new GraphQLLocalDateTime().getCoercing().parseValue(value) == result
+            new GraphQLLocalDateTime().getCoercing().parseValue(value) == result
 
         where:
-        value                      | result
-        '2017-07-09T11:54:42.277Z' | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
-        '2017-07-09T13:14:45.947Z' | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
-        '2017-07-09T11:54:42Z'     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
-        '2017-07-09'               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+            value                      | result
+            '2017-07-09T11:54:42.277Z' | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
+            '2017-07-09T13:14:45.947Z' | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
+            '2017-07-09T11:54:42Z'     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
+            '2017-07-09'               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
     }
 
     @Unroll
     def "parseValue throws exception for invalid input #value"() {
         when:
-        new GraphQLLocalDateTime().getCoercing().parseValue(value)
+            new GraphQLLocalDateTime().getCoercing().parseValue(value)
         then:
-        thrown(CoercingParseValueException)
+            thrown(CoercingParseValueException)
 
         where:
-        value        | _
-        ''           | _
-        'not a date' | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a date' | _
+            new Object() | _
     }
 
 }
