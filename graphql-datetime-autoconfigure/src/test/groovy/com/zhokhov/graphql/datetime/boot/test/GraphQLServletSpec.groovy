@@ -16,39 +16,37 @@
 package com.zhokhov.graphql.datetime.boot.test
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import graphql.schema.GraphQLSchema
-import graphql.servlet.GraphQLServlet
-import graphql.servlet.SimpleGraphQLServlet
-import org.springframework.context.support.AbstractApplicationContext
+import org.apache.commons.lang3.StringEscapeUtils
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import spock.lang.Shared
 import spock.lang.Specification
+
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
+@ComponentScan(basePackages = "com.zhokhov.graphql.datetime")
+@EnableAutoConfiguration
+@SpringBootTest(classes = GraphQLServletSpec, webEnvironment = RANDOM_PORT)
 class GraphQLServletSpec extends Specification {
 
     @Shared ObjectMapper mapper = new ObjectMapper()
 
-    AbstractApplicationContext context
-
-    def setup() {
-        context = ContextHelper.load()
-    }
-
-    def cleanup() {
-        if (context) {
-            context.close()
-            context = null
-        }
-    }
+    @Autowired TestRestTemplate restTemplate
 
     def "test GraphQLServlet"() {
         given:
-        GraphQLSchema graphQLSchema = context.getBean(GraphQLSchema.class)
-        GraphQLServlet servlet = new SimpleGraphQLServlet(graphQLSchema)
-
-        String query = """
+            String query = """
 {
     echo {
         date
@@ -60,19 +58,33 @@ class GraphQLServletSpec extends Specification {
 """
 
         when:
-        String result = servlet.executeQuery(query)
+            String json = """
+{
+    "query": "${StringEscapeUtils.escapeJson(query)}"
+}
+"""
+
+            HttpHeaders headers = new HttpHeaders()
+            headers.setContentType(MediaType.APPLICATION_JSON)
+
+            HttpEntity entity = new HttpEntity(json, headers)
+
+            ResponseEntity<String> response = restTemplate.postForEntity('/graphql', entity, String.class)
 
         then:
-        getResponseContent(result) == [
-                data: [
-                        echo: [
-                                date         : '2017-07-10T06:12:46.754Z',
-                                localDate    : '2017-01-01',
-                                localDateTime: '2017-01-01T00:00:00Z',
-                                localTime    : '00:00:00'
-                        ]
-                ]
-        ]
+            response.statusCode == HttpStatus.OK
+
+            response.body
+            getResponseContent(response.body) == [
+                    data: [
+                            echo: [
+                                    date         : '2017-07-10T06:12:46.754Z',
+                                    localDate    : '2017-01-01',
+                                    localDateTime: '2017-01-01T00:00:00Z',
+                                    localTime    : '00:00:00'
+                            ]
+                    ]
+            ]
     }
 
     private Map<String, Object> getResponseContent(String content) {

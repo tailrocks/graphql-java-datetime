@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = GraphqlDatetimeSampleAppApplicationTests.class)
 public class GraphqlDatetimeSampleAppApplicationTests {
 
     @Test

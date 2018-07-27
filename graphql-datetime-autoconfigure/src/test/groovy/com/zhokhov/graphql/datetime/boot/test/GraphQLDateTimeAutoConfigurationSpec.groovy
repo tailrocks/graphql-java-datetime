@@ -44,7 +44,7 @@ class GraphQLDateTimeAutoConfigurationSpec extends Specification {
 
     def "test"() {
         given:
-        String query = """
+            String query = """
 {
     echo {
         date
@@ -56,28 +56,28 @@ class GraphQLDateTimeAutoConfigurationSpec extends Specification {
 """
 
         when:
-        this.context = ContextHelper.load()
+            this.context = ContextHelper.load()
 
         then:
-        context.getBean(GraphQLSchema.class)
-        context.getBean(GraphQLDate.class)
-        context.getBean(GraphQLLocalDate.class)
-        context.getBean(GraphQLLocalDateTime.class)
-        context.getBean(GraphQLLocalTime.class)
+            context.getBean(GraphQLSchema.class)
+            context.getBean(GraphQLDate.class)
+            context.getBean(GraphQLLocalDate.class)
+            context.getBean(GraphQLLocalDateTime.class)
+            context.getBean(GraphQLLocalTime.class)
 
         when:
-        GraphQL graphQL = GraphQL.newGraphQL(context.getBean(GraphQLSchema.class)).build()
-        Map<String, Object> result = graphQL.execute(query).getData()
+            GraphQL graphQL = GraphQL.newGraphQL(context.getBean(GraphQLSchema.class)).build()
+            Map<String, Object> result = graphQL.execute(query).getData()
 
         then:
-        result == [
-                echo: [
-                        date         : '2017-07-10T06:12:46.754Z',
-                        localDate    : '2017-01-01',
-                        localDateTime: '2017-01-01T00:00:00Z',
-                        localTime    : '00:00:00'
-                ]
-        ]
+            result == [
+                    echo: [
+                            date         : '2017-07-10T06:12:46.754Z',
+                            localDate    : '2017-01-01',
+                            localDateTime: '2017-01-01T00:00:00Z',
+                            localTime    : '00:00:00'
+                    ]
+            ]
     }
 
 }

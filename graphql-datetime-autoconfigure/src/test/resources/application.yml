@@ -1,0 +1,16 @@
+server:
+  port: ${port:8080}
+
+spring:
+  application:
+    name: test
+  profiles:
+    active: test
+  output:
+    ansi:
+      enabled: always
+graphql:
+  servlet:
+    mapping: /graphql
+    enabled: true
+    corsEnabled: true
