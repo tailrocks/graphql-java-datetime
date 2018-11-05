@@ -89,6 +89,15 @@ graphql:
         scalarName: MyLocalTime
 ```
 
+You can enable automatic zone conversion by adding the following property to your application.yaml. This will
+automatically convert between UTC and the default TimeZone for `LocalDateTime`:
+```yaml
+graphql:
+  datetime:
+    scalars:
+      zone-conversion-enabled: true
+```
+
 ### Sample
 
 Now you can use these scalars in your application. Here is a graphql-datetime spring boot sample application, https://github.com/donbeave/graphql-java-datetime/tree/master/graphql-datetime-sample-app.

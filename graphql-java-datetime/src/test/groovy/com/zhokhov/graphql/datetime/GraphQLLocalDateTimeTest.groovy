@@ -24,6 +24,7 @@ import spock.lang.Unroll
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneOffset
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS
 
@@ -109,4 +110,35 @@ class GraphQLLocalDateTimeTest extends Specification {
             new Object() | _
     }
 
+    @Unroll
+    def "serialize #value into #result (#result.class) using zone conversion"() {
+        when:
+            TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(1)))
+
+        then:
+            new GraphQLLocalDateTime(true).getCoercing().serialize(value) == result
+
+        where:
+            value | result
+            LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277)) | '2017-07-09T10:54:42.277Z'
+            LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947)) | '2017-07-09T12:14:45.947Z'
+            LocalDateTime.of(2017, 7, 9, 11, 54, 42)                                  | '2017-07-09T10:54:42Z'
+            LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT.plusHours(1))            | '2017-07-09T00:00:00Z'
+    }
+
+    @Unroll
+    def "parse #value into #result (#result.class) using zone conversion"() {
+        when:
+            TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(1)))
+
+        then:
+            new GraphQLLocalDateTime(true).getCoercing().parseValue(value) == result
+
+        where:
+        value                      | result
+        '2017-07-09T10:54:42.277Z' | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
+        '2017-07-09T12:14:45.947Z' | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
+        '2017-07-09T10:54:42Z'     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
+        '2017-07-09'               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+    }
 }
