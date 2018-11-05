@@ -31,16 +31,21 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
     private static final String DEFAULT_NAME = "LocalDateTime";
 
     public GraphQLLocalDateTime() {
-        this(DEFAULT_NAME);
+        this(DEFAULT_NAME, false);
     }
 
-    public GraphQLLocalDateTime(final String name) {
+    public GraphQLLocalDateTime(boolean zoneConversionEnabled) {
+        this(DEFAULT_NAME, zoneConversionEnabled);
+    }
+
+    public GraphQLLocalDateTime(final String name, final boolean zoneConversionEnabled) {
         super(name, "Local Date Time type", new Coercing<LocalDateTime, String>() {
+
+            private LocalDateTimeConverter converter = new LocalDateTimeConverter(zoneConversionEnabled);
+
             private LocalDateTime convertImpl(Object input) {
                 if (input instanceof String) {
-                    LocalDateTime localDateTime = DateTimeHelper.parseDate((String) input);
-
-                    return localDateTime;
+                    return converter.parseDate((String) input);
                 }
                 return null;
             }
@@ -48,13 +53,13 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
             @Override
             public String serialize(Object input) {
                 if (input instanceof LocalDateTime) {
-                    return DateTimeHelper.toISOString((LocalDateTime) input);
+                    return converter.toISOString((LocalDateTime) input);
                 } else {
                     LocalDateTime result = convertImpl(input);
                     if (result == null) {
                         throw new CoercingSerializeException("Invalid value '" + input + "' for LocalDateTime");
                     }
-                    return DateTimeHelper.toISOString(result);
+                    return converter.toISOString(result);
                 }
             }
 
@@ -71,8 +76,7 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
             public LocalDateTime parseLiteral(Object input) {
                 if (!(input instanceof StringValue)) return null;
                 String value = ((StringValue) input).getValue();
-                LocalDateTime result = convertImpl(value);
-                return result;
+                return convertImpl(value);
             }
         });
     }

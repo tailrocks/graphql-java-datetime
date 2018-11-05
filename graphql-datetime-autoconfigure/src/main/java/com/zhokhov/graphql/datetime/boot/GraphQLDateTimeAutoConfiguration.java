@@ -61,9 +61,9 @@ public class GraphQLDateTimeAutoConfiguration {
     public GraphQLLocalDateTime graphQLLocalDateTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDateTime().getScalarName();
         if (name == null) {
-            return new GraphQLLocalDateTime();
+            return new GraphQLLocalDateTime(configurationProperties.isZoneConversionEnabled());
         } else {
-            return new GraphQLLocalDateTime(name);
+            return new GraphQLLocalDateTime(name, configurationProperties.isZoneConversionEnabled());
         }
     }
 
