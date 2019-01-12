@@ -23,7 +23,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
     }
 }
 
@@ -43,9 +43,9 @@ repositories {
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-devtools'
-    compile "com.graphql-java:graphql-spring-boot-starter:${graphqlSpringBootVersion}"
-    compile "com.graphql-java:graphiql-spring-boot-starter:${graphqlSpringBootVersion}"
-    compile "com.graphql-java:graphql-java-tools:${graphqlJavaToolsVersion}"
+    compile "com.graphql-java-kickstart:graphql-java-tools:$graphqlJavaToolsVersion"
+    compile "com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion"
+    compile "com.graphql-java-kickstart:graphiql-spring-boot-starter:$graphqlSpringBootVersion"
     compile(project(':graphql-datetime-spring-boot-starter'))
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
