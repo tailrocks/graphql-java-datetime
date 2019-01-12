@@ -15,6 +15,9 @@
  */
 package com.zhokhov.graphql.datetime.boot.test;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oembedler.moon.graphql.boot.GraphQLJavaToolsAutoConfiguration;
 import com.zhokhov.graphql.datetime.GraphQLDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDate;
@@ -23,6 +26,7 @@ import com.zhokhov.graphql.datetime.GraphQLLocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -41,6 +45,15 @@ public class ContextHelper {
         @Autowired(required = false) GraphQLLocalDate graphQLLocalDate;
         @Autowired(required = false) GraphQLLocalDateTime graphQLLocalDateTime;
         @Autowired(required = false) GraphQLLocalTime graphQLLocalTime;
+
+        @Bean
+        public ObjectMapper objectMapper() {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
+
+            return mapper;
+        }
 
     }
 
