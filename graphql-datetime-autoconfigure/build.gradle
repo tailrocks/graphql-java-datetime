@@ -18,15 +18,14 @@
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 dependencies {
-    compile "com.graphql-java:graphql-spring-boot-autoconfigure:$graphqlSpringBootVersion"
-    compile "com.graphql-java:graphql-spring-boot-starter:$graphqlSpringBootVersion"
-    compile "com.graphql-java:graphql-java-servlet:$graphqlJavaServletVersion"
-    compile "com.graphql-java:graphql-java-tools:$graphqlJavaToolsVersion"
+    compile "com.graphql-java-kickstart:graphql-java-servlet:$graphqlJavaServletVersion"
+    compile "com.graphql-java-kickstart:graphql-java-tools:$graphqlJavaToolsVersion"
+    compile "com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion"
     compile(project(':graphql-java-datetime'))
 
     testCompile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     testCompile "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
     testCompile "org.springframework.boot:spring-boot-test:$springBootVersion"
-    testCompile 'org.spockframework:spock-spring:1.1-groovy-2.4'
+    testCompile "org.spockframework:spock-spring:$spockVersion"
 }
