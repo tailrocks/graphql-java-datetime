@@ -71,6 +71,9 @@ scalar LocalDateTime
 
 # java.time.LocalTime implementation
 scalar LocalTime
+
+# javal.time.OffsetDateTime implementation
+scalar OffsetDateTime 
 ```
 
 You can rename the scalar however you want with by simply adding the following properties to you application.yaml:
@@ -87,6 +90,8 @@ graphql:
         scalarName: MyLocalDateTime
       localTime:
         scalarName: MyLocalTime
+      offsetDateTime:
+        scalarName: MyOffsetDateTime
 ```
 
 You can enable automatic zone conversion by adding the following property to your application.yaml. This will
@@ -97,6 +102,16 @@ graphql:
   datetime:
     scalars:
       zone-conversion-enabled: true
+```
+
+If using OffsetDateTime in order to present the offset and disable the automatic convertion to UTC from Jackson you should
+set to your application.yml the following:
+
+```yaml
+spring:
+  jackson:
+    deserialization:
+      adjust-dates-to-context-time-zone:false
 ```
 
 ### Sample
