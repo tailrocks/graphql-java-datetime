@@ -13,6 +13,7 @@ public class GraphQLDateTimeProperties {
     private ScalarDefinition localDate = new ScalarDefinition();
     private ScalarDefinition localDateTime = new ScalarDefinition();
     private ScalarDefinition localTime = new ScalarDefinition();
+    private ScalarDefinition offsetDateTime = new ScalarDefinition();
     private boolean zoneConversionEnabled = false;
 
     ScalarDefinition getDate() {
@@ -29,6 +30,10 @@ public class GraphQLDateTimeProperties {
 
     ScalarDefinition getLocalTime() {
         return localTime;
+    }
+
+    ScalarDefinition getOffsetDateTime() {
+        return offsetDateTime;
     }
 
     public static class ScalarDefinition {
@@ -59,6 +64,10 @@ public class GraphQLDateTimeProperties {
 
     public void setLocalTime(ScalarDefinition localTime) {
         this.localTime = localTime;
+    }
+
+    public void setOffsetDateTime(ScalarDefinition offsetDateTime) {
+        this.offsetDateTime = offsetDateTime;
     }
 
     public boolean isZoneConversionEnabled() {

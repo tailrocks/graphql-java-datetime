@@ -16,10 +16,7 @@
 package com.zhokhov.graphql.datetime.boot;
 
 import com.oembedler.moon.graphql.boot.GraphQLJavaToolsAutoConfiguration;
-import com.zhokhov.graphql.datetime.GraphQLDate;
-import com.zhokhov.graphql.datetime.GraphQLLocalDate;
-import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
-import com.zhokhov.graphql.datetime.GraphQLLocalTime;
+import com.zhokhov.graphql.datetime.*;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -77,5 +74,14 @@ public class GraphQLDateTimeAutoConfiguration {
             return new GraphQLLocalTime(name);
         }
     }
-
+    @Bean
+    @ConditionalOnMissingBean
+    public GraphQLOffsetDateTime graphQLOffsetDateTime(GraphQLDateTimeProperties configurationProperties) {
+        final String name = configurationProperties.getOffsetDateTime().getScalarName();
+        if (name == null) {
+            return new GraphQLOffsetDateTime();
+        } else {
+            return new GraphQLOffsetDateTime(name);
+        }
+    }
 }
