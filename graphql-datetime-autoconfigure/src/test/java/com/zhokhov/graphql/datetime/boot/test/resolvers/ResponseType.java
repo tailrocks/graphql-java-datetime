@@ -15,9 +15,7 @@
  */
 package com.zhokhov.graphql.datetime.boot.test.resolvers;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Date;
 
 /**
@@ -29,12 +27,14 @@ public class ResponseType {
     private LocalDate localDate;
     private LocalDateTime localDateTime;
     private LocalTime localTime;
+    private OffsetDateTime offsetDateTime;
 
     public ResponseType() {
         date = new Date(1499667166754L);
         localDate = LocalDate.of(2017, 1, 1);
         localTime = LocalTime.MIDNIGHT;
         localDateTime = LocalDateTime.of(localDate, localTime);
+        offsetDateTime = OffsetDateTime.of(localDate, localTime, ZoneOffset.UTC);
     }
 
     public Date getDate() {
@@ -53,4 +53,7 @@ public class ResponseType {
         return localTime;
     }
 
+    public OffsetDateTime getOffsetDateTime() {
+        return offsetDateTime;
+    }
 }
