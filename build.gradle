@@ -32,6 +32,15 @@ buildscript {
     }
 }
 
+apply plugin: 'idea'
+
+idea {
+    module {
+        downloadJavadoc = false
+        downloadSources = false
+    }
+}
+
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
