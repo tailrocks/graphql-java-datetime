@@ -111,7 +111,7 @@ set to your application.yml the following:
 spring:
   jackson:
     deserialization:
-      adjust-dates-to-context-time-zone:false
+      adjust-dates-to-context-time-zone: false
 ```
 
 ### Sample
