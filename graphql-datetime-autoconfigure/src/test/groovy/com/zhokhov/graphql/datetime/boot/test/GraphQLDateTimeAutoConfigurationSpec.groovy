@@ -19,6 +19,7 @@ import com.zhokhov.graphql.datetime.GraphQLDate
 import com.zhokhov.graphql.datetime.GraphQLLocalDate
 import com.zhokhov.graphql.datetime.GraphQLLocalDateTime
 import com.zhokhov.graphql.datetime.GraphQLLocalTime
+import com.zhokhov.graphql.datetime.GraphQLOffsetDateTime
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
 import org.springframework.context.support.AbstractApplicationContext
@@ -51,6 +52,7 @@ class GraphQLDateTimeAutoConfigurationSpec extends Specification {
         localDate
         localDateTime
         localTime
+        offsetDateTime
     }
 }
 """
@@ -64,6 +66,7 @@ class GraphQLDateTimeAutoConfigurationSpec extends Specification {
             context.getBean(GraphQLLocalDate.class)
             context.getBean(GraphQLLocalDateTime.class)
             context.getBean(GraphQLLocalTime.class)
+            context.getBean(GraphQLOffsetDateTime.class)
 
         when:
             GraphQL graphQL = GraphQL.newGraphQL(context.getBean(GraphQLSchema.class)).build()
@@ -72,10 +75,11 @@ class GraphQLDateTimeAutoConfigurationSpec extends Specification {
         then:
             result == [
                     echo: [
-                            date         : '2017-07-10T06:12:46.754Z',
-                            localDate    : '2017-01-01',
-                            localDateTime: '2017-01-01T00:00:00Z',
-                            localTime    : '00:00:00'
+                            date          : '2017-07-10T06:12:46.754Z',
+                            localDate     : '2017-01-01',
+                            localDateTime : '2017-01-01T00:00:00Z',
+                            offsetDateTime: '2017-01-01T00:00:00Z',
+                            localTime     : '00:00:00'
                     ]
             ]
     }

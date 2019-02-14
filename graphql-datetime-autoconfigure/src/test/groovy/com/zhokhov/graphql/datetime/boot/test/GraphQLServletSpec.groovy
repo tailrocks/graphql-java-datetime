@@ -53,6 +53,7 @@ class GraphQLServletSpec extends Specification {
         localDate
         localDateTime
         localTime
+        offsetDateTime
     }
 }
 """
@@ -78,10 +79,11 @@ class GraphQLServletSpec extends Specification {
             getResponseContent(response.body) == [
                     data: [
                             echo: [
-                                    date         : '2017-07-10T06:12:46.754Z',
-                                    localDate    : '2017-01-01',
-                                    localDateTime: '2017-01-01T00:00:00Z',
-                                    localTime    : '00:00:00'
+                                    date          : '2017-07-10T06:12:46.754Z',
+                                    localDate     : '2017-01-01',
+                                    localDateTime : '2017-01-01T00:00:00Z',
+                                    offsetDateTime: '2017-01-01T00:00:00Z',
+                                    localTime     : '00:00:00'
                             ]
                     ]
             ]
