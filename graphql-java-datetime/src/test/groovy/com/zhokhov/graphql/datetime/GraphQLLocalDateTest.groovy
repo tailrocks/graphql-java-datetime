@@ -22,6 +22,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.LocalDate
+import java.time.ZoneOffset
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
@@ -80,6 +81,20 @@ class GraphQLLocalDateTest extends Specification {
         where:
             value        | result
             '2017-07-09' | LocalDate.of(2017, 7, 9)
+    }
+
+    @Unroll
+    def "Date parse #value into #result (#result.class) using zone conversion"() {
+        when:
+            TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(2)))
+
+        then:
+            new GraphQLLocalDate(true).getCoercing().parseValue(value) == result
+
+        where:
+            value                   | result
+            '2019-03-01'            | LocalDate.of(2019, 3, 1)
+            '2019-03-01T22:00:00Z'  | LocalDate.of(2019, 3, 2)
     }
 
     @Unroll

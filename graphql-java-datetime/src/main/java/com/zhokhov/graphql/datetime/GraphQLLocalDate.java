@@ -32,14 +32,21 @@ public class GraphQLLocalDate extends GraphQLScalarType {
     private static final String DEFAULT_NAME = "LocalDate";
 
     public GraphQLLocalDate() {
-        this(DEFAULT_NAME);
+        this(DEFAULT_NAME, false);
     }
 
-    public GraphQLLocalDate(final String name) {
+    public GraphQLLocalDate(boolean zoneConversionEnabled) {
+        this(DEFAULT_NAME, zoneConversionEnabled);
+    }
+
+    public GraphQLLocalDate(final String name, boolean zoneConversionEnabled) {
         super(name, "Local Date type", new Coercing<LocalDate, String>() {
+
+            private LocalDateTimeConverter converter = new LocalDateTimeConverter(zoneConversionEnabled);
+
             private LocalDate convertImpl(Object input) {
                 if (input instanceof String) {
-                    LocalDateTime localDateTime = DateTimeHelper.parseDate((String) input);
+                    LocalDateTime localDateTime = converter.parseDate((String) input);
 
                     if (localDateTime != null) {
                         return localDateTime.toLocalDate();
@@ -74,8 +81,7 @@ public class GraphQLLocalDate extends GraphQLScalarType {
             public LocalDate parseLiteral(Object input) {
                 if (!(input instanceof StringValue)) return null;
                 String value = ((StringValue) input).getValue();
-                LocalDate result = convertImpl(value);
-                return result;
+                return convertImpl(value);
             }
         });
     }
