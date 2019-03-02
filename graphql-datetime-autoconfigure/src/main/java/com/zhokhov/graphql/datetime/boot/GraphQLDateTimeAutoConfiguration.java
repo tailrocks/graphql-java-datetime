@@ -53,7 +53,7 @@ public class GraphQLDateTimeAutoConfiguration {
         if (name == null) {
             return new GraphQLLocalDate();
         } else {
-            return new GraphQLLocalDate(name);
+            return new GraphQLLocalDate(name, false);
         }
     }
 
