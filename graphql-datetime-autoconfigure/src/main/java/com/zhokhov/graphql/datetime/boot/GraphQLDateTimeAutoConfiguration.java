@@ -15,7 +15,6 @@
  */
 package com.zhokhov.graphql.datetime.boot;
 
-import com.oembedler.moon.graphql.boot.GraphQLJavaToolsAutoConfiguration;
 import com.zhokhov.graphql.datetime.GraphQLDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
@@ -27,11 +26,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
+
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 @Configuration
-@AutoConfigureBefore({GraphQLJavaToolsAutoConfiguration.class})
+@AutoConfigureBefore({ GraphQLJavaToolsAutoConfiguration.class})
 @EnableConfigurationProperties(GraphQLDateTimeProperties.class)
 public class GraphQLDateTimeAutoConfiguration {
 
