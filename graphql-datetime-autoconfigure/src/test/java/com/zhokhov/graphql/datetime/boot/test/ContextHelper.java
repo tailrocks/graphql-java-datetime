@@ -18,7 +18,6 @@ package com.zhokhov.graphql.datetime.boot.test;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oembedler.moon.graphql.boot.GraphQLJavaToolsAutoConfiguration;
 import com.zhokhov.graphql.datetime.GraphQLDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
@@ -31,6 +30,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
+
+import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
