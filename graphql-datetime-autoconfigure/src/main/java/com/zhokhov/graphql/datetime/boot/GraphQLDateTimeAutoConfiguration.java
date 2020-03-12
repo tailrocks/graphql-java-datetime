@@ -20,19 +20,18 @@ import com.zhokhov.graphql.datetime.GraphQLLocalDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
 import com.zhokhov.graphql.datetime.GraphQLLocalTime;
 import com.zhokhov.graphql.datetime.GraphQLOffsetDateTime;
+import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
-
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 @Configuration
-@AutoConfigureBefore({ GraphQLJavaToolsAutoConfiguration.class})
+@AutoConfigureBefore({GraphQLJavaToolsAutoConfiguration.class})
 @EnableConfigurationProperties(GraphQLDateTimeProperties.class)
 public class GraphQLDateTimeAutoConfiguration {
 
@@ -79,6 +78,7 @@ public class GraphQLDateTimeAutoConfiguration {
             return new GraphQLLocalTime(name);
         }
     }
+
     @Bean
     @ConditionalOnMissingBean
     public GraphQLOffsetDateTime graphQLOffsetDateTime(GraphQLDateTimeProperties configurationProperties) {

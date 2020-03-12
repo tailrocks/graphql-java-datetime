@@ -1,7 +1,6 @@
 package com.zhokhov.graphql.datetime.boot;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author <a href='mailto:dgmneto@gmail.com'>Divino G. de Menezes Neto</a>
