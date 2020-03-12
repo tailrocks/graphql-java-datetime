@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-/**
+/*
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 buildscript {
@@ -28,7 +28,7 @@ buildscript {
 }
 
 plugins {
-    id 'io.spring.dependency-management' version '1.0.7.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
 
 apply plugin: 'java'
@@ -43,7 +43,6 @@ repositories {
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-devtools'
-    compile "com.graphql-java-kickstart:graphql-java-tools:$graphqlJavaToolsVersion"
     compile "com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion"
     compile "com.graphql-java-kickstart:graphiql-spring-boot-starter:$graphqlSpringBootVersion"
     compile(project(':graphql-datetime-spring-boot-starter'))

@@ -14,12 +14,10 @@
  *  limitations under the License.
  */
 
-/**
+/*
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 dependencies {
-    compile "com.graphql-java-kickstart:graphql-java-servlet:$graphqlJavaServletVersion"
-    compile "com.graphql-java-kickstart:graphql-java-tools:$graphqlJavaToolsVersion"
     compile "com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion"
     compile(project(':graphql-java-datetime'))
 

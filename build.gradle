@@ -67,7 +67,7 @@ subprojects {
     }
 
     dependencies {
-        testCompile 'org.spockframework:spock-core:1.2-groovy-2.5'
+        testCompile "org.spockframework:spock-core:$spockVersion"
         testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
     }
 
