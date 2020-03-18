@@ -6,7 +6,7 @@ GraphQL ISO Date is a set of RFC 3339 compliant date/time scalar types to be use
 
 # Summary
 
-A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java implementation ([graphql-java](https://github.com/graphql-java/graphql-java)).
+A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java implementation ([graphql-java](https://github.com/graphql-java/graphql-java)) and GraphQL Java Kickstart ([com.graphql-java-kickstart:graphql-spring-boot-starter](https://github.com/graphql-java-kickstart/graphql-spring-boot)).
 
 # Serialization
 
