@@ -46,6 +46,8 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
             private LocalDateTime convertImpl(Object input) {
                 if (input instanceof String) {
                     return converter.parseDate((String) input);
+                } else if (input instanceof LocalDateTime) {
+                    return (LocalDateTime) input;
                 }
                 return null;
             }

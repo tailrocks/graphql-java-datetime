@@ -27,6 +27,8 @@ public class GraphQLOffsetDateTime extends GraphQLScalarType {
                     } catch (DateTimeParseException ignored) {
                         // nothing to-do
                     }
+                } else if (input instanceof OffsetDateTime) {
+                    return (OffsetDateTime) input;
                 }
                 return null;
             }

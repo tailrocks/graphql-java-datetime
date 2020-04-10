@@ -51,6 +51,8 @@ public class GraphQLLocalDate extends GraphQLScalarType {
                     if (localDateTime != null) {
                         return localDateTime.toLocalDate();
                     }
+                } else if (input instanceof LocalDate) {
+                    return (LocalDate) input;
                 }
                 return null;
             }
