@@ -47,6 +47,8 @@ public class GraphQLLocalTime extends GraphQLScalarType {
                         return LocalTime.parse((String) input, FORMATTER);
                     } catch (DateTimeParseException ignored) {
                     }
+                } else if (input instanceof LocalTime) {
+                    return (LocalTime) input;
                 }
                 return null;
             }

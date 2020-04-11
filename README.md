@@ -43,7 +43,7 @@ Add folowing to your `pom.xml`:
 <dependency>
   <groupId>com.zhokhov.graphql</groupId>
   <artifactId>graphql-datetime-spring-boot-starter</artifactId>
-  <version>1.7.0</version>
+  <version>1.8.0</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ Add folowing to your `pom.xml`:
 Add folowing to your `build.gradle`:
 
 ```groovy
-compile 'com.zhokhov.graphql:graphql-datetime-spring-boot-starter:1.7.0'
+compile 'com.zhokhov.graphql:graphql-datetime-spring-boot-starter:1.8.0'
 ```
 
 ### Scalars
@@ -128,6 +128,6 @@ Please contribute using [Github Flow](https://guides.github.com/introduction/flo
 
 ## License
 
-Copyright © 2017-2018 [Alexey Zhokhov](http://www.zhokhov.com). All rights reserved.
+Copyright © 2017-2020 [Alexey Zhokhov](http://www.zhokhov.com). All rights reserved.
 
 This project is licensed under the Apache License, Version 2.0 - see the [LICENSE](LICENSE) file for details.

@@ -44,6 +44,8 @@ public class GraphQLDate extends GraphQLScalarType {
                     if (localDateTime != null) {
                         return DateTimeHelper.toDate(localDateTime);
                     }
+                } else if (input instanceof Date) {
+                    return (Date) input;
                 }
                 return null;
             }
