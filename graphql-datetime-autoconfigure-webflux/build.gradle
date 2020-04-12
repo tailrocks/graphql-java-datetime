@@ -1,0 +1,6 @@
+dependencies {
+    implementation "org.springframework.boot:spring-boot-autoconfigure:$springBootVersion"
+    implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:$graphqlSpringBootVersion"
+    implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-tools:$graphqlSpringBootVersion"
+    implementation(project(':graphql-java-datetime'))
+}
