@@ -116,7 +116,9 @@ spring:
 
 ### Sample
 
-Now you can use these scalars in your application. Here is a graphql-datetime spring boot sample application, https://github.com/donbeave/graphql-java-datetime/tree/master/graphql-datetime-sample-app.
+Now you can use these scalars in your application. Here is graphql-datetime spring boot sample applications:
+ - mvn: [graphql-datetime-sample-app](graphql-datetime-sample-app/)
+ - weblux: [graphql-datetime-sample-app-webflux](graphql-datetime-sample-app-webflux/)
 
 ## Bugs
 

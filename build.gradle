@@ -85,7 +85,7 @@ subprojects {
         targetCompatibility = 1.8
     }
 
-    if (it.name != 'graphql-datetime-sample-app') {
+    if (!it.name.startsWith('graphql-datetime-sample-app')) {
         jar {
             from 'LICENSE'
         }
