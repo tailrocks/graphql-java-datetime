@@ -20,6 +20,7 @@
 rootProject.name = projectName
 
 include ':graphql-java-datetime'
+include ':graphql-datetime-autoconfigure-common'
 include ':graphql-datetime-autoconfigure'
 include ':graphql-datetime-autoconfigure-webflux'
 include ':graphql-datetime-spring-boot-starter'
