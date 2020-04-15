@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
-
-export TERM="dumb"
+ABSOLUTE_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd "${ABSOLUTE_PATH}" || exit
 
 set -e
-
-ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
-cd ${ABSOLUTE_PATH}
-
-export CACHE_CHANGING_MODULES=false
 
 ./gradlew --stop
 
 rm -rf build .gradle
 
-./gradlew --no-build-cache --no-configure-on-demand --no-daemon --no-parallel dependencies
+./gradlew --no-configure-on-demand --no-daemon --no-parallel clean dependencies --stacktrace --info ${GRADLE_EXTRA_ARGS}

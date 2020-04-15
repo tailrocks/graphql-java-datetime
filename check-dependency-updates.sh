@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
+ABSOLUTE_PATH=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd "${ABSOLUTE_PATH}" || exit
 
-ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
-cd ${ABSOLUTE_PATH}
+set -e
 
-./gradlew --no-build-cache --no-configure-on-demand --no-daemon --no-parallel dependencyUpdates -Drevision=release
+./refresh-dependencies.sh
+
+./gradlew dependencyUpdates -Drevision=release --info ${GRADLE_EXTRA_ARGS}
