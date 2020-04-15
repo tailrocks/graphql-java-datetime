@@ -168,7 +168,7 @@ subprojects {
             key = System.getenv('BINTRAY_KEY') ?: project.findProperty('BINTRAY_KEY') ?: ''
             publications = ['mainProjectPublication']
             publish = !projectVersion.contains('SNAPSHOT')
-            override = false
+            override = System.getenv('BINTRAY_OVERRIDE') == 'true'
             pkg {
                 repo = 'maven'
                 name = projectName
