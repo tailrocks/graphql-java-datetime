@@ -59,7 +59,7 @@ class GraphqlDatetimeSampleAppApplicationTests {
   tomorrowMidnight
   noonTime
 }
-""".trim().strip()
+""".trim()
 
         // when
         String json = """
