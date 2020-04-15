@@ -1,0 +1,11 @@
+dependencies {
+    implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-autoconfigure-tools:$graphqlSpringBootVersion"
+    implementation(project(':graphql-java-datetime'))
+
+    testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+    testImplementation "org.springframework.boot:spring-boot-test:$springBootVersion"
+    testImplementation "org.spockframework:spock-spring:$spockVersion"
+    testImplementation "com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion"
+}

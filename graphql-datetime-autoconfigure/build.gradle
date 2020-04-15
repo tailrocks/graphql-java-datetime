@@ -18,12 +18,6 @@
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 dependencies {
-    compile "com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion"
-    compile(project(':graphql-java-datetime'))
-
-    testCompile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
-    testCompile "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"
-    testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
-    testCompile "org.springframework.boot:spring-boot-test:$springBootVersion"
-    testCompile "org.spockframework:spock-spring:$spockVersion"
+    implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion"
+    implementation(project(':graphql-datetime-autoconfigure-common'))
 }

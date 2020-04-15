@@ -1,0 +1,12 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+
+graphql:
+  datetime:
+    scalars:
+      date:
+        scalarName: MyDate
+      localDate:
+        scalarName: MyLocalDate

@@ -31,7 +31,7 @@ A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java imple
 
 ## Spring Boot
 
-Add `graphql-datetime-spring-boot-starter` starter to your project first.
+Add `graphql-datetime-spring-boot-starter` or `graphql-datetime-spring-boot-starter-webflux` starter (according to your spring boot stack) to your project first.
 
 ### Installation
 
@@ -116,7 +116,9 @@ spring:
 
 ### Sample
 
-Now you can use these scalars in your application. Here is a graphql-datetime spring boot sample application, https://github.com/donbeave/graphql-java-datetime/tree/master/graphql-datetime-sample-app.
+Now you can use these scalars in your application. Here is graphql-datetime spring boot sample applications:
+ - mvn: [graphql-datetime-sample-app](graphql-datetime-sample-app/)
+ - weblux: [graphql-datetime-sample-app-webflux](graphql-datetime-sample-app-webflux/)
 
 ## Bugs
 

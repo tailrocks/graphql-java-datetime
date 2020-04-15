@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+}
+
+plugins {
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:$graphqlSpringBootVersion"
+    implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-tools:$graphqlSpringBootVersion"
+    implementation(project(':graphql-datetime-spring-boot-starter-webflux'))
+}
+
+jar.enabled = false
+uploadArchives.enabled = false
+bintrayUpload.enabled = false
+install.enabled = false

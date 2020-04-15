@@ -1,0 +1,4 @@
+dependencies {
+    implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:$graphqlSpringBootVersion"
+    implementation(project(':graphql-datetime-autoconfigure-common'))
+}
