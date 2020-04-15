@@ -1,4 +1,4 @@
-# graphql-java-datetime
+# graphql-java-datetime &middot; [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/donbeave/graphql-java-datetime/blob/master/LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/donbeave/graphql-java-datetime/pulls)
 GraphQL ISO Date is a set of RFC 3339 compliant date/time scalar types to be used with [graphql-java](https://github.com/graphql-java/graphql-java).
 
 [![Build Status](https://travis-ci.org/donbeave/graphql-java-datetime.svg?branch=master)](https://travis-ci.org/donbeave/graphql-java-datetime)
