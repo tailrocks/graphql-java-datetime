@@ -44,7 +44,7 @@ class GraphQLServletSpec extends Specification {
 
     @Autowired TestRestTemplate restTemplate
 
-    def "test GraphQLServlet"() {
+    def "basic"() {
         given:
             String query = """
 {

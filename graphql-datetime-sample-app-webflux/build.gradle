@@ -9,11 +9,11 @@ buildscript {
 }
 
 plugins {
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+    id "com.adarshr.test-logger"
 }
 
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
+apply plugin: "org.springframework.boot"
 
 repositories {
     mavenLocal()
@@ -21,12 +21,16 @@ repositories {
 }
 
 dependencies {
-    implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:$graphqlSpringBootVersion"
-    implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-tools:$graphqlSpringBootVersion"
-    implementation(project(':graphql-datetime-spring-boot-starter-webflux'))
+    implementation(project(":graphql-datetime-spring-boot-starter-webflux"))
+
+    implementation("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:$graphqlSpringBootVersion")
+    implementation("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-tools:$graphqlSpringBootVersion")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 jar.enabled = false
 uploadArchives.enabled = false
 bintrayUpload.enabled = false
 install.enabled = false
+publishToMavenLocal.enabled = false

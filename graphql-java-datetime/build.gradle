@@ -17,6 +17,10 @@
 /*
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
+plugins {
+    id "com.adarshr.test-logger"
+}
+
 dependencies {
     compile "com.graphql-java:graphql-java:$graphqlJavaVersion"
 }

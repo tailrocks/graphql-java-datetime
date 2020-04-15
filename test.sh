@@ -24,4 +24,4 @@ rm -rf build .gradle
 
 export SPRING_PROFILES_ACTIVE="test"
 
-./gradlew clean test --info --stacktrace ${GRADLE_EXTRA_ARGS}
+./gradlew clean test --stacktrace ${GRADLE_EXTRA_ARGS}

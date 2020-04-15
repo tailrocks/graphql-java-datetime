@@ -43,7 +43,7 @@ class GraphQLDateTimeAutoConfigurationSpec extends Specification {
         }
     }
 
-    def "test"() {
+    def "basic"() {
         given:
             String query = """
 {

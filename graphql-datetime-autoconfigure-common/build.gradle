@@ -1,3 +1,7 @@
+plugins {
+    id "com.adarshr.test-logger"
+}
+
 dependencies {
     implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-autoconfigure-tools:$graphqlSpringBootVersion"
     implementation(project(':graphql-java-datetime'))
