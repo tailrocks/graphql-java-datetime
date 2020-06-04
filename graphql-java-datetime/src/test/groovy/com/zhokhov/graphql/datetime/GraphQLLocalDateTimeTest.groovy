@@ -43,6 +43,8 @@ class GraphQLLocalDateTimeTest extends Specification {
             new StringValue('2017-07-09T11:54:42.277Z') | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
             new StringValue('2017-07-09T13:14:45.947Z') | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
             new StringValue('2017-07-09T11:54:42Z')     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
+            new StringValue('2017-07-09T13:14:45.947')  | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
+            new StringValue('2017-07-09T11:54:42')      | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
             new StringValue('2017-07-09')               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
     }
 
@@ -119,11 +121,11 @@ class GraphQLLocalDateTimeTest extends Specification {
             new GraphQLLocalDateTime(true).getCoercing().serialize(value) == result
 
         where:
-            value | result
-            LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277)) | '2017-07-09T10:54:42.277Z'
-            LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947)) | '2017-07-09T12:14:45.947Z'
-            LocalDateTime.of(2017, 7, 9, 11, 54, 42)                                  | '2017-07-09T10:54:42Z'
-            LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT.plusHours(1))            | '2017-07-09T00:00:00Z'
+            value                                                                       | result
+            LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))   | '2017-07-09T10:54:42.277Z'
+            LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))   | '2017-07-09T12:14:45.947Z'
+            LocalDateTime.of(2017, 7, 9, 11, 54, 42)                                    | '2017-07-09T10:54:42Z'
+            LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT.plusHours(1)) | '2017-07-09T00:00:00Z'
     }
 
     @Unroll
@@ -135,10 +137,11 @@ class GraphQLLocalDateTimeTest extends Specification {
             new GraphQLLocalDateTime(true).getCoercing().parseValue(value) == result
 
         where:
-        value                      | result
-        '2017-07-09T10:54:42.277Z' | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
-        '2017-07-09T12:14:45.947Z' | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
-        '2017-07-09T10:54:42Z'     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
-        '2017-07-09'               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+            value                      | result
+            '2017-07-09T10:54:42.277Z' | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
+            '2017-07-09T12:14:45.947Z' | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
+            '2017-07-09T10:54:42Z'     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
+            '2017-07-09'               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
     }
+
 }

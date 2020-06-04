@@ -21,9 +21,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static com.zhokhov.graphql.datetime.DateTimeHelper.DATE_FORMATTERS;
 
@@ -32,7 +30,7 @@ import static com.zhokhov.graphql.datetime.DateTimeHelper.DATE_FORMATTERS;
  */
 class LocalDateTimeConverter {
 
-    private boolean zoneConversionEnabled;
+    private final boolean zoneConversionEnabled;
 
     LocalDateTimeConverter(boolean zoneConversionEnabled) {
         this.zoneConversionEnabled = zoneConversionEnabled;

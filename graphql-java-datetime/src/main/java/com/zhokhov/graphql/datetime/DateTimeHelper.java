@@ -22,6 +22,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
@@ -29,9 +30,12 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
-public class DateTimeHelper {
+public final class DateTimeHelper {
 
-    public static final CopyOnWriteArrayList<DateTimeFormatter> DATE_FORMATTERS = new CopyOnWriteArrayList<>();
+    protected static final List<DateTimeFormatter> DATE_FORMATTERS = new CopyOnWriteArrayList<>();
+
+    private DateTimeHelper() {
+    }
 
     static {
         DATE_FORMATTERS.add(DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC));
