@@ -95,6 +95,8 @@ class GraphQLLocalDateTimeTest extends Specification {
             '2017-07-09T11:54:42.277Z' | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
             '2017-07-09T13:14:45.947Z' | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
             '2017-07-09T11:54:42Z'     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
+            '2017-07-09T13:14:45.947'  | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
+            '2017-07-09T11:54:42'      | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
             '2017-07-09'               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
     }
 
