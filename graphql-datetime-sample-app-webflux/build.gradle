@@ -25,6 +25,7 @@ dependencies {
 
     implementation("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:$graphqlSpringBootVersion")
     implementation("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-tools:$graphqlSpringBootVersion")
+    implementation("io.projectreactor:reactor-core:3.3.5.RELEASE")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

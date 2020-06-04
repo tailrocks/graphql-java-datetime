@@ -22,5 +22,5 @@ plugins {
 }
 
 dependencies {
-    compile "com.graphql-java:graphql-java:$graphqlJavaVersion"
+    compile("com.graphql-java:graphql-java:$graphqlJavaVersion")
 }

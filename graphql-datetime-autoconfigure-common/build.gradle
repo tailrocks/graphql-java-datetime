@@ -3,8 +3,9 @@ plugins {
 }
 
 dependencies {
-    implementation "com.graphql-java-kickstart:graphql-kickstart-spring-boot-autoconfigure-tools:$graphqlSpringBootVersion"
-    implementation(project(':graphql-java-datetime'))
+    compile(project(':graphql-java-datetime'))
+    compile("com.graphql-java-kickstart:graphql-kickstart-spring-boot-autoconfigure-tools:$graphqlSpringBootVersion")
+    compile("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
 
     testImplementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
     testImplementation "org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion"

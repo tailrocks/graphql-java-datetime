@@ -44,7 +44,6 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion")
-
     implementation("com.graphql-java-kickstart:graphiql-spring-boot-starter:$graphqlSpringBootVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")

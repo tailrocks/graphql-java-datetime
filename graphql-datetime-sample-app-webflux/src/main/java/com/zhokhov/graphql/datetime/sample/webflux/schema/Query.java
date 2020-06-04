@@ -1,6 +1,6 @@
 package com.zhokhov.graphql.datetime.sample.webflux.schema;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 
 @Component
 public class Query implements GraphQLQueryResolver {

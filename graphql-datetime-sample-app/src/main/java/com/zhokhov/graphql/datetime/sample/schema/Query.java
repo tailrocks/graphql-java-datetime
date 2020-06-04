@@ -15,7 +15,7 @@
  */
 package com.zhokhov.graphql.datetime.sample.schema;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -32,7 +32,7 @@ import java.util.List;
 @Component
 public class Query implements GraphQLQueryResolver {
 
-    private static String[] TITLES = new String[]{
+    private static final String[] TITLES = new String[]{
             "Daoguang Emperor",
             "Xianfeng Emperor",
             "Tongzhi Emperor",
@@ -40,7 +40,7 @@ public class Query implements GraphQLQueryResolver {
             "Xuantong Emperor"
     };
 
-    private static String[] NAMES = new String[]{
+    private static final String[] NAMES = new String[]{
             "旻寧",
             "奕詝",
             "載淳",
@@ -48,7 +48,7 @@ public class Query implements GraphQLQueryResolver {
             "溥儀"
     };
 
-    private static LocalDate[] REIGN_STARTS = new LocalDate[]{
+    private static final LocalDate[] REIGN_STARTS = new LocalDate[]{
             LocalDate.of(1820, Month.OCTOBER, 3),
             LocalDate.of(1850, Month.MARCH, 9),
             LocalDate.of(1861, Month.NOVEMBER, 11),
@@ -56,7 +56,7 @@ public class Query implements GraphQLQueryResolver {
             LocalDate.of(1908, Month.NOVEMBER, 14)
     };
 
-    private static LocalDate[] REIGN_STOP = new LocalDate[]{
+    private static final LocalDate[] REIGN_STOP = new LocalDate[]{
             LocalDate.of(1850, Month.FEBRUARY, 25),
             LocalDate.of(1861, Month.AUGUST, 22),
             LocalDate.of(1875, Month.JANUARY, 12),

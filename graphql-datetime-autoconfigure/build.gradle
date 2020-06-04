@@ -18,6 +18,6 @@
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
 dependencies {
-    implementation "com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion"
-    implementation(project(':graphql-datetime-autoconfigure-common'))
+    compile(project(':graphql-datetime-autoconfigure-common'))
+    compile("com.graphql-java-kickstart:graphql-spring-boot-starter:$graphqlSpringBootVersion")
 }
