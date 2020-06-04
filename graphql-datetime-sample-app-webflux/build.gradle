@@ -23,6 +23,7 @@ repositories {
 dependencies {
     implementation(project(":graphql-datetime-spring-boot-starter-webflux"))
 
+    implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
     implementation("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:$graphqlSpringBootVersion")
     implementation("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-tools:$graphqlSpringBootVersion")
     implementation("io.projectreactor:reactor-core:3.3.5.RELEASE")
