@@ -15,7 +15,7 @@
  */
 package com.zhokhov.graphql.datetime.boot.test.resolvers;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
 
 /**
