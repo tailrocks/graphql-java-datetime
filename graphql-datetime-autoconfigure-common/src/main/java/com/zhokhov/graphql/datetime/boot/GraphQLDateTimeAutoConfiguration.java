@@ -15,6 +15,7 @@
  */
 package com.zhokhov.graphql.datetime.boot;
 
+import java.time.format.DateTimeFormatter;
 import com.zhokhov.graphql.datetime.GraphQLDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
@@ -50,9 +51,10 @@ public class GraphQLDateTimeAutoConfiguration {
     @ConditionalOnMissingBean
     public GraphQLLocalDate graphQLLocalDate(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDate().getScalarName();
-        if (name == null) {
-            return new GraphQLLocalDate();
-        } else {
+        final String format = configurationProperties.getLocalDate().getFormat();
+        if(format != null) {
+            return new GraphQLLocalDate(name, false, DateTimeFormatter.ofPattern(format));
+        } else  {
             return new GraphQLLocalDate(name, false);
         }
     }

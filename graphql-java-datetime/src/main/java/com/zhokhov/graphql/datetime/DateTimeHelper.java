@@ -30,9 +30,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
  */
-public final class DateTimeHelper {
+final class DateTimeHelper {
 
-    protected static final List<DateTimeFormatter> DATE_FORMATTERS = new CopyOnWriteArrayList<>();
+    static final List<DateTimeFormatter> DATE_FORMATTERS = new CopyOnWriteArrayList<>();
 
     private DateTimeHelper() {
     }
@@ -48,12 +48,6 @@ public final class DateTimeHelper {
         Objects.requireNonNull(dateTime, "dateTime");
 
         return DateTimeFormatter.ISO_INSTANT.format(ZonedDateTime.of(dateTime, ZoneOffset.UTC));
-    }
-
-    public static String toISOString(LocalDate date) {
-        Objects.requireNonNull(date, "date");
-
-        return DateTimeFormatter.ISO_LOCAL_DATE.format(date);
     }
 
     public static String toISOString(LocalTime time) {
@@ -72,12 +66,6 @@ public final class DateTimeHelper {
         Objects.requireNonNull(date, "date");
 
         return date.toInstant().atZone(ZoneOffset.UTC).toLocalDateTime();
-    }
-
-    public static Date toDate(LocalDate date) {
-        Objects.requireNonNull(date, "date");
-
-        return toDate(date.atStartOfDay());
     }
 
     public static Date toDate(LocalDateTime dateTime) {
