@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class DateTimeHelper {
 
-    protected static final List<DateTimeFormatter> DATE_FORMATTERS = new CopyOnWriteArrayList<>();
+    static final List<DateTimeFormatter> DATE_FORMATTERS = new CopyOnWriteArrayList<>();
 
     private DateTimeHelper() {
     }

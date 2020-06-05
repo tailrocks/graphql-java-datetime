@@ -39,6 +39,16 @@ public class GraphQLDateTimeProperties {
 
         private String scalarName;
 
+        private String format;
+
+        public String getFormat() {
+            return format;
+        }
+
+        public void setFormat(String format) {
+            this.format = format;
+        }
+
         String getScalarName() {
             return scalarName;
         }

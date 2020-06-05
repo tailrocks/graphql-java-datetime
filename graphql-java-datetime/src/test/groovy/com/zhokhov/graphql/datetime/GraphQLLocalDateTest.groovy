@@ -23,6 +23,7 @@ import spock.lang.Unroll
 
 import java.time.LocalDate
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
@@ -111,4 +112,29 @@ class GraphQLLocalDateTest extends Specification {
             new Object() | _
     }
 
+    @Unroll
+    def "Date parse #value into #result (#result.class) with custom formatter"() {
+        given:
+        def formatter = DateTimeFormatter.ofPattern('MM/dd/yyyy')
+
+        expect:
+        new GraphQLLocalDate(null, false, formatter).getCoercing().parseValue(value) == result
+
+        where:
+        value        | result
+        '02/09/1993' | LocalDate.of(1993, 2, 9)
+    }
+
+    @Unroll
+    def "Date serialize #value into #result (#result.class) with custom formatting"() {
+        given:
+        def formatter = DateTimeFormatter.ofPattern('MM/dd/yyyy')
+
+        expect:
+        new GraphQLLocalDate(null, false, formatter).getCoercing().serialize(value) == result
+
+        where:
+        value                    | result
+        LocalDate.of(2020, 7, 6) | '07/06/2020'
+    }
 }

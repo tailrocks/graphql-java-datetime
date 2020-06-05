@@ -45,11 +45,12 @@ class LocalDateTimeConverter {
 
     LocalDateTime parseDate(String date) {
         Objects.requireNonNull(date, "date");
-
+        int index = -1;
         for (DateTimeFormatter formatter : DATE_FORMATTERS) {
+            index++;
             try {
-                // equals ISO_LOCAL_DATE
-                if (formatter.equals(DATE_FORMATTERS.get(2))) {
+                // equals ISO_LOCAL_DATE or custom date format
+                if (index > 1) {
                     LocalDate localDate = LocalDate.parse(date, formatter);
 
                     return localDate.atStartOfDay();
