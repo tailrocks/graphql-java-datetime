@@ -52,9 +52,9 @@ public class GraphQLDateTimeAutoConfiguration {
     public GraphQLLocalDate graphQLLocalDate(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDate().getScalarName();
         final String format = configurationProperties.getLocalDate().getFormat();
-        try {
+        if(format != null) {
             return new GraphQLLocalDate(name, false, DateTimeFormatter.ofPattern(format));
-        } catch (IllegalArgumentException | NullPointerException e) {
+        } else  {
             return new GraphQLLocalDate(name, false);
         }
     }
