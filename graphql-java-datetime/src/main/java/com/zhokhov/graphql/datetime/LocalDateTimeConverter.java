@@ -45,21 +45,19 @@ class LocalDateTimeConverter {
 
     LocalDateTime parseDate(String date) {
         Objects.requireNonNull(date, "date");
-        int index = -1;
         for (DateTimeFormatter formatter : DATE_FORMATTERS) {
-            index++;
+            // try to parse as dateTime
+            try {
+                LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+                return fromUTC(dateTime);
+            } catch (java.time.format.DateTimeParseException ignored) {}
+
+            // try to parse as date
             try {
                 // equals ISO_LOCAL_DATE or custom date format
-                if (index > 1) {
-                    LocalDate localDate = LocalDate.parse(date, formatter);
-
-                    return localDate.atStartOfDay();
-                } else {
-                    LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
-                    return fromUTC(dateTime);
-                }
-            } catch (java.time.format.DateTimeParseException ignored) {
-            }
+                LocalDate localDate = LocalDate.parse(date, formatter);
+                return localDate.atStartOfDay();
+            } catch (java.time.format.DateTimeParseException ignored) {}
         }
 
         return null;
