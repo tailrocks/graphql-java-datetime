@@ -118,6 +118,16 @@ graphql:
         scalarName: MyOffsetDateTime
 ```
 
+A custom format can be set for LocalDate only using the following properties in application.yaml
+
+```yaml
+graphql:
+  datetime:
+    scalars:
+      localDate:
+        format: MM/dd/yyyy
+```
+
 You can enable automatic zone conversion by adding the following property to your application.yaml. This will
 automatically convert between UTC and the default TimeZone for `LocalDateTime`:
 
