@@ -86,4 +86,5 @@ public class GraphQLDateTimeProperties {
     public void setZoneConversionEnabled(boolean zoneConversionEnabled) {
         this.zoneConversionEnabled = zoneConversionEnabled;
     }
+
 }

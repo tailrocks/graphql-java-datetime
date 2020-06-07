@@ -25,6 +25,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS
 
@@ -144,6 +145,32 @@ class GraphQLLocalDateTimeTest extends Specification {
             '2017-07-09T12:14:45.947Z' | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
             '2017-07-09T10:54:42Z'     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
             '2017-07-09'               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+    }
+
+    @Unroll
+    def "Date parse #value into #result (#result.class) with custom formatter"() {
+        given:
+            def formatter = DateTimeFormatter.ofPattern('yyyy-MM-dd\'T\'HH:mm:ss')
+
+        expect:
+            new GraphQLLocalDateTime(null, false, formatter).getCoercing().parseValue(value) == result
+
+        where:
+            value                 | result
+            '1993-02-09T13:15:59' | LocalDateTime.of(1993, 2, 9, 13, 15, 59)
+    }
+
+    @Unroll
+    def "Date serialize #value into #result (#result.class) with custom formatting"() {
+        given:
+            def formatter = DateTimeFormatter.ofPattern('yyyy-MM-dd\'T\'HH:mm:ss')
+
+        expect:
+            new GraphQLLocalDateTime(null, false, formatter).getCoercing().serialize(value) == result
+
+        where:
+            value                                    | result
+            LocalDateTime.of(1993, 2, 9, 13, 15, 59) | '1993-02-09T13:15:59'
     }
 
 }

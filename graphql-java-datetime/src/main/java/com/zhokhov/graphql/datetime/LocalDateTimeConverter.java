@@ -36,11 +36,18 @@ class LocalDateTimeConverter {
         this.zoneConversionEnabled = zoneConversionEnabled;
     }
 
-    // ISO_8601
-    String toISOString(LocalDateTime dateTime) {
-        Objects.requireNonNull(dateTime, "dateTime");
+    String formatDate(LocalDate date, DateTimeFormatter formatter) {
+        Objects.requireNonNull(date, "date");
+        Objects.requireNonNull(formatter, "formatter");
 
-        return DateTimeFormatter.ISO_INSTANT.format(ZonedDateTime.of(toUTC(dateTime), ZoneOffset.UTC));
+        return formatter.format(date);
+    }
+
+    String formatDate(LocalDateTime dateTime, DateTimeFormatter formatter) {
+        Objects.requireNonNull(dateTime, "dateTime");
+        Objects.requireNonNull(formatter, "formatter");
+
+        return formatter.format(toUTC(dateTime));
     }
 
     LocalDateTime parseDate(String date) {
@@ -50,14 +57,16 @@ class LocalDateTimeConverter {
             try {
                 LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
                 return fromUTC(dateTime);
-            } catch (java.time.format.DateTimeParseException ignored) {}
+            } catch (java.time.format.DateTimeParseException ignored) {
+            }
 
             // try to parse as date
             try {
                 // equals ISO_LOCAL_DATE or custom date format
                 LocalDate localDate = LocalDate.parse(date, formatter);
                 return localDate.atStartOfDay();
-            } catch (java.time.format.DateTimeParseException ignored) {}
+            } catch (java.time.format.DateTimeParseException ignored) {
+            }
         }
 
         return null;
@@ -74,8 +83,8 @@ class LocalDateTimeConverter {
         return convert(dateTime, ZoneOffset.UTC, ZoneId.systemDefault());
     }
 
-    private LocalDateTime toUTC(LocalDateTime dateTime) {
-        return convert(dateTime, ZoneId.systemDefault(), ZoneOffset.UTC);
+    private ZonedDateTime toUTC(LocalDateTime dateTime) {
+        return ZonedDateTime.of(convert(dateTime, ZoneId.systemDefault(), ZoneOffset.UTC), ZoneOffset.UTC);
     }
 
 }

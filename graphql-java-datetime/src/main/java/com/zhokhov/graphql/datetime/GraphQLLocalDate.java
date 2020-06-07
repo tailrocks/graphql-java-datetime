@@ -24,7 +24,6 @@ import graphql.schema.GraphQLScalarType;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
@@ -47,7 +46,7 @@ public class GraphQLLocalDate extends GraphQLScalarType {
 
     public GraphQLLocalDate(final String name, boolean zoneConversionEnabled, DateTimeFormatter formatter) {
         super(name != null ? name : DEFAULT_NAME, "Local Date type", new Coercing<LocalDate, String>() {
-            private LocalDateTimeConverter converter = new LocalDateTimeConverter(zoneConversionEnabled);
+            private final LocalDateTimeConverter converter = new LocalDateTimeConverter(zoneConversionEnabled);
 
             private LocalDate convertImpl(Object input) {
                 if (input instanceof String) {
@@ -65,13 +64,13 @@ public class GraphQLLocalDate extends GraphQLScalarType {
             @Override
             public String serialize(Object input) {
                 if (input instanceof LocalDate) {
-                    return formatter.format((LocalDate) input);
+                    return converter.formatDate((LocalDate) input, formatter);
                 } else {
                     LocalDate result = convertImpl(input);
                     if (result == null) {
                         throw new CoercingSerializeException("Invalid value '" + input + "' for LocalDate");
                     }
-                    return formatter.format(result);
+                    return converter.formatDate(result, formatter);
                 }
             }
 
@@ -86,11 +85,16 @@ public class GraphQLLocalDate extends GraphQLScalarType {
 
             @Override
             public LocalDate parseLiteral(Object input) {
-                if (!(input instanceof StringValue)) return null;
+                if (!(input instanceof StringValue)) {
+                    return null;
+                }
                 String value = ((StringValue) input).getValue();
                 return convertImpl(value);
             }
         });
-        DateTimeHelper.DATE_FORMATTERS.add(formatter);
+        if (!DateTimeHelper.DATE_FORMATTERS.contains(formatter)) {
+            DateTimeHelper.DATE_FORMATTERS.add(formatter);
+        }
     }
+
 }

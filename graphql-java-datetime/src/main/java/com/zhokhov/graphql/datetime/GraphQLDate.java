@@ -74,10 +74,11 @@ public class GraphQLDate extends GraphQLScalarType {
 
             @Override
             public Date parseLiteral(Object input) {
-                if (!(input instanceof StringValue)) return null;
+                if (!(input instanceof StringValue)) {
+                    return null;
+                }
                 String value = ((StringValue) input).getValue();
-                Date result = convertImpl(value);
-                return result;
+                return convertImpl(value);
             }
         });
     }

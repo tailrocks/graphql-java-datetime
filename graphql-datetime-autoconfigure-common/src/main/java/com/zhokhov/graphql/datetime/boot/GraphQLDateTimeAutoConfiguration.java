@@ -15,7 +15,6 @@
  */
 package com.zhokhov.graphql.datetime.boot;
 
-import java.time.format.DateTimeFormatter;
 import com.zhokhov.graphql.datetime.GraphQLDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
@@ -27,6 +26,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
@@ -52,10 +53,11 @@ public class GraphQLDateTimeAutoConfiguration {
     public GraphQLLocalDate graphQLLocalDate(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDate().getScalarName();
         final String format = configurationProperties.getLocalDate().getFormat();
-        if(format != null) {
-            return new GraphQLLocalDate(name, false, DateTimeFormatter.ofPattern(format));
-        } else  {
-            return new GraphQLLocalDate(name, false);
+        if (format != null) {
+            return new GraphQLLocalDate(name, configurationProperties.isZoneConversionEnabled(),
+                    DateTimeFormatter.ofPattern(format));
+        } else {
+            return new GraphQLLocalDate(name, configurationProperties.isZoneConversionEnabled());
         }
     }
 
@@ -63,8 +65,10 @@ public class GraphQLDateTimeAutoConfiguration {
     @ConditionalOnMissingBean
     public GraphQLLocalDateTime graphQLLocalDateTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDateTime().getScalarName();
-        if (name == null) {
-            return new GraphQLLocalDateTime(configurationProperties.isZoneConversionEnabled());
+        final String format = configurationProperties.getLocalDateTime().getFormat();
+        if (format != null) {
+            return new GraphQLLocalDateTime(name, configurationProperties.isZoneConversionEnabled(),
+                    DateTimeFormatter.ofPattern(format));
         } else {
             return new GraphQLLocalDateTime(name, configurationProperties.isZoneConversionEnabled());
         }
@@ -91,4 +95,5 @@ public class GraphQLDateTimeAutoConfiguration {
             return new GraphQLOffsetDateTime(name);
         }
     }
+
 }

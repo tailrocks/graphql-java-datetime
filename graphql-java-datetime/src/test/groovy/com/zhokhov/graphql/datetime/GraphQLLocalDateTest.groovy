@@ -93,9 +93,9 @@ class GraphQLLocalDateTest extends Specification {
             new GraphQLLocalDate(true).getCoercing().parseValue(value) == result
 
         where:
-            value                   | result
-            '2019-03-01'            | LocalDate.of(2019, 3, 1)
-            '2019-03-01T22:00:00Z'  | LocalDate.of(2019, 3, 2)
+            value                  | result
+            '2019-03-01'           | LocalDate.of(2019, 3, 1)
+            '2019-03-01T22:00:00Z' | LocalDate.of(2019, 3, 2)
     }
 
     @Unroll
@@ -115,26 +115,27 @@ class GraphQLLocalDateTest extends Specification {
     @Unroll
     def "Date parse #value into #result (#result.class) with custom formatter"() {
         given:
-        def formatter = DateTimeFormatter.ofPattern('MM/dd/yyyy')
+            def formatter = DateTimeFormatter.ofPattern('MM/dd/yyyy')
 
         expect:
-        new GraphQLLocalDate(null, false, formatter).getCoercing().parseValue(value) == result
+            new GraphQLLocalDate(null, false, formatter).getCoercing().parseValue(value) == result
 
         where:
-        value        | result
-        '02/09/1993' | LocalDate.of(1993, 2, 9)
+            value        | result
+            '02/09/1993' | LocalDate.of(1993, 2, 9)
     }
 
     @Unroll
     def "Date serialize #value into #result (#result.class) with custom formatting"() {
         given:
-        def formatter = DateTimeFormatter.ofPattern('MM/dd/yyyy')
+            def formatter = DateTimeFormatter.ofPattern('MM/dd/yyyy')
 
         expect:
-        new GraphQLLocalDate(null, false, formatter).getCoercing().serialize(value) == result
+            new GraphQLLocalDate(null, false, formatter).getCoercing().serialize(value) == result
 
         where:
-        value                    | result
-        LocalDate.of(2020, 7, 6) | '07/06/2020'
+            value                    | result
+            LocalDate.of(2020, 7, 6) | '07/06/2020'
     }
+
 }

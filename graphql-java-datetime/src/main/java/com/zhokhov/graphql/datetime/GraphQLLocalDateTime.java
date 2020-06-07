@@ -22,6 +22,7 @@ import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
@@ -35,13 +36,16 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
     }
 
     public GraphQLLocalDateTime(boolean zoneConversionEnabled) {
-        this(DEFAULT_NAME, zoneConversionEnabled);
+        this(DEFAULT_NAME, zoneConversionEnabled, DateTimeFormatter.ISO_INSTANT);
     }
 
-    public GraphQLLocalDateTime(final String name, final boolean zoneConversionEnabled) {
-        super(name, "Local Date Time type", new Coercing<LocalDateTime, String>() {
+    public GraphQLLocalDateTime(final String name, boolean zoneConversionEnabled) {
+        this(name, zoneConversionEnabled, DateTimeFormatter.ISO_INSTANT);
+    }
 
-            private LocalDateTimeConverter converter = new LocalDateTimeConverter(zoneConversionEnabled);
+    public GraphQLLocalDateTime(final String name, boolean zoneConversionEnabled, DateTimeFormatter formatter) {
+        super(name != null ? name : DEFAULT_NAME, "Local Date Time type", new Coercing<LocalDateTime, String>() {
+            private final LocalDateTimeConverter converter = new LocalDateTimeConverter(zoneConversionEnabled);
 
             private LocalDateTime convertImpl(Object input) {
                 if (input instanceof String) {
@@ -55,13 +59,13 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
             @Override
             public String serialize(Object input) {
                 if (input instanceof LocalDateTime) {
-                    return converter.toISOString((LocalDateTime) input);
+                    return converter.formatDate((LocalDateTime) input, formatter);
                 } else {
                     LocalDateTime result = convertImpl(input);
                     if (result == null) {
                         throw new CoercingSerializeException("Invalid value '" + input + "' for LocalDateTime");
                     }
-                    return converter.toISOString(result);
+                    return converter.formatDate(result, formatter);
                 }
             }
 
@@ -76,11 +80,16 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
 
             @Override
             public LocalDateTime parseLiteral(Object input) {
-                if (!(input instanceof StringValue)) return null;
+                if (!(input instanceof StringValue)) {
+                    return null;
+                }
                 String value = ((StringValue) input).getValue();
                 return convertImpl(value);
             }
         });
+        if (!DateTimeHelper.DATE_FORMATTERS.contains(formatter)) {
+            DateTimeHelper.DATE_FORMATTERS.add(formatter);
+        }
     }
 
 }

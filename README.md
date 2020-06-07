@@ -118,7 +118,7 @@ graphql:
         scalarName: MyOffsetDateTime
 ```
 
-A custom format can be set for LocalDate only using the following properties in application.yaml
+A custom format can be set for LocalDate and LocalDateTime only using the following properties in application.yaml
 
 ```yaml
 graphql:
@@ -126,6 +126,8 @@ graphql:
     scalars:
       localDate:
         format: MM/dd/yyyy
+      localDateTime:
+        format: yyyy-MM-dd'T'HH:mm:ss
 ```
 
 You can enable automatic zone conversion by adding the following property to your application.yaml. This will
