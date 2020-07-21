@@ -14,10 +14,6 @@
  *  limitations under the License.
  */
 
-/**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
- */
-
 buildscript {
     repositories {
         mavenLocal()
@@ -38,18 +34,24 @@ plugins {
     id "net.rdrei.android.buildtimetracker" version "0.11.0"
 }
 
-idea {
-    module {
-        downloadJavadoc = false
-        downloadSources = false
-        inheritOutputDirs = false
-        outputDir = file("$buildDir/classes/main/")
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
+
+    idea {
+        module {
+            downloadJavadoc = false
+            downloadSources = false
+        }
+    }
+
+    compileJava {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
     }
 }
 
 subprojects {
-    apply plugin: 'idea'
-    apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'maven-publish'
     apply plugin: 'com.jfrog.bintray'
@@ -73,20 +75,6 @@ subprojects {
     dependencies {
         testCompile "org.spockframework:spock-core:$spockVersion"
         testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
-    }
-
-    idea {
-        module {
-            downloadJavadoc = false
-            downloadSources = false
-            inheritOutputDirs = false
-            outputDir = file("$buildDir/classes/main/")
-        }
-    }
-
-    compileJava {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
     }
 
     if (!it.name.startsWith('graphql-datetime-sample-app')) {
@@ -211,4 +199,3 @@ subprojects {
         }
     }
 }
-
