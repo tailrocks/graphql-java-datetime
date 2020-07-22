@@ -13,6 +13,7 @@ public class GraphQLDateTimeProperties {
     private ScalarDefinition localDateTime = new ScalarDefinition();
     private ScalarDefinition localTime = new ScalarDefinition();
     private ScalarDefinition offsetDateTime = new ScalarDefinition();
+    private ScalarDefinition yearMonth = new ScalarDefinition();
     private boolean zoneConversionEnabled = false;
 
     ScalarDefinition getDate() {
@@ -33,6 +34,10 @@ public class GraphQLDateTimeProperties {
 
     ScalarDefinition getOffsetDateTime() {
         return offsetDateTime;
+    }
+
+    ScalarDefinition getYearMonth() {
+        return yearMonth;
     }
 
     public static class ScalarDefinition {
@@ -77,6 +82,10 @@ public class GraphQLDateTimeProperties {
 
     public void setOffsetDateTime(ScalarDefinition offsetDateTime) {
         this.offsetDateTime = offsetDateTime;
+    }
+
+    public void setYearMonth(ScalarDefinition yearMonth) {
+        this.yearMonth = yearMonth;
     }
 
     public boolean isZoneConversionEnabled() {

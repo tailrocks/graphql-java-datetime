@@ -58,6 +58,7 @@ class GraphqlDatetimeSampleAppApplicationTests {
   yesterday
   tomorrowMidnight
   noonTime
+  springFirstRelease
 }
 """.trim()
 
@@ -124,6 +125,7 @@ class GraphqlDatetimeSampleAppApplicationTests {
                 LocalDate.now().plusDays(1).atStartOfDay().atZone(ZoneOffset.UTC)
         )
         assert response.body.data.noonTime == "12:00:00"
+        assert response.body.data.springFirstRelease == "2002-10"
     }
 
 }

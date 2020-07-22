@@ -22,6 +22,8 @@ scalar MyLocalDate
 scalar LocalDateTime
 # LocalTime implementation
 scalar LocalTime
+# YearMonth implementation
+scalar YearMonth
 
 type Query {
     # list of last 5 Chinese emperors
@@ -38,6 +40,9 @@ type Query {
 
     # noon time, lunch in China, all factories stopped
     noonTime: LocalTime
+
+    # spring first release year and month
+    springFirstRelease: YearMonth
 }
 
 type Mutation {
