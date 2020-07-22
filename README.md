@@ -96,8 +96,11 @@ scalar LocalDateTime
 # java.time.LocalTime implementation
 scalar LocalTime
 
-# javal.time.OffsetDateTime implementation
+# java.time.OffsetDateTime implementation
 scalar OffsetDateTime 
+
+# YearMonth implementation
+scalar java.time.YearMonth
 ```
 
 You can rename the scalar however you want with by simply adding the following properties to you application.yaml:
@@ -116,6 +119,8 @@ graphql:
         scalarName: MyLocalTime
       offsetDateTime:
         scalarName: MyOffsetDateTime
+      yearMonth:
+        scalarName: MyYearMonth
 ```
 
 A custom format can be set for LocalDate and LocalDateTime only using the following properties in application.yaml
