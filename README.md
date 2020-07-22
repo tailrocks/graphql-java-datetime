@@ -45,7 +45,7 @@ for **Spring MVC**:
 <dependency>
   <groupId>com.zhokhov.graphql</groupId>
   <artifactId>graphql-datetime-spring-boot-starter</artifactId>
-  <version>2.1.0</version>
+  <version>2.2.0</version>
 </dependency>
 ```
 
@@ -57,7 +57,7 @@ for **Spring WebFlux**:
 <dependency>
   <groupId>com.zhokhov.graphql</groupId>
   <artifactId>graphql-datetime-spring-boot-starter-webflux</artifactId>
-  <version>2.1.0</version>
+  <version>2.2.0</version>
 </dependency>
 ```
 
@@ -68,7 +68,7 @@ Add folowing to your `build.gradle`:
 for **Spring MVC**:
 
 ```groovy
-implementation("com.zhokhov.graphql:graphql-datetime-spring-boot-starter:2.1.0")
+implementation("com.zhokhov.graphql:graphql-datetime-spring-boot-starter:2.2.0")
 ```
 
 or 
@@ -76,7 +76,7 @@ or
 for **Spring WebFlux**:
 
 ```groovy
-implementation("com.zhokhov.graphql:graphql-datetime-spring-boot-starter-webflux:2.1.0")
+implementation("com.zhokhov.graphql:graphql-datetime-spring-boot-starter-webflux:2.2.0")
 ```
 
 ### Scalars
@@ -99,8 +99,8 @@ scalar LocalTime
 # java.time.OffsetDateTime implementation
 scalar OffsetDateTime 
 
-# YearMonth implementation
-scalar java.time.YearMonth
+# java.time.YearMonth implementation
+scalar YearMonth
 ```
 
 You can rename the scalar however you want with by simply adding the following properties to you application.yaml:
