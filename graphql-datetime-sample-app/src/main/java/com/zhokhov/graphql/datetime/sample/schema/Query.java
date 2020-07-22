@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -90,6 +91,10 @@ public class Query implements GraphQLQueryResolver {
 
     public LocalTime getNoonTime() {
         return LocalTime.NOON;
+    }
+
+    public YearMonth getSpringFirstRelease() {
+        return YearMonth.of(2002, 10);
     }
 
 }
