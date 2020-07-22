@@ -41,7 +41,7 @@ type Query {
     # noon time, lunch in China, all factories stopped
     noonTime: LocalTime
 
-    # now year and month
+    # spring first release year and month
     springFirstRelease: YearMonth
 }
 
