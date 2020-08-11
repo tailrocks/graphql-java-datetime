@@ -27,6 +27,14 @@ A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java imple
 | HH:MM:ss     | 17:59:59     |
 | HH:MM        | 17:59        |
 
+**java.time.Duration**
+
+| JSON String      |
+|:-----------------|
+| PT1H30M          |
+| P1DT3H30M        |
+| P3Y6M4DT12H30M5S |
+
 # Usage
 
 ## Spring Boot
@@ -101,6 +109,9 @@ scalar OffsetDateTime
 
 # java.time.YearMonth implementation
 scalar YearMonth
+
+# java.time.Duration implementation
+scalar Duration
 ```
 
 You can rename the scalar however you want with by simply adding the following properties to you application.yaml:
@@ -121,6 +132,8 @@ graphql:
         scalarName: MyOffsetDateTime
       yearMonth:
         scalarName: MyYearMonth
+      duration:
+        scalarName: MyDuration
 ```
 
 A custom format can be set for LocalDate and LocalDateTime only using the following properties in application.yaml

@@ -15,12 +15,7 @@
  */
 package com.zhokhov.graphql.datetime.boot;
 
-import com.zhokhov.graphql.datetime.GraphQLDate;
-import com.zhokhov.graphql.datetime.GraphQLLocalDate;
-import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
-import com.zhokhov.graphql.datetime.GraphQLLocalTime;
-import com.zhokhov.graphql.datetime.GraphQLOffsetDateTime;
-import com.zhokhov.graphql.datetime.GraphQLYearMonth;
+import com.zhokhov.graphql.datetime.*;
 import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -105,6 +100,17 @@ public class GraphQLDateTimeAutoConfiguration {
             return new GraphQLYearMonth();
         } else {
             return new GraphQLYearMonth(name);
+        }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GraphQLDuration graphQLDuration(GraphQLDateTimeProperties configurationProperties) {
+        final String name = configurationProperties.getOffsetDateTime().getScalarName();
+        if (name == null) {
+            return new GraphQLDuration();
+        } else {
+            return new GraphQLDuration(name);
         }
     }
 
