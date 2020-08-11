@@ -74,7 +74,7 @@ subprojects {
 
     dependencies {
         testCompile "org.spockframework:spock-core:$spockVersion"
-        testCompile "org.codehaus.groovy:groovy-all:$groovyVersion"
+        testCompile "org.codehaus.groovy:groovy:$groovyVersion"
     }
 
     if (!it.name.startsWith('graphql-datetime-sample-app')) {
