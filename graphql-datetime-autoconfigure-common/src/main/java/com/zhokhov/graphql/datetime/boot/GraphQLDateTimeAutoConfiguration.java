@@ -106,7 +106,7 @@ public class GraphQLDateTimeAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GraphQLDuration graphQLDuration(GraphQLDateTimeProperties configurationProperties) {
-        final String name = configurationProperties.getOffsetDateTime().getScalarName();
+        final String name = configurationProperties.getDuration().getScalarName();
         if (name == null) {
             return new GraphQLDuration();
         } else {
