@@ -53,7 +53,7 @@ for **Spring MVC**:
 <dependency>
   <groupId>com.zhokhov.graphql</groupId>
   <artifactId>graphql-datetime-spring-boot-starter</artifactId>
-  <version>2.3.0</version>
+  <version>2.3.1</version>
 </dependency>
 ```
 
@@ -65,7 +65,7 @@ for **Spring WebFlux**:
 <dependency>
   <groupId>com.zhokhov.graphql</groupId>
   <artifactId>graphql-datetime-spring-boot-starter-webflux</artifactId>
-  <version>2.3.0</version>
+  <version>2.3.1</version>
 </dependency>
 ```
 
@@ -76,7 +76,7 @@ Add folowing to your `build.gradle`:
 for **Spring MVC**:
 
 ```groovy
-implementation("com.zhokhov.graphql:graphql-datetime-spring-boot-starter:2.3.0")
+implementation("com.zhokhov.graphql:graphql-datetime-spring-boot-starter:2.3.1")
 ```
 
 or 
@@ -84,7 +84,7 @@ or
 for **Spring WebFlux**:
 
 ```groovy
-implementation("com.zhokhov.graphql:graphql-datetime-spring-boot-starter-webflux:2.3.0")
+implementation("com.zhokhov.graphql:graphql-datetime-spring-boot-starter-webflux:2.3.1")
 ```
 
 ### Scalars
