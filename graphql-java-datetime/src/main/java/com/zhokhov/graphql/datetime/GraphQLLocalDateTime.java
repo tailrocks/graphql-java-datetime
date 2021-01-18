@@ -22,6 +22,7 @@ import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -54,8 +55,6 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
 
                     if (localDateTime != null) {
                         return localDateTime;
-                    } else {
-                        throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalDateTime");
                     }
                 } else if (input instanceof LocalDateTime) {
                     return (LocalDateTime) input;
@@ -87,11 +86,13 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
 
             @Override
             public LocalDateTime parseLiteral(Object input) {
-                if (!(input instanceof StringValue)) {
-                    return null;
-                }
                 String value = ((StringValue) input).getValue();
-                return convertImpl(value);
+                LocalDateTime result = convertImpl(value);
+                if (result == null) {
+                    throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalDateTime");
+                }
+
+                return result;
             }
         });
         if (!DateTimeHelper.DATE_FORMATTERS.contains(formatter)) {

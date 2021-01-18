@@ -22,6 +22,7 @@ import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 import java.time.DateTimeException;
+import java.time.OffsetDateTime;
 import java.time.YearMonth;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,56 +49,48 @@ public class GraphQLYearMonth extends GraphQLScalarType {
                     if (m.find()) {
                         try {
                             return YearMonth.of(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
-                        } catch (NumberFormatException | DateTimeException e) {
-                            throw new CoercingParseLiteralException(e.getMessage(), e);
+                        } catch (NumberFormatException | DateTimeException ignored) {
+                            // nothing to-do
                         }
-                    } else {
-                        throw new CoercingParseLiteralException("Input value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
                     }
+                } else if (input instanceof YearMonth) {
+                    return (YearMonth) input;
                 }
-
                 return null;
             }
 
             @Override
             public String serialize(Object input) {
-                if (input == null) {
-                    return null;
+                if (input instanceof YearMonth) {
+                    return input.toString();
+                } else {
+                    YearMonth result = convertImpl(input);
+                    if (result == null) {
+                        throw new CoercingSerializeException("Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
+                    }
+                    return result.toString();
                 }
-
-                if(!(input instanceof YearMonth)) {
-                    throw new CoercingSerializeException("Invalid value '" + input + "' for YearMonth");
-                }
-
-                return input.toString();
             }
 
             @Override
             public YearMonth parseValue(Object input) {
-                if (!(input instanceof String)) {
-                    throw new CoercingParseValueException("Input value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
+                YearMonth result = convertImpl(input);
+                if (result == null) {
+                    throw new CoercingParseValueException("Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
                 }
-
-                Matcher m = YEAR_MONTH_PATTERN.matcher(input.toString());
-                if (m.find()) {
-                    try {
-                        return YearMonth.of(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
-                    } catch (NumberFormatException | DateTimeException e) {
-                        throw new CoercingParseValueException(e.getMessage(), e);
-                    }
-                } else {
-                    throw new CoercingParseValueException("Input value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
-                }
-
+                return result;
             }
 
 
             @Override
-            public YearMonth parseLiteral(Object ast) throws CoercingParseLiteralException {
-                if (ast instanceof StringValue) {
-                    return convertImpl(((StringValue) ast).getValue());
+            public YearMonth parseLiteral(Object input)  {
+                String value = ((StringValue) input).getValue();
+                YearMonth result = convertImpl(value);
+                if (result == null) {
+                    throw new CoercingParseLiteralException("Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
                 }
-                return null;
+
+                return result;
             }
         });
     }

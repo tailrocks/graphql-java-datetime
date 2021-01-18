@@ -54,8 +54,6 @@ public class GraphQLLocalDate extends GraphQLScalarType {
 
                     if (localDateTime != null) {
                         return localDateTime.toLocalDate();
-                    } else {
-                        throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalDate");
                     }
                 } else if (input instanceof LocalDate) {
                     return (LocalDate) input;
@@ -87,11 +85,13 @@ public class GraphQLLocalDate extends GraphQLScalarType {
 
             @Override
             public LocalDate parseLiteral(Object input) {
-                if (!(input instanceof StringValue)) {
-                    return null;
-                }
                 String value = ((StringValue) input).getValue();
-                return convertImpl(value);
+                LocalDate result = convertImpl(value);
+                if (result == null) {
+                    throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalDate");
+                }
+
+                return result;
             }
         });
         if (!DateTimeHelper.DATE_FORMATTERS.contains(formatter)) {

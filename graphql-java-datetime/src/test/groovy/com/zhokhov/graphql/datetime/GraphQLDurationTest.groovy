@@ -16,6 +16,7 @@
 package com.zhokhov.graphql.datetime
 
 import graphql.language.StringValue
+import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
 import spock.lang.Specification
@@ -36,73 +37,79 @@ class GraphQLDurationTest extends Specification {
     @Unroll
     def "Duration parse literal #literal.value as #result"() {
         expect:
-        new GraphQLDuration().getCoercing().parseLiteral(literal) == result
+            new GraphQLDuration().getCoercing().parseLiteral(literal) == result
 
         where:
-        literal                                     | result
-        new StringValue('PT1H30M')                  | Duration.ofMinutes(90)
-        new StringValue('P1DT3H')                   | Duration.ofHours(27)
+            literal                                     | result
+            new StringValue('PT1H30M')                  | Duration.ofMinutes(90)
+            new StringValue('P1DT3H')                   | Duration.ofHours(27)
     }
 
     @Unroll
-    def "Duration returns null for invalid #literal"() {
-        expect:
-        new GraphQLDuration().getCoercing().parseLiteral(literal) == null
+    def "Duration parseLiteral throws exception for invalid #literal"() {
+        when:
+            new GraphQLDuration().getCoercing().parseLiteral(literal)
+
+        then:
+            thrown(CoercingParseLiteralException)
 
         where:
-        literal                       | _
-        new StringValue("not a duration") | _
+            literal                         | _
+            new StringValue('')             | _
+            new StringValue('not a duration')   | _
     }
 
     @Unroll
     def "Duration serialize #value into #result (#result.class)"() {
         expect:
-        new GraphQLDuration().getCoercing().serialize(value) == result
+            new GraphQLDuration().getCoercing().serialize(value) == result
 
         where:
-        value                 | result
-        Duration.ofHours(27)  | 'PT27H'
+            value                 | result
+            Duration.ofHours(27)  | 'PT27H'
     }
 
     @Unroll
     def "serialize Duration throws exception for invalid input #value"() {
         when:
-        new GraphQLDuration().getCoercing().serialize(value)
+            new GraphQLDuration().getCoercing().serialize(value)
+
         then:
-        thrown(CoercingSerializeException)
+            thrown(CoercingSerializeException)
 
         where:
-        value        | _
-        ''           | _
-        'not a duration' | _
-        '1DT3H' | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a duration' | _
+            '1DT3H' | _
+            new Object() | _
     }
 
     @Unroll
     def "Duration parse #value into #result (#result.class)"() {
         expect:
-        new GraphQLDuration().getCoercing().parseValue(value) == result
+            new GraphQLDuration().getCoercing().parseValue(value) == result
 
         where:
-        value                      | result
-        'PT1H30M' | Duration.ofMinutes(90)
-        'P1DT3H'  | Duration.ofHours(27)
+            value                      | result
+            'PT1H30M' | Duration.ofMinutes(90)
+            'P1DT3H'  | Duration.ofHours(27)
     }
 
     @Unroll
     def "Duration parseValue throws exception for invalid input #value"() {
         when:
-        new GraphQLDuration().getCoercing().parseValue(value)
+            new GraphQLDuration().getCoercing().parseValue(value)
+
         then:
-        thrown(CoercingParseValueException)
+            thrown(CoercingParseValueException)
 
         where:
-        value        | _
-        ''           | _
-        'not a date' | _
-        '1DT3H'      | _
-        new Object() | _
+            value        | _
+            ''           | _
+            'not a date' | _
+            '1DT3H'      | _
+            new Object() | _
     }
 
 }
