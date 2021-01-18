@@ -17,6 +17,7 @@ package com.zhokhov.graphql.datetime;
 
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
+import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
@@ -49,7 +50,13 @@ public class GraphQLLocalDateTime extends GraphQLScalarType {
 
             private LocalDateTime convertImpl(Object input) {
                 if (input instanceof String) {
-                    return converter.parseDate((String) input);
+                    LocalDateTime localDateTime = converter.parseDate((String) input);
+
+                    if (localDateTime != null) {
+                        return localDateTime;
+                    } else {
+                        throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalDateTime");
+                    }
                 } else if (input instanceof LocalDateTime) {
                     return (LocalDateTime) input;
                 }

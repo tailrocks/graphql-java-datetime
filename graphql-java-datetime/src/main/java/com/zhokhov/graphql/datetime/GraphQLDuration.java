@@ -17,6 +17,7 @@ package com.zhokhov.graphql.datetime;
 
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
+import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
@@ -44,7 +45,7 @@ public class GraphQLDuration extends GraphQLScalarType {
                     try {
                         return Duration.parse((String) input);
                     } catch (DateTimeParseException ignored) {
-                        // nothing to-do
+                        throw new CoercingParseLiteralException("Invalid value '" + input + "' for Duration");
                     }
                 } else if (input instanceof Duration) {
                     return (Duration) input;

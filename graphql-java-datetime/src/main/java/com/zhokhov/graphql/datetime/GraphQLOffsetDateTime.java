@@ -2,6 +2,7 @@ package com.zhokhov.graphql.datetime;
 
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
+import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
@@ -25,7 +26,7 @@ public class GraphQLOffsetDateTime extends GraphQLScalarType {
                     try {
                         return OffsetDateTime.parse((String) input, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
                     } catch (DateTimeParseException ignored) {
-                        // nothing to-do
+                        throw new CoercingParseLiteralException("Invalid value '" + input + "' for OffsetDateTime");
                     }
                 } else if (input instanceof OffsetDateTime) {
                     return (OffsetDateTime) input;

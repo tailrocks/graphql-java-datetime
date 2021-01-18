@@ -21,11 +21,8 @@ import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
-
 import java.time.DateTimeException;
-import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +41,23 @@ public class GraphQLYearMonth extends GraphQLScalarType {
 
     public GraphQLYearMonth(final String name) {
         super(name, "YearMonth type", new Coercing<YearMonth, String>() {
+
+            private YearMonth convertImpl(Object input) {
+                if (input instanceof String) {
+                    Matcher m = YEAR_MONTH_PATTERN.matcher(input.toString());
+                    if (m.find()) {
+                        try {
+                            return YearMonth.of(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
+                        } catch (NumberFormatException | DateTimeException e) {
+                            throw new CoercingParseLiteralException(e.getMessage(), e);
+                        }
+                    } else {
+                        throw new CoercingParseLiteralException("Input value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
+                    }
+                }
+
+                return null;
+            }
 
             @Override
             public String serialize(Object input) {
@@ -81,7 +95,7 @@ public class GraphQLYearMonth extends GraphQLScalarType {
             @Override
             public YearMonth parseLiteral(Object ast) throws CoercingParseLiteralException {
                 if (ast instanceof StringValue) {
-                    return parseValue(((StringValue) ast).getValue());
+                    return convertImpl(((StringValue) ast).getValue());
                 }
                 return null;
             }
