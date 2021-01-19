@@ -1,201 +1,172 @@
-/*
- *  Copyright 2017 Alexey Zhokhov
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
+import com.jfrog.bintray.gradle.BintrayExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
     repositories {
         mavenLocal()
+        gradlePluginPortal()
         jcenter()
         mavenCentral()
-        maven { url 'https://plugins.gradle.org/m2/' }
-    }
-    dependencies {
-        classpath "com.github.ben-manes:gradle-versions-plugin:$gradleVersionsPluginVersion"
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$gradleArtifactoryPluginVersion"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$gradleBintrayPluginVersion"
     }
 }
 
 plugins {
-    id "idea"
-    id "com.adarshr.test-logger" version "2.0.0" apply false
-    id "net.rdrei.android.buildtimetracker" version "0.11.0"
+    java
+    idea
+    `maven-publish`
+    id("com.adarshr.test-logger") version Versions.gradleTestLoggerPlugin apply false
+    id("net.rdrei.android.buildtimetracker") version Versions.gradleBuildTimeTrackerPlugin
+    id("com.jfrog.bintray") version Versions.gradleBintrayPlugin apply false
+    id("com.diffplug.spotless") version Versions.gradleSpotlessPlugin
+    kotlin("jvm") version Versions.kotlin apply false
+    kotlin("kapt") version Versions.kotlin apply false
+    kotlin("plugin.allopen") version Versions.kotlin apply false
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+buildtimetracker {
+    reporters {
+        register("summary") {
+            options["ordered"] = "true"
+            options["barstyle"] = "none"
+            options["shortenTaskNames"] = "false"
+        }
+    }
 }
 
 allprojects {
-    apply plugin: 'idea'
-    apply plugin: 'java'
+    apply(plugin = "idea")
+    apply(plugin = "net.rdrei.android.buildtimetracker")
+    apply(plugin = "com.diffplug.spotless")
 
     idea {
         module {
-            downloadJavadoc = false
-            downloadSources = false
+            isDownloadJavadoc = false
+            isDownloadSources = false
         }
     }
-
-    compileJava {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
-}
-
-subprojects {
-    apply plugin: 'maven'
-    apply plugin: 'maven-publish'
-    apply plugin: 'com.jfrog.bintray'
-    if (System.getenv('ARTIFACTORY_CONTEXT_URL')) {
-        apply plugin: 'com.jfrog.artifactory'
-    }
-    apply plugin: 'groovy'
-    apply plugin: 'com.github.ben-manes.versions'
-    apply plugin: 'com.jfrog.artifactory'
-    apply plugin: 'com.jfrog.bintray'
-
-    version = projectVersion
-    group = 'com.zhokhov.graphql'
 
     repositories {
         mavenLocal()
+        gradlePluginPortal()
         jcenter()
-        maven { url 'https://dl.bintray.com/andimarek/graphql-java/' }
+        mavenCentral()
+    }
+
+    spotless {
+        java {
+            licenseHeaderFile("$rootDir/gradle/licenseHeader.txt")
+            removeUnusedImports()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+        kotlin {
+            licenseHeaderFile("$rootDir/gradle/licenseHeader.txt")
+        }
+        kotlinGradle {
+            ktlint()
+        }
+    }
+
+    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+        tasks.withType<JavaCompile> {
+            options.release.set(8)
+        }
+    }
+}
+
+val projectVersion: String by project
+val projectName: String by project
+val projectDescription: String by project
+val projectGitRepoUrl: String by project
+val projectLicense: String by project
+val projectLicenseUrl: String by project
+
+val publishingProjects = setOf(
+        "graphql-datetime-autoconfigure",
+        "graphql-datetime-autoconfigure-common",
+        "graphql-datetime-autoconfigure-webflux",
+        "graphql-datetime-spring-boot-starter",
+        "graphql-datetime-spring-boot-starter-webflux",
+        "graphql-java-datetime"
+)
+
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "com.adarshr.test-logger")
+    if (publishingProjects.contains(project.name)) {
+        apply(plugin = "java-library")
+        apply(plugin = "maven-publish")
+        apply(plugin = "com.jfrog.bintray")
+    }
+
+    version = projectVersion
+    group = "com.zhokhov.graphql"
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+
+        withJavadocJar()
+        withSourcesJar()
     }
 
     dependencies {
-        testCompile "org.spockframework:spock-core:$spockVersion"
-        testCompile "org.codehaus.groovy:groovy:$groovyVersion"
+        // JUnit
+        testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.junit}")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.junit}")
     }
 
-    if (!it.name.startsWith('graphql-datetime-sample-app')) {
-        jar {
-            from 'LICENSE'
-        }
-
-        task sourcesJar(type: Jar) {
-            dependsOn classes
-            classifier 'sources'
-            from sourceSets.main.allSource
-        }
-
-        task javadocJar(type: Jar, dependsOn: javadoc) {
-            classifier = 'javadoc'
-            from javadoc.destinationDir
-        }
-
-        artifacts {
-            archives jar
-            archives sourcesJar
-            archives javadocJar
-        }
-
+    if (publishingProjects.contains(project.name)) {
         publishing {
             publications {
-                mainProjectPublication(MavenPublication) {
-                    version project.version
-                    from components.java
-
-                    artifact sourcesJar {
-                        classifier 'sources'
-                    }
-                    artifact javadocJar {
-                        classifier 'javadoc'
-                    }
-
-                    pom.withXml {
-                        // Fix dependency scoping.
-                        asNode().dependencies.'*'.findAll() {
-                            it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
-                                dep.name == it.artifactId.text()
-                            }
-                        }.each() {
-                            it.scope*.value = 'compile'
-                        }
-
-                        asNode().children().last() + {
-                            resolveStrategy = Closure.DELEGATE_FIRST
-                            name projectName
-                            description projectDescription
-                            url projectGitRepoUrl
-                            scm {
-                                url projectGitRepoUrl
-                                connection projectGitRepoUrl
-                                developerConnection projectGitRepoUrl
-                            }
-                            licenses {
-                                license {
-                                    name projectLicense
-                                    url projectLicenseUrl
-                                    distribution 'repo'
-                                }
-                            }
-                            developers {
-                                developer {
-                                    id 'donbeave'
-                                    name 'Alexey Zhokhov'
-                                }
-                            }
+                create<MavenPublication>("mavenJava") {
+                    from(components["java"])
+                    versionMapping {
+                        allVariants {
+                            fromResolutionResult()
                         }
                     }
                 }
             }
         }
 
-        bintray {
-            user = System.getenv('BINTRAY_USER') ?: project.findProperty('BINTRAY_USER') ?: ''
-            key = System.getenv('BINTRAY_KEY') ?: project.findProperty('BINTRAY_KEY') ?: ''
-            publications = ['mainProjectPublication']
-            publish = System.getenv('BINTRAY_PUBLISH') != null ? System.getenv('BINTRAY_PUBLISH') == 'true' : !projectVersion.contains('SNAPSHOT')
-            override = System.getenv('BINTRAY_OVERRIDE') == 'true'
-            pkg {
-                repo = 'maven'
+        configure<BintrayExtension> {
+            user = System.getenv("BINTRAY_USER")
+            key = System.getenv("BINTRAY_KEY")
+            publish = true
+            override = true
+            setPublications("mavenJava")
+            pkg.apply {
+                repo = "maven"
                 name = projectName
                 desc = projectDescription
-                licenses = [projectLicense]
                 vcsUrl = projectGitRepoUrl
-                version {
-                    name = project.version
-                    gpg {
+                setLicenses(projectLicense)
+                version.apply {
+                    name = projectVersion
+                    gpg.apply {
                         sign = true
-                    }
-                    mavenCentralSync {
-                        sync = System.getenv('MAVEN_CENTRAL_SYNC') != null ? System.getenv('MAVEN_CENTRAL_SYNC') == 'true' : !projectVersion.contains('SNAPSHOT')
-                        user = System.getenv('SONATYPE_USER')
-                        password = System.getenv('SONATYPE_PASSWORD')
-                        close = '1'
                     }
                 }
             }
         }
+    }
 
-        if (System.getenv('ARTIFACTORY_CONTEXT_URL')) {
-            artifactory {
-                contextUrl = System.getenv('ARTIFACTORY_CONTEXT_URL')
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "8"
+        }
+    }
 
-                publish {
-                    defaults {
-                        publications('mainProjectPublication')
-                        publishArtifacts = true
-                        publishPom = true
-
-                    }
-                    repository {
-                        repoKey = "${version.contains('SNAPSHOT') ? (System.getenv('ARTIFACTORY_SNAPSHOT_REPO_KEY') ?: 'libs-snapshot-local') : (System.getenv('ARTIFACTORY_RELEASE_REPO_KEY') ?: 'libs-release-local')}"
-                        username = System.getenv('ARTIFACTORY_USERNAME') ?: 'admin'
-                        password = System.getenv('ARTIFACTORY_PASSWORD') ?: 'password'
-                    }
-                }
-            }
+    tasks.withType<Test> {
+        useJUnitPlatform {
+            includeEngines = setOf("junit-jupiter")
+            excludeEngines = setOf("junit-vintage")
         }
     }
 }
