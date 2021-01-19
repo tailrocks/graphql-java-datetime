@@ -19,6 +19,9 @@ object Versions {
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
     const val gradleSpotlessPlugin = "5.9.0"
 
+    // https://plugins.gradle.org/plugin/io.spring.dependency-management
+    const val gradleSpringDependencyManagementPlugin = "1.0.11.RELEASE"
+
     // Libraries
 
     const val junit = "5.6.3"

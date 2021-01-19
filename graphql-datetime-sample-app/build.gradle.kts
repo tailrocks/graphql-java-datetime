@@ -1,6 +1,6 @@
 plugins {
     groovy
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("io.spring.dependency-management") version Versions.gradleSpringDependencyManagementPlugin
     id("org.springframework.boot") version Versions.springBoot
 }
 
