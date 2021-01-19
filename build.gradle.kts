@@ -71,7 +71,7 @@ allprojects {
         }
     }
 
-    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+    if (JavaVersion.current().isJava9Compatible) {
         tasks.withType<JavaCompile> {
             options.release.set(8)
         }
@@ -82,7 +82,8 @@ val projectVersion: String by project
 val projectName: String by project
 val projectDescription: String by project
 val projectGitRepoUrl: String by project
-val projectLicense: String by project
+val projectLicenseShortName: String by project
+val projectLicenseName: String by project
 val projectLicenseUrl: String by project
 
 val publishingProjects = setOf(
@@ -133,6 +134,29 @@ subprojects {
                             fromResolutionResult()
                         }
                     }
+                    pom {
+                        name.set(projectName)
+                        description.set(projectDescription)
+                        url.set(projectGitRepoUrl)
+                        licenses {
+                            license {
+                                name.set(projectLicenseName)
+                                url.set(projectLicenseUrl)
+                            }
+                        }
+                        developers {
+                            developer {
+                                id.set("donbeave")
+                                name.set("Alexey Zhokhov")
+                                email.set("alexey@zhokhov.com")
+                            }
+                        }
+                        scm {
+                            connection.set(projectGitRepoUrl)
+                            developerConnection.set(projectGitRepoUrl)
+                            url.set(projectGitRepoUrl)
+                        }
+                    }
                 }
             }
         }
@@ -148,7 +172,7 @@ subprojects {
                 name = projectName
                 desc = projectDescription
                 vcsUrl = projectGitRepoUrl
-                setLicenses(projectLicense)
+                setLicenses(projectLicenseShortName)
                 version.apply {
                     name = projectVersion
                     gpg.apply {
@@ -168,8 +192,8 @@ subprojects {
     tasks.withType<Test> {
         useJUnitPlatform {
             // TODO uncomment after Spock started supports junit-jupiter engine
-            //includeEngines = setOf("junit-jupiter")
-            //excludeEngines = setOf("junit-vintage")
+            // includeEngines = setOf("junit-jupiter")
+            // excludeEngines = setOf("junit-vintage")
         }
     }
 }
