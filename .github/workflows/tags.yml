@@ -3,7 +3,7 @@ name: master
 on:
   push:
     tags:
-      - *
+      - v*
 
 jobs:
   build:
