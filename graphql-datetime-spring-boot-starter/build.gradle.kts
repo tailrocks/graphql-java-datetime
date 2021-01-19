@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    compile(project(":graphql-datetime-autoconfigure"))
+    api(project(":graphql-datetime-autoconfigure"))
 }

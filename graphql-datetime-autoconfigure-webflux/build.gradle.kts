@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-    compile(project(":graphql-datetime-autoconfigure-common"))
-    compile("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:${Versions.graphQlSpringBoot}")
+    api(project(":graphql-datetime-autoconfigure-common"))
+    api("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:${Versions.graphQlSpringBoot}")
 }

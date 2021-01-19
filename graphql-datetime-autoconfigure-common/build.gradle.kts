@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    compile(project(":graphql-java-datetime"))
-    compile("com.graphql-java-kickstart:graphql-kickstart-spring-boot-autoconfigure-tools:${Versions.graphQlSpringBoot}")
-    compile("org.springframework.boot:spring-boot-autoconfigure:${Versions.springBoot}")
+    api(project(":graphql-java-datetime"))
+    api("com.graphql-java-kickstart:graphql-kickstart-spring-boot-autoconfigure-tools:${Versions.graphQlSpringBoot}")
+    api("org.springframework.boot:spring-boot-autoconfigure:${Versions.springBoot}")
 
     testImplementation("org.springframework.boot:spring-boot-starter-web:${Versions.springBoot}")
     testImplementation("org.springframework.boot:spring-boot-starter-tomcat:${Versions.springBoot}")

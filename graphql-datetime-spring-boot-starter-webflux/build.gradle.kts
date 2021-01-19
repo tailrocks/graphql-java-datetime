@@ -3,5 +3,5 @@ plugins {
 }
 
 dependencies {
-    compile(project(":graphql-datetime-autoconfigure-webflux"))
+    api(project(":graphql-datetime-autoconfigure-webflux"))
 }
