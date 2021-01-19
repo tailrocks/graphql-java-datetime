@@ -19,5 +19,5 @@ dependencies {
 }
 
 // FIXME
-//jar.enabled = false
-//uploadArchives.enabled = false
+// jar.enabled = false
+// uploadArchives.enabled = false
