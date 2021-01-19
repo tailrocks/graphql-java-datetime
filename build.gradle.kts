@@ -81,7 +81,6 @@ allprojects {
 val projectVersion: String by project
 val projectName: String by project
 val projectDescription: String by project
-val projectGitRepoUrl: String by project
 val projectLicenseShortName: String by project
 val projectLicenseName: String by project
 val projectLicenseUrl: String by project
@@ -141,7 +140,7 @@ subprojects {
                     pom {
                         name.set(projectName)
                         description.set(projectDescription)
-                        url.set(projectGitRepoUrl)
+                        url.set(projectScmUrl)
                         licenses {
                             license {
                                 name.set(projectLicenseName)
@@ -179,12 +178,18 @@ subprojects {
                 repo = "maven"
                 name = projectName
                 desc = projectDescription
-                vcsUrl = projectGitRepoUrl
+                vcsUrl = projectScmUrl
                 setLicenses(projectLicenseShortName)
                 version.apply {
                     name = projectVersion
                     gpg.apply {
                         sign = true
+                    }
+                    mavenCentralSync.apply {
+                        sync = true
+                        user = System.getenv("SONATYPE_USER")
+                        password = System.getenv("SONATYPE_PASSWORD")
+                        close = "1"
                     }
                 }
             }
