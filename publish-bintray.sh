@@ -4,5 +4,6 @@ cd "${ABSOLUTE_PATH}" || exit
 
 set -e
 
-./test.sh
-./build.sh
+./gradlew generatePomFileForMavenJavaPublication build
+
+./gradlew bintrayUpload --info

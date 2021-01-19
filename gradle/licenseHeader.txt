@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Alexey Zhokhov
+ * Copyright $YEAR Alexey Zhokhov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zhokhov.graphql.datetime.boot.test.resolvers;
-
-import graphql.kickstart.tools.GraphQLQueryResolver;
-import org.springframework.stereotype.Component;
-
-/**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
- */
-@Component
-public class Query implements GraphQLQueryResolver {
-
-    public ResponseType echo() {
-        return new ResponseType();
-    }
-
-}
