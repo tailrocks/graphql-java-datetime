@@ -52,7 +52,6 @@ allprojects {
 
     repositories {
         mavenLocal()
-        gradlePluginPortal()
         jcenter()
         mavenCentral()
     }
@@ -119,6 +118,9 @@ subprojects {
         // JUnit
         testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.junit}")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.junit}")
+
+        // TODO remove after Spock started supports junit-jupiter engine
+        testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${Versions.junit}")
     }
 
     if (publishingProjects.contains(project.name)) {
@@ -165,8 +167,9 @@ subprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform {
-            includeEngines = setOf("junit-jupiter")
-            excludeEngines = setOf("junit-vintage")
+            // TODO uncomment after Spock started supports junit-jupiter engine
+            //includeEngines = setOf("junit-jupiter")
+            //excludeEngines = setOf("junit-vintage")
         }
     }
 }
