@@ -17,11 +17,13 @@ package com.zhokhov.graphql.datetime;
 
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
+import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class GraphQLDuration extends GraphQLScalarType {
@@ -69,18 +71,20 @@ public class GraphQLDuration extends GraphQLScalarType {
             public Duration parseValue(Object input) {
                 Duration result = convertImpl(input);
                 if (result == null) {
-                    throw new CoercingParseValueException("Invalid value '" + input + "' for OffsetDateTime");
+                    throw new CoercingParseValueException("Invalid value '" + input + "' for Duration");
                 }
                 return result;
             }
 
             @Override
             public Duration parseLiteral(Object input) {
-                if (!(input instanceof StringValue)) {
-                    return null;
-                }
                 String value = ((StringValue) input).getValue();
-                return convertImpl(value);
+                Duration result = convertImpl(value);
+                if (result == null) {
+                    throw new CoercingParseLiteralException("Invalid value '" + input + "' for Duration");
+                }
+
+                return result;
             }
         });
     }

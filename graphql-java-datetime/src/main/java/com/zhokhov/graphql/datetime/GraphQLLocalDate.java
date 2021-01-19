@@ -17,10 +17,10 @@ package com.zhokhov.graphql.datetime;
 
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
+import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -85,11 +85,13 @@ public class GraphQLLocalDate extends GraphQLScalarType {
 
             @Override
             public LocalDate parseLiteral(Object input) {
-                if (!(input instanceof StringValue)) {
-                    return null;
-                }
                 String value = ((StringValue) input).getValue();
-                return convertImpl(value);
+                LocalDate result = convertImpl(value);
+                if (result == null) {
+                    throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalDate");
+                }
+
+                return result;
             }
         });
         if (!DateTimeHelper.DATE_FORMATTERS.contains(formatter)) {

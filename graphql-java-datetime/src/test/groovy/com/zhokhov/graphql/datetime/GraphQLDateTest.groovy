@@ -18,6 +18,7 @@ package com.zhokhov.graphql.datetime
 import graphql.language.StringValue
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
+import graphql.schema.CoercingParseLiteralException
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -42,13 +43,17 @@ class GraphQLDateTest extends Specification {
     }
 
     @Unroll
-    def "Date returns null for invalid #literal"() {
-        expect:
-            new GraphQLDate().getCoercing().parseLiteral(literal) == null
+    def "Date parseLiteral throws exception for invalid #literal"() {
+        when:
+            new GraphQLDate().getCoercing().parseLiteral(literal)
+
+        then:
+            thrown(CoercingParseLiteralException)
 
         where:
-            literal                       | _
-            new StringValue("not a date") | _
+            literal                         | _
+            new StringValue('')             | _
+            new StringValue('not a date')   | _
     }
 
     @Unroll

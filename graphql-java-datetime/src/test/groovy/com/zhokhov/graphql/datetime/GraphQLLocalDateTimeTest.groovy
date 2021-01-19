@@ -16,6 +16,7 @@
 package com.zhokhov.graphql.datetime
 
 import graphql.language.StringValue
+import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
 import spock.lang.Specification
@@ -35,7 +36,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS
 class GraphQLLocalDateTimeTest extends Specification {
 
     @Unroll
-    def "Date parse literal #literal.value as #result"() {
+    def "LocalDateTime parse literal #literal.value as #result"() {
         expect:
             new GraphQLLocalDateTime().getCoercing().parseLiteral(literal) == result
 
@@ -50,17 +51,21 @@ class GraphQLLocalDateTimeTest extends Specification {
     }
 
     @Unroll
-    def "Date returns null for invalid #literal"() {
-        expect:
-            new GraphQLLocalDateTime().getCoercing().parseLiteral(literal) == null
+    def "LocalDateTime parseLiteral throws exception for invalid #literal"() {
+        when:
+            new GraphQLLocalDateTime().getCoercing().parseLiteral(literal)
+
+        then:
+            thrown(CoercingParseLiteralException)
 
         where:
-            literal                       | _
-            new StringValue("not a date") | _
+            literal                                     | _
+            new StringValue('')                         | _
+            new StringValue('not a localdatetime')      | _
     }
 
     @Unroll
-    def "Date serialize #value into #result (#result.class)"() {
+    def "LocalDateTime serialize #value into #result (#result.class)"() {
         expect:
             new GraphQLLocalDateTime().getCoercing().serialize(value) == result
 
@@ -80,14 +85,14 @@ class GraphQLLocalDateTimeTest extends Specification {
             thrown(CoercingSerializeException)
 
         where:
-            value        | _
-            ''           | _
-            'not a date' | _
-            new Object() | _
+            value                   | _
+            ''                      | _
+            'not a localdatetime'   | _
+            new Object()            | _
     }
 
     @Unroll
-    def "Date parse #value into #result (#result.class)"() {
+    def "LocalDateTime parse #value into #result (#result.class)"() {
         expect:
             new GraphQLLocalDateTime().getCoercing().parseValue(value) == result
 
@@ -109,10 +114,10 @@ class GraphQLLocalDateTimeTest extends Specification {
             thrown(CoercingParseValueException)
 
         where:
-            value        | _
-            ''           | _
-            'not a date' | _
-            new Object() | _
+            value                   | _
+            ''                      | _
+            'not a localdatetime'   | _
+            new Object()            | _
     }
 
     @Unroll
@@ -148,7 +153,7 @@ class GraphQLLocalDateTimeTest extends Specification {
     }
 
     @Unroll
-    def "Date parse #value into #result (#result.class) with custom formatter"() {
+    def "LocalDateTime parse #value into #result (#result.class) with custom formatter"() {
         given:
             def formatter = DateTimeFormatter.ofPattern('yyyy-MM-dd\'T\'HH:mm:ss')
 

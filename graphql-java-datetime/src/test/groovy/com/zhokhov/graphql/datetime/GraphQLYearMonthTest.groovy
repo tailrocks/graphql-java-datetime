@@ -16,6 +16,7 @@
 package com.zhokhov.graphql.datetime
 
 import graphql.language.StringValue
+import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
 import spock.lang.Specification
@@ -44,14 +45,17 @@ class GraphQLYearMonthTest extends Specification {
     }
 
     @Unroll
-    def "YearMonth throws exception for invalid #literal"() {
+    def "YearMonth parseLiteral throws exception for invalid #literal"() {
         when:
-            new GraphQLYearMonth().getCoercing().parseLiteral(literal)
+        new GraphQLYearMonth().getCoercing().parseLiteral(literal)
+
         then:
-            thrown(CoercingParseValueException)
+        thrown(CoercingParseLiteralException)
+
         where:
-            literal                       | _
-            new StringValue("not a date") | _
+        literal                         | _
+        new StringValue('')             | _
+        new StringValue('not a date')   | _
     }
 
     @Unroll

@@ -17,10 +17,12 @@ package com.zhokhov.graphql.datetime;
 
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
+import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +48,7 @@ public class GraphQLLocalTime extends GraphQLScalarType {
                     try {
                         return LocalTime.parse((String) input, FORMATTER);
                     } catch (DateTimeParseException ignored) {
+                        // nothing to-do
                     }
                 } else if (input instanceof LocalTime) {
                     return (LocalTime) input;
@@ -77,9 +80,12 @@ public class GraphQLLocalTime extends GraphQLScalarType {
 
             @Override
             public LocalTime parseLiteral(Object input) {
-                if (!(input instanceof StringValue)) return null;
                 String value = ((StringValue) input).getValue();
                 LocalTime result = convertImpl(value);
+                if (result == null) {
+                    throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalTime");
+                }
+
                 return result;
             }
         });
