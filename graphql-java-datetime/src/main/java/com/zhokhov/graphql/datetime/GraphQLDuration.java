@@ -23,7 +23,6 @@ import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class GraphQLDuration extends GraphQLScalarType {
