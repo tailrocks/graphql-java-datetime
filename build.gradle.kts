@@ -85,6 +85,10 @@ val projectGitRepoUrl: String by project
 val projectLicenseShortName: String by project
 val projectLicenseName: String by project
 val projectLicenseUrl: String by project
+val projectScmUrl: String by project
+val projectScmConnection: String by project
+val projectScmDeveloperConnection: String by project
+val projectIssueManagementUrl: String by project
 
 val publishingProjects = setOf(
         "graphql-datetime-autoconfigure",
@@ -142,6 +146,7 @@ subprojects {
                             license {
                                 name.set(projectLicenseName)
                                 url.set(projectLicenseUrl)
+                                distribution.set("repo")
                             }
                         }
                         developers {
@@ -152,9 +157,12 @@ subprojects {
                             }
                         }
                         scm {
-                            connection.set(projectGitRepoUrl)
-                            developerConnection.set(projectGitRepoUrl)
-                            url.set(projectGitRepoUrl)
+                            url.set(projectScmUrl)
+                            connection.set(projectScmConnection)
+                            developerConnection.set(projectScmDeveloperConnection)
+                        }
+                        issueManagement {
+                            url.set(projectIssueManagementUrl)
                         }
                     }
                 }
