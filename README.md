@@ -12,7 +12,7 @@ A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java imple
 
 **java.util.Date**, **java.time.LocalDate**, **java.time.LocalDateTime**
 
-| Format                       | JSON String              |
+| Format                       | JSON String              |
 |:-----------------------------|:-------------------------|
 | yyyy-MM-dd'T'HH:MM:ss.SSS'Z' | 2017-07-09T13:14:45.947Z |
 | yyyy-MM-dd'T'HH:MM:ss'Z'     | 2017-07-09T11:54:42Z     |
@@ -21,7 +21,7 @@ A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java imple
 
 **java.time.LocalTime**
 
-| Format       | JSON String  |
+| Format       | JSON String  |
 |:-------------|:-------------|
 | HH:MM:ss.SSS | 17:59:59.129 |
 | HH:MM:ss     | 17:59:59     |
