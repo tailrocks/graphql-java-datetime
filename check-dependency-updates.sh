@@ -4,6 +4,4 @@ cd "${ABSOLUTE_PATH}" || exit
 
 set -e
 
-./refresh-dependencies.sh
-
-./gradlew dependencyUpdates -Drevision=release --info ${GRADLE_EXTRA_ARGS}
+./gradlew dependencyUpdates -Drevision=release --info --parallel --continue ${GRADLE_EXTRA_ARGS}

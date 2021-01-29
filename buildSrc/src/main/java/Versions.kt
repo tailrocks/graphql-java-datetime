@@ -7,6 +7,9 @@ object Versions {
 
     // Gradle plugins
 
+    // https://plugins.gradle.org/plugin/com.github.ben-manes.versions
+    const val gradleVersionsPlugin = "0.36.0"
+
     // https://plugins.gradle.org/plugin/com.adarshr.test-logger
     const val gradleTestLoggerPlugin = "2.1.1"
 

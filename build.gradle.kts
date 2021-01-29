@@ -43,6 +43,8 @@ allprojects {
     apply(plugin = "net.rdrei.android.buildtimetracker")
     apply(plugin = "com.diffplug.spotless")
 
+    apply(from = "${project.rootDir}/gradle/dependencyUpdates.gradle.kts")
+
     idea {
         module {
             isDownloadJavadoc = false
