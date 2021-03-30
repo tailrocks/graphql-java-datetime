@@ -1,4 +1,3 @@
-import com.jfrog.bintray.gradle.BintrayExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
@@ -16,7 +15,6 @@ plugins {
     `maven-publish`
     id("com.adarshr.test-logger") version Versions.gradleTestLoggerPlugin apply false
     id("net.rdrei.android.buildtimetracker") version Versions.gradleBuildTimeTrackerPlugin
-    id("com.jfrog.bintray") version Versions.gradleBintrayPlugin apply false
     id("com.diffplug.spotless") version Versions.gradleSpotlessPlugin
     kotlin("jvm") version Versions.kotlin apply false
     kotlin("kapt") version Versions.kotlin apply false
@@ -106,7 +104,6 @@ subprojects {
     if (publishingProjects.contains(project.name)) {
         apply(plugin = "java-library")
         apply(plugin = "maven-publish")
-        apply(plugin = "com.jfrog.bintray")
     }
 
     version = projectVersion
@@ -165,33 +162,6 @@ subprojects {
                         issueManagement {
                             url.set(projectIssueManagementUrl)
                         }
-                    }
-                }
-            }
-        }
-
-        configure<BintrayExtension> {
-            user = System.getenv("BINTRAY_USER")
-            key = System.getenv("BINTRAY_KEY")
-            publish = true
-            override = true
-            setPublications("mavenJava")
-            pkg.apply {
-                repo = "maven"
-                name = projectName
-                desc = projectDescription
-                vcsUrl = projectScmUrl
-                setLicenses(projectLicenseShortName)
-                version.apply {
-                    name = projectVersion
-                    gpg.apply {
-                        sign = true
-                    }
-                    mavenCentralSync.apply {
-                        sync = true
-                        user = System.getenv("SONATYPE_USER")
-                        password = System.getenv("SONATYPE_PASSWORD")
-                        close = "1"
                     }
                 }
             }
