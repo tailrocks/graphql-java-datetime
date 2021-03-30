@@ -8,7 +8,7 @@ object Versions {
     // Gradle plugins
 
     // https://plugins.gradle.org/plugin/com.github.ben-manes.versions
-    const val gradleVersionsPlugin = "0.36.0"
+    const val gradleVersionsPlugin = "0.38.0"
 
     // https://plugins.gradle.org/plugin/com.adarshr.test-logger
     const val gradleTestLoggerPlugin = "2.1.1"
@@ -17,7 +17,7 @@ object Versions {
     const val gradleBuildTimeTrackerPlugin = "0.11.0"
 
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
-    const val gradleSpotlessPlugin = "5.9.0"
+    const val gradleSpotlessPlugin = "5.11.1"
 
     // https://plugins.gradle.org/plugin/io.spring.dependency-management
     const val gradleSpringDependencyManagementPlugin = "1.0.11.RELEASE"
