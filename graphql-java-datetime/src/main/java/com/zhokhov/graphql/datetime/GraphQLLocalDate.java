@@ -21,12 +21,13 @@ import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 public class GraphQLLocalDate extends GraphQLScalarType {
 

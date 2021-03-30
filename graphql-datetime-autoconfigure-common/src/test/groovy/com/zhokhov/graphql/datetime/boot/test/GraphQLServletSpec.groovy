@@ -33,7 +33,7 @@ import spock.lang.Specification
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 @ComponentScan(basePackages = "com.zhokhov.graphql.datetime")
 @EnableAutoConfiguration

@@ -19,7 +19,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 @SpringBootApplication
 public class GraphqlDatetimeSampleAppApplication {

@@ -24,10 +24,8 @@ import spock.lang.Unroll
 
 import java.time.YearMonth
 
-import static com.zhokhov.graphql.datetime.DateTimeHelper.createDate
-
 /**
- * @author <ahref='mailto:alexey@zhokhov.com'  >  Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 class GraphQLYearMonthTest extends Specification {
 
@@ -47,15 +45,15 @@ class GraphQLYearMonthTest extends Specification {
     @Unroll
     def "YearMonth parseLiteral throws exception for invalid #literal"() {
         when:
-        new GraphQLYearMonth().getCoercing().parseLiteral(literal)
+            new GraphQLYearMonth().getCoercing().parseLiteral(literal)
 
         then:
-        thrown(CoercingParseLiteralException)
+            thrown(CoercingParseLiteralException)
 
         where:
-        literal                         | _
-        new StringValue('')             | _
-        new StringValue('not a date')   | _
+            literal                       | _
+            new StringValue('')           | _
+            new StringValue('not a date') | _
     }
 
     @Unroll

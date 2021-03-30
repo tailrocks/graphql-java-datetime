@@ -23,6 +23,7 @@ import com.zhokhov.graphql.datetime.GraphQLLocalDate;
 import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
 import com.zhokhov.graphql.datetime.GraphQLLocalTime;
 import com.zhokhov.graphql.datetime.GraphQLOffsetDateTime;
+import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
@@ -31,12 +32,29 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
-
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 public class ContextHelper {
+
+    static public AbstractApplicationContext load() {
+        AbstractApplicationContext context;
+
+        try {
+            context = AnnotationConfigApplicationContext.class.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        AnnotationConfigRegistry registry = (AnnotationConfigRegistry) context;
+
+        registry.register(BaseConfiguration.class);
+        registry.register(GraphQLJavaToolsAutoConfiguration.class);
+
+        context.refresh();
+
+        return context;
+    }
 
     @Configuration
     @ComponentScan("com.zhokhov.graphql.datetime.boot")
@@ -58,25 +76,6 @@ public class ContextHelper {
             return mapper;
         }
 
-    }
-
-    static public AbstractApplicationContext load() {
-        AbstractApplicationContext context;
-
-        try {
-            context = AnnotationConfigApplicationContext.class.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        AnnotationConfigRegistry registry = (AnnotationConfigRegistry) context;
-
-        registry.register(BaseConfiguration.class);
-        registry.register(GraphQLJavaToolsAutoConfiguration.class);
-
-        context.refresh();
-
-        return context;
     }
 
 }

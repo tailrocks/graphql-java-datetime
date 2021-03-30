@@ -31,7 +31,7 @@ import java.time.format.DateTimeFormatter
 import static java.util.concurrent.TimeUnit.MILLISECONDS
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 class GraphQLLocalDateTimeTest extends Specification {
 
@@ -59,9 +59,9 @@ class GraphQLLocalDateTimeTest extends Specification {
             thrown(CoercingParseLiteralException)
 
         where:
-            literal                                     | _
-            new StringValue('')                         | _
-            new StringValue('not a localdatetime')      | _
+            literal                                | _
+            new StringValue('')                    | _
+            new StringValue('not a localdatetime') | _
     }
 
     @Unroll
@@ -85,10 +85,10 @@ class GraphQLLocalDateTimeTest extends Specification {
             thrown(CoercingSerializeException)
 
         where:
-            value                   | _
-            ''                      | _
-            'not a localdatetime'   | _
-            new Object()            | _
+            value                 | _
+            ''                    | _
+            'not a localdatetime' | _
+            new Object()          | _
     }
 
     @Unroll
@@ -114,10 +114,10 @@ class GraphQLLocalDateTimeTest extends Specification {
             thrown(CoercingParseValueException)
 
         where:
-            value                   | _
-            ''                      | _
-            'not a localdatetime'   | _
-            new Object()            | _
+            value                 | _
+            ''                    | _
+            'not a localdatetime' | _
+            new Object()          | _
     }
 
     @Unroll

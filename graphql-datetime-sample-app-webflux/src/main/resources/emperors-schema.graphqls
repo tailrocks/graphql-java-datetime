@@ -24,35 +24,35 @@ scalar LocalDateTime
 scalar LocalTime
 
 type Query {
-    # list of last 5 Chinese emperors
-    emperors: [Emperor]
+  # list of last 5 Chinese emperors
+  emperors: [Emperor]
 
-    # date and time now
-    now: MyDate
+  # date and time now
+  now: MyDate
 
-    # date yesterday
-    yesterday: MyLocalDate
+  # date yesterday
+  yesterday: MyLocalDate
 
-    # date and time tomorrow midnight
-    tomorrowMidnight: LocalDateTime
+  # date and time tomorrow midnight
+  tomorrowMidnight: LocalDateTime
 
-    # noon time, lunch in China, all factories stopped
-    noonTime: LocalTime
+  # noon time, lunch in China, all factories stopped
+  noonTime: LocalTime
 }
 
 type Mutation {
-    # try these values:
-    # "2017-07-15"
-    # "2017-07-15T05:02:54"
-    # "2017-07-15T05:02:54.957Z"
-    plusDay(input: LocalDateTime!): LocalDateTime!
+  # try these values:
+  # "2017-07-15"
+  # "2017-07-15T05:02:54"
+  # "2017-07-15T05:02:54.957Z"
+  plusDay(input: LocalDateTime!): LocalDateTime!
 }
 
 # A type that describes the emperor
 type Emperor {
-    givenName: String!
-    title: String!
-    reignStart: MyLocalDate!
-    reignStop: MyLocalDate!
-    name: String! @doc(d: "Given name") @deprecated(reason: "Use givenName instead")
+  givenName: String!
+  title: String!
+  reignStart: MyLocalDate!
+  reignStop: MyLocalDate!
+  name: String! @doc(d: "Given name") @deprecated(reason: "Use givenName instead")
 }

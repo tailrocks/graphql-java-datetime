@@ -23,15 +23,15 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 public class ResponseType {
 
-    private Date date;
-    private LocalDate localDate;
-    private LocalDateTime localDateTime;
-    private LocalTime localTime;
-    private OffsetDateTime offsetDateTime;
+    private final Date date;
+    private final LocalDate localDate;
+    private final LocalDateTime localDateTime;
+    private final LocalTime localTime;
+    private final OffsetDateTime offsetDateTime;
 
     public ResponseType() {
         date = new Date(1499667166754L);
@@ -60,4 +60,5 @@ public class ResponseType {
     public OffsetDateTime getOffsetDateTime() {
         return offsetDateTime;
     }
+
 }

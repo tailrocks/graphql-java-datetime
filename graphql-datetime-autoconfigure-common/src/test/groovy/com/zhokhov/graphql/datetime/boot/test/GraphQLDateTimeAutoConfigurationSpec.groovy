@@ -26,7 +26,7 @@ import org.springframework.context.support.AbstractApplicationContext
 import spock.lang.Specification
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 class GraphQLDateTimeAutoConfigurationSpec extends Specification {
 

@@ -27,7 +27,7 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 class GraphQLLocalDateTest extends Specification {
 
@@ -44,15 +44,15 @@ class GraphQLLocalDateTest extends Specification {
     @Unroll
     def "LocalDate parseLiteral throws exception for invalid #literal"() {
         when:
-        new GraphQLLocalDate().getCoercing().parseLiteral(literal)
+            new GraphQLLocalDate().getCoercing().parseLiteral(literal)
 
         then:
-        thrown(CoercingParseLiteralException)
+            thrown(CoercingParseLiteralException)
 
         where:
-        literal                         | _
-        new StringValue('')             | _
-        new StringValue('not a localdate')   | _
+            literal                            | _
+            new StringValue('')                | _
+            new StringValue('not a localdate') | _
     }
 
     @Unroll
@@ -73,10 +73,10 @@ class GraphQLLocalDateTest extends Specification {
             thrown(CoercingSerializeException)
 
         where:
-            value               | _
-            ''                  | _
-            'not a localdate'   | _
-            new Object()        | _
+            value             | _
+            ''                | _
+            'not a localdate' | _
+            new Object()      | _
     }
 
     @Unroll

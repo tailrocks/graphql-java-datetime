@@ -21,13 +21,13 @@ scalar LocalTime
 scalar OffsetDateTime
 
 type Query {
-    echo: Response
+  echo: Response
 }
 
 type Response {
-    date: Date
-    localDate: LocalDate
-    localDateTime: LocalDateTime
-    localTime: LocalTime
-    offsetDateTime: OffsetDateTime
+  date: Date
+  localDate: LocalDate
+  localDateTime: LocalDateTime
+  localTime: LocalTime
+  offsetDateTime: OffsetDateTime
 }

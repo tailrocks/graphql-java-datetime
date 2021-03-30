@@ -90,12 +90,12 @@ val projectScmDeveloperConnection: String by project
 val projectIssueManagementUrl: String by project
 
 val publishingProjects = setOf(
-        "graphql-datetime-autoconfigure",
-        "graphql-datetime-autoconfigure-common",
-        "graphql-datetime-autoconfigure-webflux",
-        "graphql-datetime-spring-boot-starter",
-        "graphql-datetime-spring-boot-starter-webflux",
-        "graphql-java-datetime"
+    "graphql-datetime-autoconfigure",
+    "graphql-datetime-autoconfigure-common",
+    "graphql-datetime-autoconfigure-webflux",
+    "graphql-datetime-spring-boot-starter",
+    "graphql-datetime-spring-boot-starter-webflux",
+    "graphql-java-datetime"
 )
 
 subprojects {

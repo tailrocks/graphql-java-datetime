@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 @Component
 public class Query implements GraphQLQueryResolver {

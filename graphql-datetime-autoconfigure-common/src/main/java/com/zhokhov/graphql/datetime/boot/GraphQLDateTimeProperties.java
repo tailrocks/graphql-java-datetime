@@ -18,7 +18,7 @@ package com.zhokhov.graphql.datetime.boot;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * @author <a href='mailto:dgmneto@gmail.com'>Divino G. de Menezes Neto</a>
+ * @author Divino G. de Menezes Neto
  */
 @ConfigurationProperties(prefix = "graphql.datetime.scalars")
 public class GraphQLDateTimeProperties {
@@ -36,28 +36,64 @@ public class GraphQLDateTimeProperties {
         return date;
     }
 
+    public void setDate(ScalarDefinition date) {
+        this.date = date;
+    }
+
     ScalarDefinition getLocalDate() {
         return localDate;
+    }
+
+    public void setLocalDate(ScalarDefinition localDate) {
+        this.localDate = localDate;
     }
 
     ScalarDefinition getLocalDateTime() {
         return localDateTime;
     }
 
+    public void setLocalDateTime(ScalarDefinition localDateTime) {
+        this.localDateTime = localDateTime;
+    }
+
     ScalarDefinition getLocalTime() {
         return localTime;
+    }
+
+    public void setLocalTime(ScalarDefinition localTime) {
+        this.localTime = localTime;
     }
 
     ScalarDefinition getOffsetDateTime() {
         return offsetDateTime;
     }
 
+    public void setOffsetDateTime(ScalarDefinition offsetDateTime) {
+        this.offsetDateTime = offsetDateTime;
+    }
+
     ScalarDefinition getYearMonth() {
         return yearMonth;
     }
 
+    public void setYearMonth(ScalarDefinition yearMonth) {
+        this.yearMonth = yearMonth;
+    }
+
     ScalarDefinition getDuration() {
         return duration;
+    }
+
+    public void setDuration(ScalarDefinition duration) {
+        this.duration = duration;
+    }
+
+    public boolean isZoneConversionEnabled() {
+        return zoneConversionEnabled;
+    }
+
+    public void setZoneConversionEnabled(boolean zoneConversionEnabled) {
+        this.zoneConversionEnabled = zoneConversionEnabled;
     }
 
     public static class ScalarDefinition {
@@ -82,42 +118,6 @@ public class GraphQLDateTimeProperties {
             this.scalarName = scalarName;
         }
 
-    }
-
-    public void setDate(ScalarDefinition date) {
-        this.date = date;
-    }
-
-    public void setLocalDate(ScalarDefinition localDate) {
-        this.localDate = localDate;
-    }
-
-    public void setLocalDateTime(ScalarDefinition localDateTime) {
-        this.localDateTime = localDateTime;
-    }
-
-    public void setLocalTime(ScalarDefinition localTime) {
-        this.localTime = localTime;
-    }
-
-    public void setOffsetDateTime(ScalarDefinition offsetDateTime) {
-        this.offsetDateTime = offsetDateTime;
-    }
-
-    public void setYearMonth(ScalarDefinition yearMonth) {
-        this.yearMonth = yearMonth;
-    }
-
-    public void setDuration(ScalarDefinition duration) {
-        this.duration = duration;
-    }
-
-    public boolean isZoneConversionEnabled() {
-        return zoneConversionEnabled;
-    }
-
-    public void setZoneConversionEnabled(boolean zoneConversionEnabled) {
-        this.zoneConversionEnabled = zoneConversionEnabled;
     }
 
 }

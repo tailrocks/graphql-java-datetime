@@ -26,7 +26,7 @@ import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 class GraphQLLocalTimeTest extends Specification {
 
@@ -51,9 +51,9 @@ class GraphQLLocalTimeTest extends Specification {
             thrown(CoercingParseLiteralException)
 
         where:
-            literal                              | _
-            new StringValue('')                  | _
-            new StringValue('not a localtime')   | _
+            literal                            | _
+            new StringValue('')                | _
+            new StringValue('not a localtime') | _
     }
 
     @Unroll
@@ -77,10 +77,10 @@ class GraphQLLocalTimeTest extends Specification {
             thrown(CoercingSerializeException)
 
         where:
-            value               | _
-            ''                  | _
-            'not a localtime'   | _
-            new Object()        | _
+            value             | _
+            ''                | _
+            'not a localtime' | _
+            new Object()      | _
     }
 
     @Unroll
@@ -104,10 +104,10 @@ class GraphQLLocalTimeTest extends Specification {
             thrown(CoercingParseValueException)
 
         where:
-            value               | _
-            ''                  | _
-            'not a localtime'   | _
-            new Object()        | _
+            value             | _
+            ''                | _
+            'not a localtime' | _
+            new Object()      | _
     }
 
 }

@@ -21,6 +21,7 @@ import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
 import graphql.schema.GraphQLScalarType;
+
 import java.time.DateTimeException;
 import java.time.YearMonth;
 import java.util.regex.Matcher;
@@ -82,7 +83,7 @@ public class GraphQLYearMonth extends GraphQLScalarType {
 
 
             @Override
-            public YearMonth parseLiteral(Object input)  {
+            public YearMonth parseLiteral(Object input) {
                 String value = ((StringValue) input).getValue();
                 YearMonth result = convertImpl(value);
                 if (result == null) {

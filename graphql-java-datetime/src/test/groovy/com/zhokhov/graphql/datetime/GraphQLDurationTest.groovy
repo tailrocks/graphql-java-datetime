@@ -23,12 +23,9 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.Duration
-import java.time.YearMonth
-
-import static com.zhokhov.graphql.datetime.DateTimeHelper.createDate
 
 /**
- * @author <ahref='mailto:alexey@zhokhov.com'  >  Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  *
  * Test Java 8 ISO 8601 Duration
  */
@@ -40,9 +37,9 @@ class GraphQLDurationTest extends Specification {
             new GraphQLDuration().getCoercing().parseLiteral(literal) == result
 
         where:
-            literal                                     | result
-            new StringValue('PT1H30M')                  | Duration.ofMinutes(90)
-            new StringValue('P1DT3H')                   | Duration.ofHours(27)
+            literal                    | result
+            new StringValue('PT1H30M') | Duration.ofMinutes(90)
+            new StringValue('P1DT3H')  | Duration.ofHours(27)
     }
 
     @Unroll
@@ -54,9 +51,9 @@ class GraphQLDurationTest extends Specification {
             thrown(CoercingParseLiteralException)
 
         where:
-            literal                         | _
-            new StringValue('')             | _
-            new StringValue('not a duration')   | _
+            literal                           | _
+            new StringValue('')               | _
+            new StringValue('not a duration') | _
     }
 
     @Unroll
@@ -65,8 +62,8 @@ class GraphQLDurationTest extends Specification {
             new GraphQLDuration().getCoercing().serialize(value) == result
 
         where:
-            value                 | result
-            Duration.ofHours(27)  | 'PT27H'
+            value                | result
+            Duration.ofHours(27) | 'PT27H'
     }
 
     @Unroll
@@ -78,11 +75,11 @@ class GraphQLDurationTest extends Specification {
             thrown(CoercingSerializeException)
 
         where:
-            value        | _
-            ''           | _
+            value            | _
+            ''               | _
             'not a duration' | _
-            '1DT3H' | _
-            new Object() | _
+            '1DT3H'          | _
+            new Object()     | _
     }
 
     @Unroll
@@ -91,7 +88,7 @@ class GraphQLDurationTest extends Specification {
             new GraphQLDuration().getCoercing().parseValue(value) == result
 
         where:
-            value                      | result
+            value     | result
             'PT1H30M' | Duration.ofMinutes(90)
             'P1DT3H'  | Duration.ofHours(27)
     }

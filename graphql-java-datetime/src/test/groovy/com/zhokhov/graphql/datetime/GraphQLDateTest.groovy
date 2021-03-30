@@ -16,16 +16,16 @@
 package com.zhokhov.graphql.datetime
 
 import graphql.language.StringValue
+import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
-import graphql.schema.CoercingParseLiteralException
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import static com.zhokhov.graphql.datetime.DateTimeHelper.createDate
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 class GraphQLDateTest extends Specification {
 
@@ -51,9 +51,9 @@ class GraphQLDateTest extends Specification {
             thrown(CoercingParseLiteralException)
 
         where:
-            literal                         | _
-            new StringValue('')             | _
-            new StringValue('not a date')   | _
+            literal                       | _
+            new StringValue('')           | _
+            new StringValue('not a date') | _
     }
 
     @Unroll

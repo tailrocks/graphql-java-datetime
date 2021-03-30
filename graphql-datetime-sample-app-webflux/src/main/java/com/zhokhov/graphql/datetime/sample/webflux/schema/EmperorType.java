@@ -18,7 +18,7 @@ package com.zhokhov.graphql.datetime.sample.webflux.schema;
 import java.time.LocalDate;
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 public class EmperorType {
 

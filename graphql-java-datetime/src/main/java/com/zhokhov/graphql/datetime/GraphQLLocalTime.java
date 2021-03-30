@@ -28,13 +28,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 public class GraphQLLocalTime extends GraphQLScalarType {
 
-    private static final String DEFAULT_NAME = "LocalTime";
-
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME.withZone(ZoneOffset.UTC);
+    private static final String DEFAULT_NAME = "LocalTime";
 
     public GraphQLLocalTime() {
         this(DEFAULT_NAME);

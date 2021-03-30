@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * @author <a href='mailto:alexey@zhokhov.com'>Alexey Zhokhov</a>
+ * @author Alexey Zhokhov
  */
 public class GraphQLDate extends GraphQLScalarType {
 
