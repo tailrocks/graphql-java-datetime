@@ -4,6 +4,4 @@ cd "${ABSOLUTE_PATH}" || exit
 
 set -e
 
-./gradlew generatePomFileForMavenJavaPublication build
-
-./gradlew bintrayUpload --info
+./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository --info --stacktrace

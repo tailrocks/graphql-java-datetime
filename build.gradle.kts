@@ -13,9 +13,11 @@ plugins {
     java
     idea
     `maven-publish`
+    signing
     id("com.adarshr.test-logger") version Versions.gradleTestLoggerPlugin apply false
     id("net.rdrei.android.buildtimetracker") version Versions.gradleBuildTimeTrackerPlugin
     id("com.diffplug.spotless") version Versions.gradleSpotlessPlugin
+    id("io.github.gradle-nexus.publish-plugin") version Versions.gradleNexusPublishPlugin
     kotlin("jvm") version Versions.kotlin apply false
     kotlin("kapt") version Versions.kotlin apply false
     kotlin("plugin.allopen") version Versions.kotlin apply false
@@ -36,12 +38,26 @@ buildtimetracker {
     }
 }
 
+val projectVersion: String by project
+val projectName: String by project
+val projectDescription: String by project
+val projectLicenseShortName: String by project
+val projectLicenseName: String by project
+val projectLicenseUrl: String by project
+val projectScmUrl: String by project
+val projectScmConnection: String by project
+val projectScmDeveloperConnection: String by project
+val projectIssueManagementUrl: String by project
+
 allprojects {
     apply(plugin = "idea")
     apply(plugin = "net.rdrei.android.buildtimetracker")
     apply(plugin = "com.diffplug.spotless")
 
     apply(from = "${project.rootDir}/gradle/dependencyUpdates.gradle.kts")
+
+    version = projectVersion
+    group = "com.zhokhov.graphql"
 
     idea {
         module {
@@ -78,17 +94,6 @@ allprojects {
     }
 }
 
-val projectVersion: String by project
-val projectName: String by project
-val projectDescription: String by project
-val projectLicenseShortName: String by project
-val projectLicenseName: String by project
-val projectLicenseUrl: String by project
-val projectScmUrl: String by project
-val projectScmConnection: String by project
-val projectScmDeveloperConnection: String by project
-val projectIssueManagementUrl: String by project
-
 val publishingProjects = setOf(
     "graphql-datetime-autoconfigure",
     "graphql-datetime-autoconfigure-common",
@@ -104,10 +109,8 @@ subprojects {
     if (publishingProjects.contains(project.name)) {
         apply(plugin = "java-library")
         apply(plugin = "maven-publish")
+        apply(plugin = "signing")
     }
-
-    version = projectVersion
-    group = "com.zhokhov.graphql"
 
     java {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -166,6 +169,15 @@ subprojects {
                 }
             }
         }
+
+        signing {
+            val key = System.getenv("SIGNING_KEY") ?: return@signing
+            val password = System.getenv("SIGNING_PASSWORD") ?: return@signing
+            val publishing: PublishingExtension by project
+
+            useInMemoryPgpKeys(key, password)
+            sign(publishing.publications)
+        }
     }
 
     tasks.withType<KotlinCompile> {
@@ -179,6 +191,15 @@ subprojects {
             // TODO uncomment after Spock started supports junit-jupiter engine
             // includeEngines = setOf("junit-jupiter")
             // excludeEngines = setOf("junit-vintage")
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            username.set(System.getenv("OSSRH_USER") ?: return@sonatype)
+            password.set(System.getenv("OSSRH_PASSWORD") ?: return@sonatype)
         }
     }
 }

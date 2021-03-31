@@ -22,6 +22,9 @@ object Versions {
     // https://plugins.gradle.org/plugin/io.spring.dependency-management
     const val gradleSpringDependencyManagementPlugin = "1.0.11.RELEASE"
 
+    // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
+    const val gradleNexusPublishPlugin = "1.0.0"
+
     // Libraries
 
     const val junit = "5.6.3"

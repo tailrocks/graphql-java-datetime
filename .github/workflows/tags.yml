@@ -24,8 +24,10 @@ jobs:
         run: ./gradlew spotlessCheck
       - name: Test
         run: ./gradlew test
-      - name: Publish to Bintray
-        run: ./publish-bintray.sh
+      - name: Publish to Maven Central
+        run: ./publish-sonatype.sh
         env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+          OSSRH_USER: ${{ secrets.OSSRH_USER }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
