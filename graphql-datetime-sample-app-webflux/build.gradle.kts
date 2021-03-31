@@ -4,11 +4,6 @@ plugins {
     id("org.springframework.boot") version Versions.springBoot
 }
 
-repositories {
-    mavenLocal()
-    jcenter()
-}
-
 dependencies {
     implementation(project(":graphql-datetime-spring-boot-starter-webflux"))
 
