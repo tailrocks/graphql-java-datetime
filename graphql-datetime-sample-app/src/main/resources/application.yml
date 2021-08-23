@@ -15,25 +15,15 @@
 #
 
 spring:
+  main:
+    web-application-type: servlet
   output:
     ansi:
       enabled: always
 
 graphql:
-  servlet:
-    mapping: /graphql
+  graphiql:
     enabled: true
-    corsEnabled: true
-
-  spring-graphql-common:
-    clientMutationIdName: clientMutationId
-    injectClientMutationId: true
-    allowEmptyClientMutationId: false
-    mutationInputArgumentName: input
-    outputObjectNamePrefix: Payload
-    inputObjectNamePrefix: Input
-    schemaMutationObjectName: Mutation
-
   datetime:
     scalars:
       date:
