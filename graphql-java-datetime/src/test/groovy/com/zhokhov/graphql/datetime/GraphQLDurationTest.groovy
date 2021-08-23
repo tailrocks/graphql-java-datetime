@@ -24,6 +24,8 @@ import spock.lang.Unroll
 
 import java.time.Duration
 
+import static java.time.ZoneOffset.UTC
+
 /**
  * @author Alexey Zhokhov
  *
@@ -31,10 +33,14 @@ import java.time.Duration
  */
 class GraphQLDurationTest extends Specification {
 
+    def setup() {
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    }
+
     @Unroll
     def "Duration parse literal #literal.value as #result"() {
         expect:
-            new GraphQLDuration().getCoercing().parseLiteral(literal) == result
+            new GraphqlDurationCoercing().parseLiteral(literal) == result
 
         where:
             literal                    | result
@@ -45,7 +51,7 @@ class GraphQLDurationTest extends Specification {
     @Unroll
     def "Duration parseLiteral throws exception for invalid #literal"() {
         when:
-            new GraphQLDuration().getCoercing().parseLiteral(literal)
+            new GraphqlDurationCoercing().parseLiteral(literal)
 
         then:
             thrown(CoercingParseLiteralException)
@@ -59,7 +65,7 @@ class GraphQLDurationTest extends Specification {
     @Unroll
     def "Duration serialize #value into #result (#result.class)"() {
         expect:
-            new GraphQLDuration().getCoercing().serialize(value) == result
+            new GraphqlDurationCoercing().serialize(value) == result
 
         where:
             value                | result
@@ -69,7 +75,7 @@ class GraphQLDurationTest extends Specification {
     @Unroll
     def "serialize Duration throws exception for invalid input #value"() {
         when:
-            new GraphQLDuration().getCoercing().serialize(value)
+            new GraphqlDurationCoercing().serialize(value)
 
         then:
             thrown(CoercingSerializeException)
@@ -85,7 +91,7 @@ class GraphQLDurationTest extends Specification {
     @Unroll
     def "Duration parse #value into #result (#result.class)"() {
         expect:
-            new GraphQLDuration().getCoercing().parseValue(value) == result
+            new GraphqlDurationCoercing().parseValue(value) == result
 
         where:
             value     | result
@@ -96,7 +102,7 @@ class GraphQLDurationTest extends Specification {
     @Unroll
     def "Duration parseValue throws exception for invalid input #value"() {
         when:
-            new GraphQLDuration().getCoercing().parseValue(value)
+            new GraphqlDurationCoercing().parseValue(value)
 
         then:
             thrown(CoercingParseValueException)

@@ -6,7 +6,6 @@ plugins {
     `maven-publish`
     signing
     id("com.adarshr.test-logger") version Versions.gradleTestLoggerPlugin apply false
-    id("net.rdrei.android.buildtimetracker") version Versions.gradleBuildTimeTrackerPlugin
     id("com.diffplug.spotless") version Versions.gradleSpotlessPlugin
     id("io.github.gradle-nexus.publish-plugin") version Versions.gradleNexusPublishPlugin
     kotlin("jvm") version Versions.kotlin apply false
@@ -17,16 +16,6 @@ plugins {
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-buildtimetracker {
-    reporters {
-        register("summary") {
-            options["ordered"] = "true"
-            options["barstyle"] = "none"
-            options["shortenTaskNames"] = "false"
-        }
-    }
 }
 
 val projectVersion: String by project
@@ -42,7 +31,6 @@ val projectIssueManagementUrl: String by project
 
 allprojects {
     apply(plugin = "idea")
-    apply(plugin = "net.rdrei.android.buildtimetracker")
     apply(plugin = "com.diffplug.spotless")
 
     apply(from = "${project.rootDir}/gradle/dependencyUpdates.gradle.kts")

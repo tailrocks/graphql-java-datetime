@@ -5,7 +5,7 @@ plugins {
 
 dependencies {
     api(project(":graphql-java-datetime"))
-    api("com.graphql-java-kickstart:graphql-kickstart-spring-boot-autoconfigure-tools:${Versions.graphQlSpringBoot}")
+    api("com.graphql-java-kickstart:graphql-spring-boot-autoconfigure:${Versions.graphQlSpringBoot}")
     api("org.springframework.boot:spring-boot-autoconfigure:${Versions.springBoot}")
 
     testImplementation("org.codehaus.groovy:groovy-all:${Versions.groovy}")

@@ -28,6 +28,8 @@ import java.time.LocalTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
+import static java.time.ZoneOffset.UTC
+import static java.time.format.DateTimeFormatter.ISO_INSTANT
 import static java.util.concurrent.TimeUnit.MILLISECONDS
 
 /**
@@ -35,10 +37,14 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS
  */
 class GraphQLLocalDateTimeTest extends Specification {
 
+    def setup() {
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    }
+
     @Unroll
     def "LocalDateTime parse literal #literal.value as #result"() {
         expect:
-            new GraphQLLocalDateTime().getCoercing().parseLiteral(literal) == result
+            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseLiteral(literal) == result
 
         where:
             literal                                     | result
@@ -53,7 +59,7 @@ class GraphQLLocalDateTimeTest extends Specification {
     @Unroll
     def "LocalDateTime parseLiteral throws exception for invalid #literal"() {
         when:
-            new GraphQLLocalDateTime().getCoercing().parseLiteral(literal)
+            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseLiteral(literal)
 
         then:
             thrown(CoercingParseLiteralException)
@@ -67,7 +73,7 @@ class GraphQLLocalDateTimeTest extends Specification {
     @Unroll
     def "LocalDateTime serialize #value into #result (#result.class)"() {
         expect:
-            new GraphQLLocalDateTime().getCoercing().serialize(value) == result
+            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).serialize(value) == result
 
         where:
             value                                                                     | result
@@ -80,7 +86,7 @@ class GraphQLLocalDateTimeTest extends Specification {
     @Unroll
     def "serialize throws exception for invalid input #value"() {
         when:
-            new GraphQLLocalDateTime().getCoercing().serialize(value)
+            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).serialize(value)
         then:
             thrown(CoercingSerializeException)
 
@@ -94,7 +100,7 @@ class GraphQLLocalDateTimeTest extends Specification {
     @Unroll
     def "LocalDateTime parse #value into #result (#result.class)"() {
         expect:
-            new GraphQLLocalDateTime().getCoercing().parseValue(value) == result
+            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseValue(value) == result
 
         where:
             value                      | result
@@ -109,7 +115,7 @@ class GraphQLLocalDateTimeTest extends Specification {
     @Unroll
     def "parseValue throws exception for invalid input #value"() {
         when:
-            new GraphQLLocalDateTime().getCoercing().parseValue(value)
+            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseValue(value)
         then:
             thrown(CoercingParseValueException)
 
@@ -126,7 +132,7 @@ class GraphQLLocalDateTimeTest extends Specification {
             TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(1)))
 
         then:
-            new GraphQLLocalDateTime(true).getCoercing().serialize(value) == result
+            new GraphqlLocalDateTimeCoercing(true, ISO_INSTANT).serialize(value) == result
 
         where:
             value                                                                       | result
@@ -142,7 +148,7 @@ class GraphQLLocalDateTimeTest extends Specification {
             TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(1)))
 
         then:
-            new GraphQLLocalDateTime(true).getCoercing().parseValue(value) == result
+            new GraphqlLocalDateTimeCoercing(true, ISO_INSTANT).parseValue(value) == result
 
         where:
             value                      | result
@@ -158,7 +164,7 @@ class GraphQLLocalDateTimeTest extends Specification {
             def formatter = DateTimeFormatter.ofPattern('yyyy-MM-dd\'T\'HH:mm:ss')
 
         expect:
-            new GraphQLLocalDateTime(null, false, formatter).getCoercing().parseValue(value) == result
+            new GraphqlLocalDateTimeCoercing(false, formatter).parseValue(value) == result
 
         where:
             value                 | result
@@ -171,7 +177,7 @@ class GraphQLLocalDateTimeTest extends Specification {
             def formatter = DateTimeFormatter.ofPattern('yyyy-MM-dd\'T\'HH:mm:ss')
 
         expect:
-            new GraphQLLocalDateTime(null, false, formatter).getCoercing().serialize(value) == result
+            new GraphqlLocalDateTimeCoercing(false, formatter).serialize(value) == result
 
         where:
             value                                    | result

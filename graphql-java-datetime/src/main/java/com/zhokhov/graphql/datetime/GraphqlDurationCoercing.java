@@ -15,76 +15,67 @@
  */
 package com.zhokhov.graphql.datetime;
 
+import graphql.Internal;
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
-import graphql.schema.GraphQLScalarType;
 
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
 
-public class GraphQLDuration extends GraphQLScalarType {
+@Internal
+public class GraphqlDurationCoercing implements Coercing<Duration, String> {
 
-    private static final String DEFAULT_NAME = "Duration";
-
-    public GraphQLDuration() {
-        this(DEFAULT_NAME);
+    /**
+     * @param input - the input string with an ISO 8601 Duration, e.g. P3Y6M4DT12H30M5S or PT1H30M
+     * @return - a java.time.Duration object
+     */
+    private Duration convertImpl(Object input) {
+        if (input instanceof String) {
+            try {
+                return Duration.parse((String) input);
+            } catch (DateTimeParseException ignored) {
+                // nothing to-do
+            }
+        } else if (input instanceof Duration) {
+            return (Duration) input;
+        }
+        return null;
     }
 
-    public GraphQLDuration(final String name) {
-        super(name, "A Java 8 ISO 8601 Duration", new Coercing<Duration, String>() {
-            /**
-             *
-             * @param input - the input string with an ISO 8601 Duration, e.g. P3Y6M4DT12H30M5S or PT1H30M
-             * @return - a java.time.Duration object
-             */
-            private Duration convertImpl(Object input) {
-                if (input instanceof String) {
-                    try {
-                        return Duration.parse((String) input);
-                    } catch (DateTimeParseException ignored) {
-                        // nothing to-do
-                    }
-                } else if (input instanceof Duration) {
-                    return (Duration) input;
-                }
-                return null;
+    @Override
+    public String serialize(Object input) {
+        if (input instanceof Duration) {
+            return ((Duration) input).toString();
+        } else {
+            Duration result = convertImpl(input);
+            if (result == null) {
+                throw new CoercingSerializeException("Invalid value '" + input + "' for Duration");
             }
-
-            @Override
-            public String serialize(Object input) {
-                if (input instanceof Duration) {
-                    return ((Duration) input).toString();
-                } else {
-                    Duration result = convertImpl(input);
-                    if (result == null) {
-                        throw new CoercingSerializeException("Invalid value '" + input + "' for Duration");
-                    }
-                    return result.toString();
-                }
-            }
-
-            @Override
-            public Duration parseValue(Object input) {
-                Duration result = convertImpl(input);
-                if (result == null) {
-                    throw new CoercingParseValueException("Invalid value '" + input + "' for Duration");
-                }
-                return result;
-            }
-
-            @Override
-            public Duration parseLiteral(Object input) {
-                String value = ((StringValue) input).getValue();
-                Duration result = convertImpl(value);
-                if (result == null) {
-                    throw new CoercingParseLiteralException("Invalid value '" + input + "' for Duration");
-                }
-
-                return result;
-            }
-        });
+            return result.toString();
+        }
     }
+
+    @Override
+    public Duration parseValue(Object input) {
+        Duration result = convertImpl(input);
+        if (result == null) {
+            throw new CoercingParseValueException("Invalid value '" + input + "' for Duration");
+        }
+        return result;
+    }
+
+    @Override
+    public Duration parseLiteral(Object input) {
+        String value = ((StringValue) input).getValue();
+        Duration result = convertImpl(value);
+        if (result == null) {
+            throw new CoercingParseLiteralException("Invalid value '" + input + "' for Duration");
+        }
+
+        return result;
+    }
+
 }

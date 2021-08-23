@@ -15,30 +15,19 @@
  */
 package com.zhokhov.graphql.datetime;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Alexey Zhokhov
  */
 final class DateTimeHelper {
-
-    static final List<DateTimeFormatter> DATE_FORMATTERS = new CopyOnWriteArrayList<>();
-
-    static {
-        DATE_FORMATTERS.add(DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC));
-        DATE_FORMATTERS.add(DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneOffset.UTC));
-        DATE_FORMATTERS.add(DateTimeFormatter.ISO_LOCAL_DATE.withZone(ZoneOffset.UTC));
-    }
 
     private DateTimeHelper() {
     }
@@ -72,26 +61,6 @@ final class DateTimeHelper {
         Objects.requireNonNull(dateTime, "dateTime");
 
         return Date.from(dateTime.atZone(ZoneOffset.UTC).toInstant());
-    }
-
-    public static LocalDateTime parseDate(String date) {
-        Objects.requireNonNull(date, "date");
-
-        for (DateTimeFormatter formatter : DATE_FORMATTERS) {
-            try {
-                // equals ISO_LOCAL_DATE
-                if (formatter.equals(DATE_FORMATTERS.get(2))) {
-                    LocalDate localDate = LocalDate.parse(date, formatter);
-
-                    return localDate.atStartOfDay();
-                } else {
-                    return LocalDateTime.parse(date, formatter);
-                }
-            } catch (java.time.format.DateTimeParseException ignored) {
-            }
-        }
-
-        return null;
     }
 
     public static Date createDate(int year, int month, int day) {

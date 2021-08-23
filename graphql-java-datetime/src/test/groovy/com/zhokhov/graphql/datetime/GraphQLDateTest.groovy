@@ -23,16 +23,21 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import static com.zhokhov.graphql.datetime.DateTimeHelper.createDate
+import static java.time.ZoneOffset.UTC
 
 /**
  * @author Alexey Zhokhov
  */
 class GraphQLDateTest extends Specification {
 
+    def setup() {
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    }
+
     @Unroll
     def "Date parse literal #literal.value as #result"() {
         expect:
-            new GraphQLDate().getCoercing().parseLiteral(literal) == result
+            new GraphqlDateCoercing().parseLiteral(literal) == result
 
         where:
             literal                                     | result
@@ -45,7 +50,7 @@ class GraphQLDateTest extends Specification {
     @Unroll
     def "Date parseLiteral throws exception for invalid #literal"() {
         when:
-            new GraphQLDate().getCoercing().parseLiteral(literal)
+            new GraphqlDateCoercing().parseLiteral(literal)
 
         then:
             thrown(CoercingParseLiteralException)
@@ -59,7 +64,7 @@ class GraphQLDateTest extends Specification {
     @Unroll
     def "Date serialize #value into #result (#result.class)"() {
         expect:
-            new GraphQLDate().getCoercing().serialize(value) == result
+            new GraphqlDateCoercing().serialize(value) == result
 
         where:
             value                                   | result
@@ -72,7 +77,7 @@ class GraphQLDateTest extends Specification {
     @Unroll
     def "serialize throws exception for invalid input #value"() {
         when:
-            new GraphQLDate().getCoercing().serialize(value)
+            new GraphqlDateCoercing().serialize(value)
         then:
             thrown(CoercingSerializeException)
 
@@ -86,7 +91,7 @@ class GraphQLDateTest extends Specification {
     @Unroll
     def "Date parse #value into #result (#result.class)"() {
         expect:
-            new GraphQLDate().getCoercing().parseValue(value) == result
+            new GraphqlDateCoercing().parseValue(value) == result
 
         where:
             value                      | result
@@ -99,7 +104,7 @@ class GraphQLDateTest extends Specification {
     @Unroll
     def "parseValue throws exception for invalid input #value"() {
         when:
-            new GraphQLDate().getCoercing().parseValue(value)
+            new GraphqlDateCoercing().parseValue(value)
         then:
             thrown(CoercingParseValueException)
 

@@ -24,15 +24,21 @@ import spock.lang.Unroll
 
 import java.time.YearMonth
 
+import static java.time.ZoneOffset.UTC
+
 /**
  * @author Alexey Zhokhov
  */
 class GraphQLYearMonthTest extends Specification {
 
+    def setup() {
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    }
+
     @Unroll
     def "YearMonth parse literal #literal.value as #result"() {
         expect:
-            new GraphQLYearMonth().getCoercing().parseLiteral(literal) == result
+            new GraphqlYearMonthCoercing().parseLiteral(literal) == result
 
         where:
             literal                                     | result
@@ -45,7 +51,7 @@ class GraphQLYearMonthTest extends Specification {
     @Unroll
     def "YearMonth parseLiteral throws exception for invalid #literal"() {
         when:
-            new GraphQLYearMonth().getCoercing().parseLiteral(literal)
+            new GraphqlYearMonthCoercing().parseLiteral(literal)
 
         then:
             thrown(CoercingParseLiteralException)
@@ -59,7 +65,7 @@ class GraphQLYearMonthTest extends Specification {
     @Unroll
     def "YearMonth serialize #value into #result (#result.class)"() {
         expect:
-            new GraphQLYearMonth().getCoercing().serialize(value) == result
+            new GraphqlYearMonthCoercing().serialize(value) == result
 
         where:
             value                 | result
@@ -69,7 +75,7 @@ class GraphQLYearMonthTest extends Specification {
     @Unroll
     def "serialize throws exception for invalid input #value"() {
         when:
-            new GraphQLYearMonth().getCoercing().serialize(value)
+            new GraphqlYearMonthCoercing().serialize(value)
         then:
             thrown(CoercingSerializeException)
 
@@ -83,7 +89,7 @@ class GraphQLYearMonthTest extends Specification {
     @Unroll
     def "YearMonth parse #value into #result (#result.class)"() {
         expect:
-            new GraphQLYearMonth().getCoercing().parseValue(value) == result
+            new GraphqlYearMonthCoercing().parseValue(value) == result
 
         where:
             value                      | result
@@ -96,7 +102,7 @@ class GraphQLYearMonthTest extends Specification {
     @Unroll
     def "parseValue throws exception for invalid input #value"() {
         when:
-            new GraphQLYearMonth().getCoercing().parseValue(value)
+            new GraphqlYearMonthCoercing().parseValue(value)
         then:
             thrown(CoercingParseValueException)
 

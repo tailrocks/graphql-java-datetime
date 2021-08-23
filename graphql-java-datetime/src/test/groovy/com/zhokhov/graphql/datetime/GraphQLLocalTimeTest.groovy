@@ -25,15 +25,21 @@ import spock.lang.Unroll
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
+import static java.time.ZoneOffset.UTC
+
 /**
  * @author Alexey Zhokhov
  */
 class GraphQLLocalTimeTest extends Specification {
 
+    def setup() {
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    }
+
     @Unroll
     def "LocalTime parse literal #literal.value as #result"() {
         expect:
-            new GraphQLLocalTime().getCoercing().parseLiteral(literal) == result
+            new GraphqlLocalTimeCoercing().parseLiteral(literal) == result
 
         where:
             literal                     | result
@@ -45,7 +51,7 @@ class GraphQLLocalTimeTest extends Specification {
     @Unroll
     def "LocalTime parseLiteral throws exception for invalid #literal"() {
         when:
-            new GraphQLLocalTime().getCoercing().parseLiteral(literal)
+            new GraphqlLocalTimeCoercing().parseLiteral(literal)
 
         then:
             thrown(CoercingParseLiteralException)
@@ -59,7 +65,7 @@ class GraphQLLocalTimeTest extends Specification {
     @Unroll
     def "LocalTime serialize #value into #result (#result.class)"() {
         expect:
-            new GraphQLLocalTime().getCoercing().serialize(value) == result
+            new GraphqlLocalTimeCoercing().serialize(value) == result
 
         where:
             value                                                              | result
@@ -72,7 +78,7 @@ class GraphQLLocalTimeTest extends Specification {
     @Unroll
     def "serialize throws exception for invalid input #value"() {
         when:
-            new GraphQLLocalTime().getCoercing().serialize(value)
+            new GraphqlLocalTimeCoercing().serialize(value)
         then:
             thrown(CoercingSerializeException)
 
@@ -86,7 +92,7 @@ class GraphQLLocalTimeTest extends Specification {
     @Unroll
     def "LocalTime parse #value into #result (#result.class)"() {
         expect:
-            new GraphQLLocalTime().getCoercing().parseValue(value) == result
+            new GraphqlLocalTimeCoercing().parseValue(value) == result
 
         where:
             value          | result
@@ -99,7 +105,7 @@ class GraphQLLocalTimeTest extends Specification {
     @Unroll
     def "parseValue throws exception for invalid input #value"() {
         when:
-            new GraphQLLocalTime().getCoercing().parseValue(value)
+            new GraphqlLocalTimeCoercing().parseValue(value)
         then:
             thrown(CoercingParseValueException)
 

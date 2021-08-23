@@ -21,9 +21,9 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
-
-import static com.zhokhov.graphql.datetime.DateTimeHelper.DATE_FORMATTERS;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Alexey Zhokhov
@@ -32,8 +32,16 @@ class LocalDateTimeConverter {
 
     private final boolean zoneConversionEnabled;
 
-    LocalDateTimeConverter(boolean zoneConversionEnabled) {
+    private final List<DateTimeFormatter> formatters = new CopyOnWriteArrayList<>();
+
+    LocalDateTimeConverter(boolean zoneConversionEnabled, DateTimeFormatter formatter) {
         this.zoneConversionEnabled = zoneConversionEnabled;
+
+        formatters.add(formatter);
+
+        formatters.add(DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC));
+        formatters.add(DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneOffset.UTC));
+        formatters.add(DateTimeFormatter.ISO_LOCAL_DATE.withZone(ZoneOffset.UTC));
     }
 
     String formatDate(LocalDate date, DateTimeFormatter formatter) {
@@ -52,7 +60,7 @@ class LocalDateTimeConverter {
 
     LocalDateTime parseDate(String date) {
         Objects.requireNonNull(date, "date");
-        for (DateTimeFormatter formatter : DATE_FORMATTERS) {
+        for (DateTimeFormatter formatter : formatters) {
             // try to parse as dateTime
             try {
                 LocalDateTime dateTime = LocalDateTime.parse(date, formatter);

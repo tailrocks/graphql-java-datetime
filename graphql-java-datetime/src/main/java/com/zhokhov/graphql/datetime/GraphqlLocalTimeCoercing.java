@@ -15,12 +15,12 @@
  */
 package com.zhokhov.graphql.datetime;
 
+import graphql.Internal;
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
-import graphql.schema.GraphQLScalarType;
 
 import java.time.LocalTime;
 import java.time.ZoneOffset;
@@ -30,63 +30,55 @@ import java.time.format.DateTimeParseException;
 /**
  * @author Alexey Zhokhov
  */
-public class GraphQLLocalTime extends GraphQLScalarType {
+@Internal
+public class GraphqlLocalTimeCoercing implements Coercing<LocalTime, String> {
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME.withZone(ZoneOffset.UTC);
-    private static final String DEFAULT_NAME = "LocalTime";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME.withZone(ZoneOffset.UTC);
 
-    public GraphQLLocalTime() {
-        this(DEFAULT_NAME);
+    private LocalTime convertImpl(Object input) {
+        if (input instanceof String) {
+            try {
+                return LocalTime.parse((String) input, FORMATTER);
+            } catch (DateTimeParseException ignored) {
+                // nothing to-do
+            }
+        } else if (input instanceof LocalTime) {
+            return (LocalTime) input;
+        }
+        return null;
     }
 
-    public GraphQLLocalTime(final String name) {
-        super(name, "Local Time type", new Coercing<LocalTime, String>() {
-            private LocalTime convertImpl(Object input) {
-                if (input instanceof String) {
-                    try {
-                        return LocalTime.parse((String) input, FORMATTER);
-                    } catch (DateTimeParseException ignored) {
-                        // nothing to-do
-                    }
-                } else if (input instanceof LocalTime) {
-                    return (LocalTime) input;
-                }
-                return null;
+    @Override
+    public String serialize(Object input) {
+        if (input instanceof LocalTime) {
+            return DateTimeHelper.toISOString((LocalTime) input);
+        } else {
+            LocalTime result = convertImpl(input);
+            if (result == null) {
+                throw new CoercingSerializeException("Invalid value '" + input + "' for LocalTime");
             }
+            return DateTimeHelper.toISOString(result);
+        }
+    }
 
-            @Override
-            public String serialize(Object input) {
-                if (input instanceof LocalTime) {
-                    return DateTimeHelper.toISOString((LocalTime) input);
-                } else {
-                    LocalTime result = convertImpl(input);
-                    if (result == null) {
-                        throw new CoercingSerializeException("Invalid value '" + input + "' for LocalTime");
-                    }
-                    return DateTimeHelper.toISOString(result);
-                }
-            }
+    @Override
+    public LocalTime parseValue(Object input) {
+        LocalTime result = convertImpl(input);
+        if (result == null) {
+            throw new CoercingParseValueException("Invalid value '" + input + "' for LocalTime");
+        }
+        return result;
+    }
 
-            @Override
-            public LocalTime parseValue(Object input) {
-                LocalTime result = convertImpl(input);
-                if (result == null) {
-                    throw new CoercingParseValueException("Invalid value '" + input + "' for LocalTime");
-                }
-                return result;
-            }
+    @Override
+    public LocalTime parseLiteral(Object input) {
+        String value = ((StringValue) input).getValue();
+        LocalTime result = convertImpl(value);
+        if (result == null) {
+            throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalTime");
+        }
 
-            @Override
-            public LocalTime parseLiteral(Object input) {
-                String value = ((StringValue) input).getValue();
-                LocalTime result = convertImpl(value);
-                if (result == null) {
-                    throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalTime");
-                }
-
-                return result;
-            }
-        });
+        return result;
     }
 
 }

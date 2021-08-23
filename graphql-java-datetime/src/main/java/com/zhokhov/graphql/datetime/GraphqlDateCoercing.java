@@ -15,75 +15,112 @@
  */
 package com.zhokhov.graphql.datetime;
 
+import graphql.Internal;
 import graphql.language.StringValue;
 import graphql.schema.Coercing;
 import graphql.schema.CoercingParseLiteralException;
 import graphql.schema.CoercingParseValueException;
 import graphql.schema.CoercingSerializeException;
-import graphql.schema.GraphQLScalarType;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Alexey Zhokhov
  */
-public class GraphQLDate extends GraphQLScalarType {
+@Internal
+public class GraphqlDateCoercing implements Coercing<Date, String> {
 
-    private static final String DEFAULT_NAME = "Date";
+    private final List<DateTimeFormatter> formatters = new CopyOnWriteArrayList<>();
 
-    public GraphQLDate() {
-        this(DEFAULT_NAME);
+    public GraphqlDateCoercing() {
+        this(Collections.emptyList());
     }
 
-    public GraphQLDate(final String name) {
-        super(name, "Date type", new Coercing<Date, String>() {
-            private Date convertImpl(Object input) {
-                if (input instanceof String) {
-                    LocalDateTime localDateTime = DateTimeHelper.parseDate((String) input);
+    public GraphqlDateCoercing(Collection<DateTimeFormatter> formatters) {
+        this.formatters.addAll(formatters);
 
-                    if (localDateTime != null) {
-                        return DateTimeHelper.toDate(localDateTime);
-                    }
-                } else if (input instanceof Date) {
-                    return (Date) input;
-                }
-                return null;
+        initBasicFormatters();
+    }
+
+    private void initBasicFormatters() {
+        formatters.add(DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC));
+        formatters.add(DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneOffset.UTC));
+        formatters.add(DateTimeFormatter.ISO_LOCAL_DATE.withZone(ZoneOffset.UTC));
+    }
+
+    private Date convertImpl(Object input) {
+        if (input instanceof String) {
+            LocalDateTime localDateTime = parseDate((String) input);
+
+            if (localDateTime != null) {
+                return DateTimeHelper.toDate(localDateTime);
             }
+        } else if (input instanceof Date) {
+            return (Date) input;
+        }
+        return null;
+    }
 
-            @Override
-            public String serialize(Object input) {
-                if (input instanceof Date) {
-                    return DateTimeHelper.toISOString((Date) input);
+    @Override
+    public String serialize(Object input) {
+        if (input instanceof Date) {
+            return DateTimeHelper.toISOString((Date) input);
+        } else {
+            Date result = convertImpl(input);
+            if (result == null) {
+                throw new CoercingSerializeException("Invalid value '" + input + "' for Date");
+            }
+            return DateTimeHelper.toISOString(result);
+        }
+    }
+
+    @Override
+    public Date parseValue(Object input) {
+        Date result = convertImpl(input);
+        if (result == null) {
+            throw new CoercingParseValueException("Invalid value '" + input + "' for Date");
+        }
+        return result;
+    }
+
+    @Override
+    public Date parseLiteral(Object input) {
+        String value = ((StringValue) input).getValue();
+        Date result = convertImpl(value);
+        if (result == null) {
+            throw new CoercingParseLiteralException("Invalid value '" + input + "' for Date");
+        }
+
+        return result;
+    }
+
+    private LocalDateTime parseDate(String date) {
+        Objects.requireNonNull(date, "date");
+
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                // equals ISO_LOCAL_DATE
+                if (formatter.equals(formatters.get(2))) {
+                    LocalDate localDate = LocalDate.parse(date, formatter);
+
+                    return localDate.atStartOfDay();
                 } else {
-                    Date result = convertImpl(input);
-                    if (result == null) {
-                        throw new CoercingSerializeException("Invalid value '" + input + "' for Date");
-                    }
-                    return DateTimeHelper.toISOString(result);
+                    return LocalDateTime.parse(date, formatter);
                 }
+            } catch (java.time.format.DateTimeParseException ignored) {
             }
+        }
 
-            @Override
-            public Date parseValue(Object input) {
-                Date result = convertImpl(input);
-                if (result == null) {
-                    throw new CoercingParseValueException("Invalid value '" + input + "' for Date");
-                }
-                return result;
-            }
-
-            @Override
-            public Date parseLiteral(Object input) {
-                String value = ((StringValue) input).getValue();
-                Date result = convertImpl(value);
-                if (result == null) {
-                    throw new CoercingParseLiteralException("Invalid value '" + input + "' for Date");
-                }
-
-                return result;
-            }
-        });
+        return null;
     }
 
 }

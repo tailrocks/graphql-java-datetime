@@ -26,15 +26,22 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
+import static java.time.ZoneOffset.UTC
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
+
 /**
  * @author Alexey Zhokhov
  */
 class GraphQLLocalDateTest extends Specification {
 
+    def setup() {
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    }
+
     @Unroll
     def "LocalDate parse literal #literal.value as #result"() {
         expect:
-            new GraphQLLocalDate().getCoercing().parseLiteral(literal) == result
+            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal) == result
 
         where:
             literal                       | result
@@ -44,7 +51,7 @@ class GraphQLLocalDateTest extends Specification {
     @Unroll
     def "LocalDate parseLiteral throws exception for invalid #literal"() {
         when:
-            new GraphQLLocalDate().getCoercing().parseLiteral(literal)
+            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal)
 
         then:
             thrown(CoercingParseLiteralException)
@@ -58,7 +65,7 @@ class GraphQLLocalDateTest extends Specification {
     @Unroll
     def "LocalDate serialize #value into #result (#result.class)"() {
         expect:
-            new GraphQLLocalDate().getCoercing().serialize(value) == result
+            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).serialize(value) == result
 
         where:
             value                    | result
@@ -68,7 +75,7 @@ class GraphQLLocalDateTest extends Specification {
     @Unroll
     def "serialize throws exception for invalid input #value"() {
         when:
-            new GraphQLLocalDate().getCoercing().serialize(value)
+            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).serialize(value)
         then:
             thrown(CoercingSerializeException)
 
@@ -82,7 +89,7 @@ class GraphQLLocalDateTest extends Specification {
     @Unroll
     def "LocalDate parse #value into #result (#result.class)"() {
         expect:
-            new GraphQLLocalDate().getCoercing().parseValue(value) == result
+            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseValue(value) == result
 
         where:
             value        | result
@@ -95,7 +102,7 @@ class GraphQLLocalDateTest extends Specification {
             TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(2)))
 
         then:
-            new GraphQLLocalDate(true).getCoercing().parseValue(value) == result
+            new GraphqlLocalDateCoercing(true, ISO_LOCAL_DATE).parseValue(value) == result
 
         where:
             value                  | result
@@ -106,7 +113,7 @@ class GraphQLLocalDateTest extends Specification {
     @Unroll
     def "parseValue throws exception for invalid input #value"() {
         when:
-            new GraphQLLocalDate().getCoercing().parseValue(value)
+            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseValue(value)
         then:
             thrown(CoercingParseValueException)
 
@@ -123,7 +130,7 @@ class GraphQLLocalDateTest extends Specification {
             def formatter = DateTimeFormatter.ofPattern('MM/dd/yyyy')
 
         expect:
-            new GraphQLLocalDate(null, false, formatter).getCoercing().parseValue(value) == result
+            new GraphqlLocalDateCoercing(false, formatter).parseValue(value) == result
 
         where:
             value        | result
@@ -136,7 +143,7 @@ class GraphQLLocalDateTest extends Specification {
             def formatter = DateTimeFormatter.ofPattern('MM/dd/yyyy')
 
         expect:
-            new GraphQLLocalDate(null, false, formatter).getCoercing().serialize(value) == result
+            new GraphqlLocalDateCoercing(false, formatter).serialize(value) == result
 
         where:
             value                    | result
