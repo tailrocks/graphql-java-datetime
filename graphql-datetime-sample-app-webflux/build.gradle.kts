@@ -8,8 +8,7 @@ dependencies {
     implementation(project(":graphql-datetime-spring-boot-starter-webflux"))
 
     implementation("org.springframework.boot:spring-boot-starter-webflux:${Versions.springBoot}")
-    implementation("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-webflux:${Versions.graphQlSpringBoot}")
-    implementation("com.graphql-java-kickstart:graphql-kickstart-spring-boot-starter-tools:${Versions.graphQlSpringBoot}")
+    implementation("com.graphql-java-kickstart:graphql-spring-boot-starter:${Versions.graphQlSpringBoot}")
     implementation("io.projectreactor:reactor-core:${Versions.reactorCore}")
 
     testImplementation("org.codehaus.groovy:groovy-all:${Versions.groovy}")

@@ -18,12 +18,8 @@ package com.zhokhov.graphql.datetime.boot.test;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zhokhov.graphql.datetime.GraphQLDate;
-import com.zhokhov.graphql.datetime.GraphQLLocalDate;
-import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
-import com.zhokhov.graphql.datetime.GraphQLLocalTime;
-import com.zhokhov.graphql.datetime.GraphQLOffsetDateTime;
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
+import graphql.schema.GraphQLScalarType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigRegistry;
@@ -61,11 +57,11 @@ public class ContextHelper {
     static class BaseConfiguration {
 
         // initialize date time types here
-        @Autowired(required = false) GraphQLDate graphQLDate;
-        @Autowired(required = false) GraphQLLocalDate graphQLLocalDate;
-        @Autowired(required = false) GraphQLLocalDateTime graphQLLocalDateTime;
-        @Autowired(required = false) GraphQLLocalTime graphQLLocalTime;
-        @Autowired(required = false) GraphQLOffsetDateTime graphQLOffsetDateTime;
+        @Autowired(required = false) GraphQLScalarType graphQLDate;
+        @Autowired(required = false) GraphQLScalarType graphQLLocalDate;
+        @Autowired(required = false) GraphQLScalarType graphQLLocalDateTime;
+        @Autowired(required = false) GraphQLScalarType graphQLLocalTime;
+        @Autowired(required = false) GraphQLScalarType graphQLOffsetDateTime;
 
         @Bean
         public ObjectMapper objectMapper() {

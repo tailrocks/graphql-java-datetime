@@ -15,11 +15,6 @@
  */
 package com.zhokhov.graphql.datetime.boot.test
 
-import com.zhokhov.graphql.datetime.GraphQLDate
-import com.zhokhov.graphql.datetime.GraphQLLocalDate
-import com.zhokhov.graphql.datetime.GraphQLLocalDateTime
-import com.zhokhov.graphql.datetime.GraphQLLocalTime
-import com.zhokhov.graphql.datetime.GraphQLOffsetDateTime
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema
 import org.springframework.context.support.AbstractApplicationContext
@@ -62,11 +57,12 @@ class GraphQLDateTimeAutoConfigurationSpec extends Specification {
 
         then:
             context.getBean(GraphQLSchema.class)
-            context.getBean(GraphQLDate.class)
-            context.getBean(GraphQLLocalDate.class)
-            context.getBean(GraphQLLocalDateTime.class)
-            context.getBean(GraphQLLocalTime.class)
-            context.getBean(GraphQLOffsetDateTime.class)
+
+            context.getBean("graphQLDate")
+            context.getBean("graphQLLocalDate")
+            context.getBean("graphQLLocalDateTime")
+            context.getBean("graphQLLocalTime")
+            context.getBean("graphQLOffsetDateTime")
 
         when:
             GraphQL graphQL = GraphQL.newGraphQL(context.getBean(GraphQLSchema.class)).build()

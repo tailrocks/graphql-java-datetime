@@ -15,14 +15,15 @@
  */
 package com.zhokhov.graphql.datetime.boot;
 
-import com.zhokhov.graphql.datetime.GraphQLDate;
-import com.zhokhov.graphql.datetime.GraphQLDuration;
-import com.zhokhov.graphql.datetime.GraphQLLocalDate;
-import com.zhokhov.graphql.datetime.GraphQLLocalDateTime;
-import com.zhokhov.graphql.datetime.GraphQLLocalTime;
-import com.zhokhov.graphql.datetime.GraphQLOffsetDateTime;
-import com.zhokhov.graphql.datetime.GraphQLYearMonth;
-import graphql.kickstart.tools.boot.GraphQLJavaToolsAutoConfiguration;
+import com.zhokhov.graphql.datetime.DateScalar;
+import com.zhokhov.graphql.datetime.DurationScalar;
+import com.zhokhov.graphql.datetime.LocalDateScalar;
+import com.zhokhov.graphql.datetime.LocalDateTimeScalar;
+import com.zhokhov.graphql.datetime.LocalTimeScalar;
+import com.zhokhov.graphql.datetime.OffsetDateTimeScalar;
+import com.zhokhov.graphql.datetime.YearMonthScalar;
+import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
+import graphql.schema.GraphQLScalarType;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -41,83 +42,61 @@ public class GraphQLDateTimeAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLDate graphQLDate(GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLScalarType graphQLDate(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getDate().getScalarName();
-        if (name == null) {
-            return new GraphQLDate();
-        } else {
-            return new GraphQLDate(name);
-        }
+        return DateScalar.create(name);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLLocalDate graphQLLocalDate(GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLScalarType graphQLLocalDate(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDate().getScalarName();
         final String format = configurationProperties.getLocalDate().getFormat();
-        if (format != null) {
-            return new GraphQLLocalDate(name, configurationProperties.isZoneConversionEnabled(),
-                    DateTimeFormatter.ofPattern(format));
-        } else {
-            return new GraphQLLocalDate(name, configurationProperties.isZoneConversionEnabled());
-        }
+        return LocalDateScalar.create(
+                name,
+                configurationProperties.isZoneConversionEnabled(),
+                format != null ? DateTimeFormatter.ofPattern(format) : null
+        );
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLLocalDateTime graphQLLocalDateTime(GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLScalarType graphQLLocalDateTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDateTime().getScalarName();
         final String format = configurationProperties.getLocalDateTime().getFormat();
-        if (format != null) {
-            return new GraphQLLocalDateTime(name, configurationProperties.isZoneConversionEnabled(),
-                    DateTimeFormatter.ofPattern(format));
-        } else {
-            return new GraphQLLocalDateTime(name, configurationProperties.isZoneConversionEnabled());
-        }
+        return LocalDateTimeScalar.create(
+                name,
+                configurationProperties.isZoneConversionEnabled(),
+                format != null ? DateTimeFormatter.ofPattern(format) : null
+        );
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLLocalTime graphQLLocalTime(GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLScalarType graphQLLocalTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalTime().getScalarName();
-        if (name == null) {
-            return new GraphQLLocalTime();
-        } else {
-            return new GraphQLLocalTime(name);
-        }
+        return LocalTimeScalar.create(name);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLOffsetDateTime graphQLOffsetDateTime(GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLScalarType graphQLOffsetDateTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getOffsetDateTime().getScalarName();
-        if (name == null) {
-            return new GraphQLOffsetDateTime();
-        } else {
-            return new GraphQLOffsetDateTime(name);
-        }
+        return OffsetDateTimeScalar.create(name);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLYearMonth graphQLYearMonth(GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLScalarType graphQLYearMonth(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getYearMonth().getScalarName();
-        if (name == null) {
-            return new GraphQLYearMonth();
-        } else {
-            return new GraphQLYearMonth(name);
-        }
+        return YearMonthScalar.create(name);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public GraphQLDuration graphQLDuration(GraphQLDateTimeProperties configurationProperties) {
+    public GraphQLScalarType graphQLDuration(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getDuration().getScalarName();
-        if (name == null) {
-            return new GraphQLDuration();
-        } else {
-            return new GraphQLDuration(name);
-        }
+        return DurationScalar.create(name);
     }
 
 }
