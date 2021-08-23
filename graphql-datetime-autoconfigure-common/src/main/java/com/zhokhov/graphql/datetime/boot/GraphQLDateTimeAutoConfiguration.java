@@ -35,7 +35,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * @author Alexey Zhokhov
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore({GraphQLJavaToolsAutoConfiguration.class})
 @EnableConfigurationProperties(GraphQLDateTimeProperties.class)
 public class GraphQLDateTimeAutoConfiguration {

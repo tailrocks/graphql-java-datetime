@@ -25,7 +25,7 @@ object Versions {
     // Libraries
 
     const val junit = "5.7.2"
-    const val springBoot = "2.5.3"
+    const val springBoot = "2.5.4"
     const val graphQlSpringBoot = "12.0.0-SNAPSHOT"
     const val spock = "2.0-groovy-3.0"
     const val graphqlJava = "17.1"

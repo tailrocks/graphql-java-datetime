@@ -23,8 +23,6 @@ import java.time.format.DateTimeFormatter;
 @PublicApi
 public final class LocalDateTimeScalar {
 
-    private static final String DEFAULT_NAME = "LocalDateTime";
-
     private LocalDateTimeScalar() {
     }
 
