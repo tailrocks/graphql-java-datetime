@@ -40,14 +40,14 @@ import java.time.format.DateTimeFormatter;
 @EnableConfigurationProperties(GraphQLDateTimeProperties.class)
 public class GraphQLDateTimeAutoConfiguration {
 
-    @Bean
+    @Bean(name = "graphQLDate")
     @ConditionalOnMissingBean(name = "graphQLDate")
     public GraphQLScalarType graphQLDate(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getDate().getScalarName();
         return DateScalar.create(name);
     }
 
-    @Bean
+    @Bean(name = "graphQLLocalDate")
     @ConditionalOnMissingBean(name = "graphQLLocalDate")
     public GraphQLScalarType graphQLLocalDate(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDate().getScalarName();
@@ -59,7 +59,7 @@ public class GraphQLDateTimeAutoConfiguration {
         );
     }
 
-    @Bean
+    @Bean(name = "graphQLLocalDateTime")
     @ConditionalOnMissingBean(name = "graphQLLocalDateTime")
     public GraphQLScalarType graphQLLocalDateTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalDateTime().getScalarName();
@@ -71,28 +71,28 @@ public class GraphQLDateTimeAutoConfiguration {
         );
     }
 
-    @Bean
+    @Bean(name = "graphQLLocalTime")
     @ConditionalOnMissingBean(name = "graphQLLocalTime")
     public GraphQLScalarType graphQLLocalTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getLocalTime().getScalarName();
         return LocalTimeScalar.create(name);
     }
 
-    @Bean
+    @Bean(name = "graphQLOffsetDateTime")
     @ConditionalOnMissingBean(name = "graphQLOffsetDateTime")
     public GraphQLScalarType graphQLOffsetDateTime(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getOffsetDateTime().getScalarName();
         return OffsetDateTimeScalar.create(name);
     }
 
-    @Bean
+    @Bean(name = "graphQLYearMonth")
     @ConditionalOnMissingBean(name = "graphQLYearMonth")
     public GraphQLScalarType graphQLYearMonth(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getYearMonth().getScalarName();
         return YearMonthScalar.create(name);
     }
 
-    @Bean
+    @Bean(name = "graphQLDuration")
     @ConditionalOnMissingBean(name = "graphQLDuration")
     public GraphQLScalarType graphQLDuration(GraphQLDateTimeProperties configurationProperties) {
         final String name = configurationProperties.getDuration().getScalarName();
