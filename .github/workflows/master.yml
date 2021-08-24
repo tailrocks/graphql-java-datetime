@@ -27,3 +27,8 @@ jobs:
         run: ./gradlew spotlessCheck
       - name: Test
         run: ./gradlew test
+      - name: Publish to Sonatype OSSRH
+        run: ./publish-sonatype.sh
+        env:
+          OSSRH_USER: ${{ secrets.OSSRH_USER }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
