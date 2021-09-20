@@ -3,7 +3,7 @@ object Versions {
     // Languages
 
     const val kotlin = "1.5.21"
-    const val groovy = "3.0.8"
+    const val groovy = "3.0.9"
 
     // Gradle plugins
 
@@ -19,7 +19,7 @@ object Versions {
     const val springBoot = "2.5.4"
     const val graphQlSpringBoot = "12.0.0"
     const val spock = "2.0-groovy-3.0"
-    const val graphqlJava = "17.1"
-    const val reactorCore = "3.4.9"
+    const val graphqlJava = "17.3"
+    const val reactorCore = "3.4.10"
 
 }
