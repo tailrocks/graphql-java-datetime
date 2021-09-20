@@ -1,7 +1,7 @@
 plugins {
     groovy
-    id("io.spring.dependency-management") version Versions.gradleSpringDependencyManagementPlugin
-    id("org.springframework.boot") version Versions.springBoot
+    id("spring-conventions")
+    id("com.adarshr.test-logger")
 }
 
 dependencies {

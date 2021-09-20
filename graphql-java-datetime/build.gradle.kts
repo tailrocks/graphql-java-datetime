@@ -1,6 +1,8 @@
 plugins {
-    `java-library`
     groovy
+    id("maven-publish-conventions")
+    id("signing-conventions")
+    id("com.adarshr.test-logger")
 }
 
 dependencies {
@@ -8,4 +10,12 @@ dependencies {
 
     testImplementation("org.codehaus.groovy:groovy-all:${Versions.groovy}")
     testImplementation("org.spockframework:spock-core:${Versions.spock}")
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    javaCompiler.set(
+        javaToolchains.compilerFor {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    )
 }

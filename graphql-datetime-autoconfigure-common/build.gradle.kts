@@ -1,6 +1,8 @@
 plugins {
     groovy
-    `java-library`
+    id("com.adarshr.test-logger")
+    id("maven-publish-conventions")
+    id("signing-conventions")
 }
 
 dependencies {
@@ -15,4 +17,12 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-test:${Versions.springBoot}")
     testImplementation("org.spockframework:spock-spring:${Versions.spock}")
     testImplementation("com.graphql-java-kickstart:graphql-spring-boot-starter:${Versions.graphQlSpringBoot}")
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    javaCompiler.set(
+        javaToolchains.compilerFor {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    )
 }
