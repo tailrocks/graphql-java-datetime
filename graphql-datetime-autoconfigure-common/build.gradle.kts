@@ -5,6 +5,11 @@ plugins {
     id("signing-conventions")
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 dependencies {
     api(project(":graphql-java-datetime"))
     api("com.graphql-java-kickstart:graphql-spring-boot-autoconfigure:${Versions.graphQlSpringBoot}")

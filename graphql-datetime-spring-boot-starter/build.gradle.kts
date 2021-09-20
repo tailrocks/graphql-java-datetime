@@ -3,6 +3,11 @@ plugins {
     id("signing-conventions")
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 dependencies {
     api(project(":graphql-datetime-autoconfigure"))
 }

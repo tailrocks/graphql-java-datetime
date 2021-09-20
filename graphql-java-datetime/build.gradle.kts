@@ -5,6 +5,11 @@ plugins {
     id("com.adarshr.test-logger")
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 dependencies {
     api("com.graphql-java:graphql-java:${Versions.graphqlJava}")
 
