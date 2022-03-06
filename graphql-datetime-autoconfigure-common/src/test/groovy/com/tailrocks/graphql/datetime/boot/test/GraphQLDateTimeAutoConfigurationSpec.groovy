@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.zhokhov.graphql.datetime.boot.test
+package com.tailrocks.graphql.datetime.boot.test
 
 import graphql.GraphQL
 import graphql.schema.GraphQLSchema

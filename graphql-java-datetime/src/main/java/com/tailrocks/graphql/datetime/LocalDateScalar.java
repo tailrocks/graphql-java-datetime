@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zhokhov.graphql.datetime;
+package com.tailrocks.graphql.datetime;
 
 import graphql.PublicApi;
 import graphql.schema.GraphQLScalarType;
@@ -30,7 +30,12 @@ public final class LocalDateScalar {
         return GraphQLScalarType.newScalar()
                 .name(name != null ? name : "LocalDate")
                 .description("Local Date type")
-                .coercing(new GraphqlLocalDateCoercing(zoneConversionEnabled, formatter != null ? formatter : DateTimeFormatter.ISO_LOCAL_DATE))
+                .coercing(
+                        new GraphqlLocalDateCoercing(
+                                zoneConversionEnabled,
+                                formatter != null ? formatter : DateTimeFormatter.ISO_LOCAL_DATE
+                        )
+                )
                 .build();
     }
 

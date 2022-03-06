@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.zhokhov.graphql.datetime.boot.test
+package com.tailrocks.graphql.datetime.boot.test
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.commons.lang3.StringEscapeUtils
@@ -35,7 +35,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 /**
  * @author Alexey Zhokhov
  */
-@ComponentScan(basePackages = "com.zhokhov.graphql.datetime")
+@ComponentScan(basePackages = "com.tailrocks.graphql.datetime")
 @EnableAutoConfiguration
 @SpringBootTest(classes = GraphQLServletSpec, webEnvironment = RANDOM_PORT)
 class GraphQLServletSpec extends Specification {

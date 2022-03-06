@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zhokhov.graphql.datetime;
+package com.tailrocks.graphql.datetime;
 
 import graphql.Internal;
 import graphql.language.StringValue;
@@ -58,7 +58,9 @@ public class GraphqlYearMonthCoercing implements Coercing<YearMonth, String> {
         } else {
             YearMonth result = convertImpl(input);
             if (result == null) {
-                throw new CoercingSerializeException("Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
+                throw new CoercingSerializeException(
+                        "Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM"
+                );
             }
             return result.toString();
         }
@@ -68,7 +70,9 @@ public class GraphqlYearMonthCoercing implements Coercing<YearMonth, String> {
     public YearMonth parseValue(Object input) {
         YearMonth result = convertImpl(input);
         if (result == null) {
-            throw new CoercingParseValueException("Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
+            throw new CoercingParseValueException(
+                    "Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM"
+            );
         }
         return result;
     }
@@ -78,7 +82,9 @@ public class GraphqlYearMonthCoercing implements Coercing<YearMonth, String> {
         String value = ((StringValue) input).getValue();
         YearMonth result = convertImpl(value);
         if (result == null) {
-            throw new CoercingParseLiteralException("Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM");
+            throw new CoercingParseLiteralException(
+                    "Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM"
+            );
         }
 
         return result;

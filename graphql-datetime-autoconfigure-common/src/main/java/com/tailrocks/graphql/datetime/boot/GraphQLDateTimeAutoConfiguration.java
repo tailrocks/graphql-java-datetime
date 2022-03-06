@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zhokhov.graphql.datetime.boot;
+package com.tailrocks.graphql.datetime.boot;
 
-import com.zhokhov.graphql.datetime.DateScalar;
-import com.zhokhov.graphql.datetime.DurationScalar;
-import com.zhokhov.graphql.datetime.LocalDateScalar;
-import com.zhokhov.graphql.datetime.LocalDateTimeScalar;
-import com.zhokhov.graphql.datetime.LocalTimeScalar;
-import com.zhokhov.graphql.datetime.OffsetDateTimeScalar;
-import com.zhokhov.graphql.datetime.YearMonthScalar;
+import com.tailrocks.graphql.datetime.DateScalar;
+import com.tailrocks.graphql.datetime.DurationScalar;
+import com.tailrocks.graphql.datetime.LocalDateScalar;
+import com.tailrocks.graphql.datetime.LocalDateTimeScalar;
+import com.tailrocks.graphql.datetime.LocalTimeScalar;
+import com.tailrocks.graphql.datetime.OffsetDateTimeScalar;
+import com.tailrocks.graphql.datetime.YearMonthScalar;
 import graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration;
 import graphql.schema.GraphQLScalarType;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;

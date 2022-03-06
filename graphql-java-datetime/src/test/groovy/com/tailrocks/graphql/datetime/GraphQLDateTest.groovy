@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.zhokhov.graphql.datetime
+package com.tailrocks.graphql.datetime
 
 import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
@@ -22,7 +22,7 @@ import graphql.schema.CoercingSerializeException
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import static com.zhokhov.graphql.datetime.DateTimeHelper.createDate
+import static com.tailrocks.graphql.datetime.DateTimeHelper.createDate
 import static java.time.ZoneOffset.UTC
 
 /**

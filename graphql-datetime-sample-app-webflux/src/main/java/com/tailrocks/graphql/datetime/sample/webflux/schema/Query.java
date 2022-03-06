@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zhokhov.graphql.datetime.sample.webflux.schema;
+package com.tailrocks.graphql.datetime.sample.webflux.schema;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
@@ -26,13 +26,12 @@ import java.time.Month;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
 public class Query implements GraphQLQueryResolver {
 
-    private static String[] TITLES = new String[]{
+    private static final String[] TITLES = new String[]{
             "Daoguang Emperor",
             "Xianfeng Emperor",
             "Tongzhi Emperor",
@@ -40,7 +39,7 @@ public class Query implements GraphQLQueryResolver {
             "Xuantong Emperor"
     };
 
-    private static String[] NAMES = new String[]{
+    private static final String[] NAMES = new String[]{
             "旻寧",
             "奕詝",
             "載淳",
@@ -48,7 +47,7 @@ public class Query implements GraphQLQueryResolver {
             "溥儀"
     };
 
-    private static LocalDate[] REIGN_STARTS = new LocalDate[]{
+    private static final LocalDate[] REIGN_STARTS = new LocalDate[]{
             LocalDate.of(1820, Month.OCTOBER, 3),
             LocalDate.of(1850, Month.MARCH, 9),
             LocalDate.of(1861, Month.NOVEMBER, 11),
@@ -56,7 +55,7 @@ public class Query implements GraphQLQueryResolver {
             LocalDate.of(1908, Month.NOVEMBER, 14)
     };
 
-    private static LocalDate[] REIGN_STOP = new LocalDate[]{
+    private static final LocalDate[] REIGN_STOP = new LocalDate[]{
             LocalDate.of(1850, Month.FEBRUARY, 25),
             LocalDate.of(1861, Month.AUGUST, 22),
             LocalDate.of(1875, Month.JANUARY, 12),
@@ -67,7 +66,7 @@ public class Query implements GraphQLQueryResolver {
     public CompletableFuture<List<EmperorType>> getEmperors() {
         List<EmperorType> result = IntStream.range(0, NAMES.length)
                 .mapToObj(i -> new EmperorType(NAMES[i], TITLES[i], REIGN_STARTS[i], REIGN_STOP[i]))
-                .collect(Collectors.toList());
+                .toList();
         return Mono.just(result).toFuture();
     }
 

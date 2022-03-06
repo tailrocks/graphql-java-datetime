@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.zhokhov.graphql.datetime.boot.test;
+package com.tailrocks.graphql.datetime.boot.test;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -53,7 +53,7 @@ public class ContextHelper {
     }
 
     @Configuration
-    @ComponentScan("com.zhokhov.graphql.datetime.boot")
+    @ComponentScan("com.tailrocks.graphql.datetime.boot")
     static class BaseConfiguration {
 
         // initialize date time types here
