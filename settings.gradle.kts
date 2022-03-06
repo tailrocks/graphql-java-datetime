@@ -22,14 +22,14 @@ rootProject.name = "graphql-java-datetime"
 
 include(
     // libraries
-    ":graphql-datetime-autoconfigure",
-    ":graphql-datetime-autoconfigure-common",
-    ":graphql-datetime-autoconfigure-webflux",
-    ":graphql-datetime-spring-boot-starter",
-    ":graphql-datetime-spring-boot-starter-webflux",
+    ":graphql-datetime-kickstart-autoconfigure",
+    ":graphql-datetime-kickstart-autoconfigure-common",
+    ":graphql-datetime-kickstart-autoconfigure-webflux",
+    ":graphql-datetime-kickstart-spring-boot-starter",
+    ":graphql-datetime-kickstart-spring-boot-starter-webflux",
     ":graphql-java-datetime",
 
     // apps
-    ":graphql-datetime-sample-app",
-    ":graphql-datetime-sample-app-webflux"
+    ":graphql-datetime-kickstart-sample-app",
+    ":graphql-datetime-kickstart-sample-app-webflux"
 )
