@@ -1,9 +1,9 @@
-# graphql-java-datetime &middot; [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/donbeave/graphql-java-datetime/blob/master/LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/donbeave/graphql-java-datetime/pulls)
+# graphql-java-datetime &middot; [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/tailrocks/graphql-java-datetime/blob/master/LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tailrocks/graphql-java-datetime/pulls)
 
 GraphQL ISO Date is a set of RFC 3339 compliant date/time scalar types to be used with
 [graphql-java](https://github.com/graphql-java/graphql-java).
 
-[![Build Status](https://travis-ci.org/donbeave/graphql-java-datetime.svg?branch=master)](https://travis-ci.org/donbeave/graphql-java-datetime)
+[![Build Status](https://travis-ci.org/tailrocks/graphql-java-datetime.svg?branch=master)](https://travis-ci.org/tailrocks/graphql-java-datetime)
 
 # Summary
 
@@ -58,8 +58,8 @@ for **Spring MVC**:
 ```xml
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
-    <artifactId>graphql-datetime-spring-boot-starter</artifactId>
-    <version>4.1.0</version>
+    <artifactId>graphql-datetime-kickstart-spring-boot-starter</artifactId>
+    <version>5.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -70,8 +70,8 @@ for **Spring WebFlux**:
 ```xml
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
-    <artifactId>graphql-datetime-spring-boot-starter-webflux</artifactId>
-    <version>4.1.0</version>
+    <artifactId>graphql-datetime-kickstart-spring-boot-starter-webflux</artifactId>
+    <version>5.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -82,7 +82,7 @@ Add folowing to your `build.gradle`:
 for **Spring MVC**:
 
 ```groovy
-implementation("com.tailrocks.graphql:graphql-datetime-spring-boot-starter:4.1.0")
+implementation("com.tailrocks.graphql:graphql-datetime-kickstart-spring-boot-starter:5.0.0-SNAPSHOT")
 ```
 
 or
@@ -90,7 +90,7 @@ or
 for **Spring WebFlux**:
 
 ```groovy
-implementation("com.tailrocks.graphql:graphql-datetime-spring-boot-starter-webflux:4.1.0")
+implementation("com.tailrocks.graphql:graphql-datetime-kickstart-spring-boot-starter-webflux:5.0.0-SNAPSHOT")
 ```
 
 ### Scalars
@@ -178,18 +178,18 @@ spring:
 
 Now you can use these scalars in your application. Here is graphql-datetime spring boot sample applications:
 
-- mvc: [graphql-datetime-sample-app](graphql-datetime-sample-app/)
-- weblux: [graphql-datetime-sample-app-webflux](graphql-datetime-sample-app-webflux/)
+- mvc: [graphql-datetime-kickstart-sample-app](graphql-datetime-kickstart-sample-app/)
+- weblux: [graphql-datetime-kickstart-sample-app-webflux](graphql-datetime-kickstart-sample-app-webflux/)
 
 ## Bugs
 
-To report any bug, please use the project [Issues](https://github.com/donbeave/graphql-java-datetime/issues/new) section
+To report any bug, please use the project [Issues](https://github.com/tailrocks/graphql-java-datetime/issues/new) section
 on GitHub.
 
 ## Contributing
 
 Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits,
-and [open a pull request](https://github.com/donbeave/graphql-java-datetime/compare/).
+and [open a pull request](https://github.com/tailrocks/graphql-java-datetime/compare/).
 
 ## License
 
