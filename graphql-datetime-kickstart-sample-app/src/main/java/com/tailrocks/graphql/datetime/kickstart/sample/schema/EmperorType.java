@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tailrocks.graphql.datetime.sample.schema;
+package com.tailrocks.graphql.datetime.kickstart.sample.schema;
 
 import java.time.LocalDate;
 
@@ -22,15 +22,17 @@ import java.time.LocalDate;
  */
 public class EmperorType {
 
-    private String givenName;
-    private String title;
-    private LocalDate reignStart;
-    private LocalDate reignStop;
+    private final String givenName;
+    private final String title;
+    private final LocalDate reignStart;
+    private final LocalDate reignStop;
 
-    public EmperorType(String givenName,
-                       String title,
-                       LocalDate reignStart,
-                       LocalDate reignStop) {
+    public EmperorType(
+            String givenName,
+            String title,
+            LocalDate reignStart,
+            LocalDate reignStop
+    ) {
         this.givenName = givenName;
         this.title = title;
         this.reignStart = reignStart;

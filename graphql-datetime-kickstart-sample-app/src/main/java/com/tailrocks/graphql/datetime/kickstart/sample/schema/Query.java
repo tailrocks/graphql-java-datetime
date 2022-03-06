@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tailrocks.graphql.datetime.sample.schema;
+package com.tailrocks.graphql.datetime.kickstart.sample.schema;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;

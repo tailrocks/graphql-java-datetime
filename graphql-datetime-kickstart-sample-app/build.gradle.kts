@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":graphql-datetime-spring-boot-starter"))
+    implementation(project(":graphql-datetime-kickstart-spring-boot-starter"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.graphql-java-kickstart:graphql-spring-boot-starter:${Versions.graphQlSpringBoot}")

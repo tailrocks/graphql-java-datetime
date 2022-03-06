@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":graphql-datetime-spring-boot-starter-webflux"))
+    implementation(project(":graphql-datetime-kickstart-spring-boot-starter-webflux"))
 
     implementation("org.springframework.boot:spring-boot-starter-webflux:${Versions.springBoot}")
     implementation("com.graphql-java-kickstart:graphql-spring-boot-starter:${Versions.graphQlSpringBoot}")

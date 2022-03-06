@@ -9,7 +9,7 @@ java {
 }
 
 dependencies {
-    api(project(":graphql-datetime-autoconfigure"))
+    api(project(":graphql-datetime-kickstart-autoconfigure"))
 }
 
 java {
