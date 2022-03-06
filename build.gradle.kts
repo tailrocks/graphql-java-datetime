@@ -2,11 +2,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-    id("com.adarshr.test-logger") version Versions.gradleTestLoggerPlugin apply false
-    id("io.github.gradle-nexus.publish-plugin") version Versions.gradleNexusPublishPlugin
-    kotlin("jvm") version Versions.kotlin apply false
-    kotlin("kapt") version Versions.kotlin apply false
-    kotlin("plugin.allopen") version Versions.kotlin apply false
+
+    // https://plugins.gradle.org/plugin/com.adarshr.test-logger
+    id("com.adarshr.test-logger") version "3.0.0" apply false
+
+    // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+
+    kotlin("jvm") version libs.versions.kotlin.get() apply false
+    kotlin("kapt") version libs.versions.kotlin.get() apply false
+    kotlin("plugin.allopen") version libs.versions.kotlin.get() apply false
 }
 
 val javaVersion = 17
@@ -41,11 +46,12 @@ subprojects {
 
     dependencies {
         // JUnit
-        testImplementation("org.junit.jupiter:junit-jupiter-api:${Versions.junit}")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.junit}")
+        implementation(platform(rootProject.libs.boms.junit))
+        testImplementation("org.junit.jupiter:junit-jupiter-api")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
         // TODO remove after Spock started supports junit-jupiter engine
-        testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${Versions.junit}")
+        testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
     }
 
     tasks.withType<KotlinCompile> {

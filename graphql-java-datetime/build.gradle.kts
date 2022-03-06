@@ -11,10 +11,10 @@ java {
 }
 
 dependencies {
-    api("com.graphql-java:graphql-java:${Versions.graphqlJava}")
+    api(libs.graphql.java)
 
-    testImplementation("org.codehaus.groovy:groovy-all:${Versions.groovy}")
-    testImplementation("org.spockframework:spock-core:${Versions.spock}")
+    testImplementation(libs.groovy.all)
+    testImplementation(libs.spock.core)
 }
 
 java {

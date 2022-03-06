@@ -2,16 +2,21 @@ plugins {
     groovy
     id("spring-conventions")
     id("com.adarshr.test-logger")
+    id("org.springframework.boot")
 }
 
 dependencies {
     implementation(project(":graphql-datetime-kickstart-spring-boot-starter-webflux"))
 
-    implementation("org.springframework.boot:spring-boot-starter-webflux:${Versions.springBoot}")
-    implementation("com.graphql-java-kickstart:graphql-spring-boot-starter:${Versions.graphQlSpringBoot}")
-    implementation("io.projectreactor:reactor-core:${Versions.reactorCore}")
-
-    testImplementation("org.codehaus.groovy:groovy-all:${Versions.groovy}")
+    // Spring Boot
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.spockframework:spock-spring:${Versions.spock}")
+
+    implementation(libs.graphql.kickstart.spring.boot.starter)
+
+    implementation("io.projectreactor:reactor-core")
+
+    testImplementation(libs.groovy.all)
+    testImplementation(libs.spock.spring)
+    testImplementation(libs.commons.text)
 }

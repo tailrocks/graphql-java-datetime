@@ -1,0 +1,24 @@
+[versions]
+# Libraries
+kotlin = "1.5.21"
+groovy = "3.0.9"
+junit = "5.7.2"
+graphql-java = "17.3"
+graphql-kickstart-spring-boot = "12.0.0"
+commons-text = "1.9"
+spring-boot = "2.6.4"
+spock = "2.1-groovy-3.0"
+
+[libraries]
+# BOMs
+boms-junit = { module = "org.junit:junit-bom", version.ref = "junit" }
+boms-spring-boot = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+
+# Libraries
+groovy-all = { module = "org.codehaus.groovy:groovy-all", version.ref = "groovy" }
+graphql-kickstart-spring-boot-starter = { module = "com.graphql-java-kickstart:graphql-spring-boot-starter", version.ref = "graphql-kickstart-spring-boot" }
+graphql-kickstart-spring-boot-autoconfigure = { module = "com.graphql-java-kickstart:graphql-spring-boot-autoconfigure", version.ref = "graphql-kickstart-spring-boot" }
+commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
+spock-core = { module = "org.spockframework:spock-core", version.ref = "spock" }
+spock-spring = { module = "org.spockframework:spock-spring", version.ref = "spock" }
+graphql-java = { module = "com.graphql-java:graphql-java", version.ref = "graphql-java" }

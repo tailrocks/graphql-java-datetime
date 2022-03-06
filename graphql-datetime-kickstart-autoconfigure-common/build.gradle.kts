@@ -12,16 +12,22 @@ java {
 
 dependencies {
     api(project(":graphql-java-datetime"))
-    api("com.graphql-java-kickstart:graphql-spring-boot-autoconfigure:${Versions.graphQlSpringBoot}")
-    api("org.springframework.boot:spring-boot-autoconfigure:${Versions.springBoot}")
 
-    testImplementation("org.codehaus.groovy:groovy-all:${Versions.groovy}")
-    testImplementation("org.springframework.boot:spring-boot-starter-web:${Versions.springBoot}")
-    testImplementation("org.springframework.boot:spring-boot-starter-tomcat:${Versions.springBoot}")
-    testImplementation("org.springframework.boot:spring-boot-starter-test:${Versions.springBoot}")
-    testImplementation("org.springframework.boot:spring-boot-test:${Versions.springBoot}")
-    testImplementation("org.spockframework:spock-spring:${Versions.spock}")
-    testImplementation("com.graphql-java-kickstart:graphql-spring-boot-starter:${Versions.graphQlSpringBoot}")
+    // Spring Boot
+    api(platform(libs.boms.spring.boot))
+    api("org.springframework.boot:spring-boot-autoconfigure")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-tomcat")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-test")
+
+    // GraphQL Kickstart
+    api(libs.graphql.kickstart.spring.boot.autoconfigure)
+    testImplementation(libs.graphql.kickstart.spring.boot.starter)
+
+    testImplementation(libs.groovy.all)
+    testImplementation(libs.spock.spring)
+    testImplementation(libs.commons.text)
 }
 
 java {
