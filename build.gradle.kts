@@ -9,7 +9,7 @@ plugins {
     kotlin("plugin.allopen") version Versions.kotlin apply false
 }
 
-val javaVersion = 16
+val javaVersion = 17
 
 java {
     toolchain {
