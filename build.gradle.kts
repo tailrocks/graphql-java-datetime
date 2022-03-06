@@ -27,7 +27,7 @@ allprojects {
     apply(plugin = "versions-conventions")
 
     version = projectVersion
-    group = "com.zhokhov.graphql"
+    group = "com.tailrocks.graphql"
 
     // TODO remove me later, this is temp hack to remove deprecated dependencies from classpath
     configurations.all {
