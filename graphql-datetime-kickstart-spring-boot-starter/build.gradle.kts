@@ -1,6 +1,7 @@
 plugins {
-    id("maven-publish-conventions")
-    id("signing-conventions")
+    `java-library`
+    id("com.tailrocks.maven-publish")
+    id("com.tailrocks.signing")
 }
 
 java {

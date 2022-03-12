@@ -1,8 +1,14 @@
 plugins {
     groovy
-    id("spring-conventions")
     id("com.adarshr.test-logger")
-    id("org.springframework.boot")
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.springframework.boot") version "2.6.4"
+}
+
+the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
+    imports {
+        mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+    }
 }
 
 dependencies {

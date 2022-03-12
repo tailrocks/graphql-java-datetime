@@ -9,6 +9,27 @@ plugins {
     // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 
+    // https://plugins.gradle.org/plugin/com.tailrocks.java
+    id("com.tailrocks.java") version "0.1.3" apply false
+
+    // https://plugins.gradle.org/plugin/com.tailrocks.idea
+    id("com.tailrocks.idea") version "0.1.3" apply false
+
+    // https://plugins.gradle.org/plugin/com.tailrocks.junit
+    id("com.tailrocks.junit") version "0.1.4" apply false
+
+    // https://plugins.gradle.org/plugin/com.tailrocks.versions
+    id("com.tailrocks.versions") version "0.1.3" apply false
+
+    // https://plugins.gradle.org/plugin/com.tailrocks.maven-publish
+    id("com.tailrocks.maven-publish") version "0.1.6" apply false
+
+    // https://plugins.gradle.org/plugin/com.tailrocks.spotless
+    id("com.tailrocks.spotless") version "0.1.3" apply false
+
+    // https://plugins.gradle.org/plugin/com.tailrocks.signing
+    id("com.tailrocks.signing") version "0.1.3" apply false
+
     kotlin("jvm") version libs.versions.kotlin.get() apply false
     kotlin("kapt") version libs.versions.kotlin.get() apply false
     kotlin("plugin.allopen") version libs.versions.kotlin.get() apply false
@@ -25,11 +46,9 @@ java {
 val projectVersion: String by project
 
 allprojects {
-    apply(plugin = "com.diffplug.spotless")
-
-    apply(plugin = "idea-conventions")
-    apply(plugin = "spotless-conventions")
-    apply(plugin = "versions-conventions")
+    apply(plugin = "com.tailrocks.idea")
+    apply(plugin = "com.tailrocks.spotless")
+    apply(plugin = "com.tailrocks.versions")
 
     version = projectVersion
     group = "com.tailrocks.graphql"
@@ -41,8 +60,8 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "java-conventions")
-    apply(plugin = "junit-conventions")
+    apply(plugin = "com.tailrocks.java")
+    apply(plugin = "com.tailrocks.junit")
 
     dependencies {
         // JUnit

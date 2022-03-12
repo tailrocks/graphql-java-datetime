@@ -3,6 +3,7 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         mavenCentral()
+        maven { url = uri("https://repo.spring.io/milestone") }
     }
 }
 
@@ -11,6 +12,7 @@ dependencyResolutionManagement {
         mavenLocal()
         mavenCentral()
         gradlePluginPortal()
+        maven { url = uri("https://repo.spring.io/milestone") }
 
         // uncomment if you need to use snapshot versions
         //maven("https://oss.sonatype.org/content/repositories/snapshots")

@@ -1,8 +1,8 @@
 plugins {
     groovy
-    id("com.adarshr.test-logger")
+    id("org.springframework.boot") version "2.7.0-M2"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.springframework.boot") version "2.6.4"
+    id("com.adarshr.test-logger")
 }
 
 the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
@@ -12,16 +12,10 @@ the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().a
 }
 
 dependencies {
-    implementation(project(":graphql-datetime-kickstart-spring-boot-starter"))
+    implementation(project(":graphql-java-datetime"))
 
     // Spring Boot
+    implementation("org.springframework.boot:spring-boot-starter-graphql")
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-
-    // GraphQL Kickstart
-    implementation(libs.graphql.kickstart.spring.boot.starter)
-
-    testImplementation(libs.groovy.all)
-    testImplementation(libs.spock.spring)
-    testImplementation(libs.commons.text)
 }

@@ -1,7 +1,8 @@
 plugins {
+    `java-library`
     groovy
-    id("maven-publish-conventions")
-    id("signing-conventions")
+    id("com.tailrocks.maven-publish")
+    id("com.tailrocks.signing")
     id("com.adarshr.test-logger")
 }
 
