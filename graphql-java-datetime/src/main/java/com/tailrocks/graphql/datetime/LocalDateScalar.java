@@ -20,6 +20,9 @@ import graphql.schema.GraphQLScalarType;
 
 import java.time.format.DateTimeFormatter;
 
+/**
+ * @author Alexey Zhokhov
+ */
 @PublicApi
 public final class LocalDateScalar {
 

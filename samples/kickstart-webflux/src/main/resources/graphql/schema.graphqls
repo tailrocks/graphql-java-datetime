@@ -1,0 +1,58 @@
+#
+#  Copyright 2017 Alexey Zhokhov
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+#
+
+# Date implementation
+scalar MyDate
+# LocalDate implementation
+scalar MyLocalDate
+# LocalDateTime implementation
+scalar LocalDateTime
+# LocalTime implementation
+scalar LocalTime
+
+type Query {
+  # list of last 5 Chinese emperors
+  emperors: [Emperor]
+
+  # date and time now
+  now: MyDate
+
+  # date yesterday
+  yesterday: MyLocalDate
+
+  # date and time tomorrow midnight
+  tomorrowMidnight: LocalDateTime
+
+  # noon time, lunch in China, all factories stopped
+  noonTime: LocalTime
+}
+
+type Mutation {
+  # try these values:
+  # "2017-07-15"
+  # "2017-07-15T05:02:54"
+  # "2017-07-15T05:02:54.957Z"
+  plusDay(input: LocalDateTime!): LocalDateTime!
+}
+
+# A type that describes the emperor
+type Emperor {
+  givenName: String!
+  title: String!
+  reignStart: MyLocalDate!
+  reignStop: MyLocalDate!
+  name: String! @deprecated(reason: "Use givenName instead")
+}

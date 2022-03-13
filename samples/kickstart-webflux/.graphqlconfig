@@ -1,0 +1,5 @@
+{
+  "name": "Kickstart WebFlux Sample Schema",
+  "schemaPath": "src/main/resources/graphql/schema.graphqls",
+  "extensions": {}
+}

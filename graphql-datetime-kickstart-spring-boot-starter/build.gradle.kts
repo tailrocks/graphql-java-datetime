@@ -10,7 +10,10 @@ java {
 }
 
 dependencies {
-    api(project(":graphql-datetime-kickstart-autoconfigure"))
+    api(project(":graphql-datetime-spring-boot-autoconfigure"))
+
+    // GraphQL Kickstart
+    api(libs.graphql.kickstart.spring.boot.starter)
 }
 
 java {

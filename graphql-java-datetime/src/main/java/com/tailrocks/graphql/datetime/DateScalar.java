@@ -18,6 +18,9 @@ package com.tailrocks.graphql.datetime;
 import graphql.PublicApi;
 import graphql.schema.GraphQLScalarType;
 
+/**
+ * @author Alexey Zhokhov
+ */
 @PublicApi
 public final class DateScalar {
 

@@ -1,0 +1,16 @@
+spring:
+  main:
+    web-application-type: reactive
+  output:
+    ansi:
+      enabled: always
+
+graphql:
+  graphiql:
+    enabled: true
+  datetime:
+    scalars:
+      date:
+        scalar-name: MyDate
+      localDate:
+        scalar-name: MyLocalDate

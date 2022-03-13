@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.tailrocks.graphql.datetime.spring.boot.GraphQlDateTimeAutoConfiguration,\
+com.tailrocks.graphql.datetime.spring.boot.GraphQlDateTimeScalarsAutoConfiguration

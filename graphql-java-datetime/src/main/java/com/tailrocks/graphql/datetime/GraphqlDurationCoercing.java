@@ -25,6 +25,9 @@ import graphql.schema.CoercingSerializeException;
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
 
+/**
+ * @author Alexey Zhokhov
+ */
 @Internal
 public class GraphqlDurationCoercing implements Coercing<Duration, String> {
 

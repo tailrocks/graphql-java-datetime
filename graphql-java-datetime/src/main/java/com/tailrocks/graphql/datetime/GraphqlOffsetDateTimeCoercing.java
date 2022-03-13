@@ -26,6 +26,9 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * @author Alexey Zhokhov
+ */
 @Internal
 public class GraphqlOffsetDateTimeCoercing implements Coercing<OffsetDateTime, String> {
 
