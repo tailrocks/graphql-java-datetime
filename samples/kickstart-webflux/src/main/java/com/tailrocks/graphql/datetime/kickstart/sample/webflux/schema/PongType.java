@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tailrocks.graphql.datetime.kickstart.boot.test.resolvers;
+package com.tailrocks.graphql.datetime.kickstart.sample.webflux.schema;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ import java.util.Date;
 /**
  * @author Alexey Zhokhov
  */
-public class ResponseType {
+public class PongType {
 
     private final Date date;
     private final LocalDate localDate;
@@ -33,7 +33,7 @@ public class ResponseType {
     private final LocalTime localTime;
     private final OffsetDateTime offsetDateTime;
 
-    public ResponseType() {
+    public PongType() {
         date = new Date(1499667166754L);
         localDate = LocalDate.of(2017, 1, 1);
         localTime = LocalTime.MIDNIGHT;

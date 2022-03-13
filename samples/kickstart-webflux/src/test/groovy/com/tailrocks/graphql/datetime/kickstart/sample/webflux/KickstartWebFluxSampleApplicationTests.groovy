@@ -16,8 +16,7 @@
 package com.tailrocks.graphql.datetime.kickstart.sample.webflux
 
 import org.apache.commons.text.StringEscapeUtils
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -27,14 +26,12 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.junit4.SpringRunner
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-@RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class KickstartWebFluxSampleApplicationTests {
@@ -43,7 +40,7 @@ class KickstartWebFluxSampleApplicationTests {
 
     @Test
     void "basic usage"() {
-        // given
+        // GIVEN:
         String graphQlQuery = """
 {
   emperors {
@@ -59,7 +56,7 @@ class KickstartWebFluxSampleApplicationTests {
 }
 """.trim()
 
-        // when
+        // WHEN:
         String json = """
 {
     "query": "${StringEscapeUtils.escapeJson(graphQlQuery)}"
@@ -73,7 +70,7 @@ class KickstartWebFluxSampleApplicationTests {
 
         ResponseEntity<Map> response = restTemplate.postForEntity('/graphql', entity, Map.class)
 
-        // then
+        // THEN:
         assert response
         assert response.statusCode == HttpStatus.OK
         assert response.body

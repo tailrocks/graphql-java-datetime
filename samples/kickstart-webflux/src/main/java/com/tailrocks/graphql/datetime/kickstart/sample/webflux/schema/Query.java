@@ -17,7 +17,6 @@ package com.tailrocks.graphql.datetime.kickstart.sample.webflux.schema;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -67,23 +66,27 @@ public class Query implements GraphQLQueryResolver {
         List<EmperorType> result = IntStream.range(0, NAMES.length)
                 .mapToObj(i -> new EmperorType(NAMES[i], TITLES[i], REIGN_STARTS[i], REIGN_STOP[i]))
                 .toList();
-        return Mono.just(result).toFuture();
+        return CompletableFuture.completedFuture(result);
     }
 
     public CompletableFuture<Date> getNow() {
-        return Mono.just(new Date()).toFuture();
+        return CompletableFuture.completedFuture(new Date());
     }
 
     public CompletableFuture<LocalDate> getYesterday() {
-        return Mono.just(LocalDate.now().minusDays(1)).toFuture();
+        return CompletableFuture.completedFuture(LocalDate.now().minusDays(1));
     }
 
     public CompletableFuture<LocalDateTime> getTomorrowMidnight() {
-        return Mono.just(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT)).toFuture();
+        return CompletableFuture.completedFuture(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.MIDNIGHT));
     }
 
     public CompletableFuture<LocalTime> getNoonTime() {
-        return Mono.just(LocalTime.NOON).toFuture();
+        return CompletableFuture.completedFuture(LocalTime.NOON);
+    }
+
+    public CompletableFuture<PongType> ping() {
+        return CompletableFuture.completedFuture(new PongType());
     }
 
 }

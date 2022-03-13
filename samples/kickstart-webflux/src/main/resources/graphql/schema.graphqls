@@ -22,6 +22,8 @@ scalar MyLocalDate
 scalar LocalDateTime
 # LocalTime implementation
 scalar LocalTime
+# OffsetDateTime implementation
+scalar OffsetDateTime
 
 type Query {
   # list of last 5 Chinese emperors
@@ -38,6 +40,8 @@ type Query {
 
   # noon time, lunch in China, all factories stopped
   noonTime: LocalTime
+
+  ping: Pong
 }
 
 type Mutation {
@@ -55,4 +59,12 @@ type Emperor {
   reignStart: MyLocalDate!
   reignStop: MyLocalDate!
   name: String! @deprecated(reason: "Use givenName instead")
+}
+
+type Pong {
+  date: MyDate
+  localDate: MyLocalDate
+  localDateTime: LocalDateTime
+  localTime: LocalTime
+  offsetDateTime: OffsetDateTime
 }
