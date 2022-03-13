@@ -1,8 +1,8 @@
 plugins {
     groovy
-    id("org.springframework.boot") version "2.7.0-M2"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("com.adarshr.test-logger")
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.springframework.boot") version "2.7.0-M2"
 }
 
 the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
@@ -17,5 +17,10 @@ dependencies {
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter-graphql")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-hateoas")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation(libs.groovy.all)
+    testImplementation(libs.spock.spring)
+    testImplementation(libs.commons.text)
 }

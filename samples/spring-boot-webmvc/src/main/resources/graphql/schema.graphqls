@@ -24,6 +24,8 @@ scalar LocalDateTime
 scalar LocalTime
 # YearMonth implementation
 scalar YearMonth
+# OffsetDateTime implementation
+scalar OffsetDateTime
 
 type Query {
   # list of last 5 Chinese emperors
@@ -43,6 +45,8 @@ type Query {
 
   # spring first release year and month
   springFirstRelease: YearMonth
+
+  ping: Pong
 }
 
 type Mutation {
@@ -60,4 +64,12 @@ type Emperor {
   reignStart: MyLocalDate!
   reignStop: MyLocalDate!
   name: String! @deprecated(reason: "Use givenName instead")
+}
+
+type Pong {
+  date: MyDate
+  localDate: MyLocalDate
+  localDateTime: LocalDateTime
+  localTime: LocalTime
+  offsetDateTime: OffsetDateTime
 }
