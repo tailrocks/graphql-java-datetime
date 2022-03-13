@@ -18,10 +18,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    implementation(libs.graphql.kickstart.spring.boot.starter)
-
-    implementation("io.projectreactor:reactor-core")
-
     testImplementation(libs.groovy.all)
     testImplementation(libs.spock.spring)
     testImplementation(libs.commons.text)

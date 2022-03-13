@@ -97,4 +97,8 @@ public class Query implements GraphQLQueryResolver {
         return YearMonth.of(2002, 10);
     }
 
+    public PongType ping() {
+        return new PongType();
+    }
+
 }

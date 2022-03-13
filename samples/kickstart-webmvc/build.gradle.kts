@@ -18,9 +18,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    // GraphQL Kickstart
-    implementation(libs.graphql.kickstart.spring.boot.starter)
-
     testImplementation(libs.groovy.all)
     testImplementation(libs.spock.spring)
     testImplementation(libs.commons.text)
