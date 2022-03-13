@@ -9,6 +9,9 @@ plugins {
     // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 
+    // https://plugins.gradle.org/plugin/com.tailrocks.spotless
+    id("com.tailrocks.spotless") version "0.1.3"
+
     // https://plugins.gradle.org/plugin/com.tailrocks.java
     id("com.tailrocks.java") version "0.1.3" apply false
 
@@ -23,9 +26,6 @@ plugins {
 
     // https://plugins.gradle.org/plugin/com.tailrocks.maven-publish
     id("com.tailrocks.maven-publish") version "0.1.6" apply false
-
-    // https://plugins.gradle.org/plugin/com.tailrocks.spotless
-    id("com.tailrocks.spotless") version "0.1.3" apply false
 
     // https://plugins.gradle.org/plugin/com.tailrocks.signing
     id("com.tailrocks.signing") version "0.1.3" apply false
@@ -52,6 +52,15 @@ allprojects {
 
     version = projectVersion
     group = "com.tailrocks.graphql"
+
+    spotless {
+        java {
+            licenseHeaderFile("$rootDir/gradle/licenseHeader.txt")
+        }
+        kotlin {
+            licenseHeaderFile("$rootDir/gradle/licenseHeader.txt")
+        }
+    }
 
     // TODO remove me later, this is temp hack to remove deprecated dependencies from classpath
     configurations.all {
