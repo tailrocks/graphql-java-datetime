@@ -15,6 +15,7 @@ dependencies {
 
     // Spring Boot
     // TODO remove hardcoded version
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:2.7.0-M2")
     compileOnly("org.springframework.boot:spring-boot-autoconfigure:2.7.0-M2")
     compileOnly("org.springframework.boot:spring-boot-starter-graphql:2.7.0-M2")
 }
