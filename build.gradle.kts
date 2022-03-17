@@ -22,7 +22,7 @@ plugins {
     id("com.tailrocks.junit") version "0.1.4" apply false
 
     // https://plugins.gradle.org/plugin/com.tailrocks.versions
-    id("com.tailrocks.versions") version "0.1.3" apply false
+    id("com.tailrocks.versions") version "0.1.4" apply false
 
     // https://plugins.gradle.org/plugin/com.tailrocks.maven-publish
     id("com.tailrocks.maven-publish") version "0.1.6" apply false
