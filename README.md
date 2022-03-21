@@ -17,9 +17,7 @@ GraphQL ISO Date is a set of RFC 3339 compliant date/time scalar types to be use
 
 A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java
 implementation ([graphql-java](https://github.com/graphql-java/graphql-java)) and GraphQL Java Kickstart
-([com.graphql-java-kickstart:graphql-spring-boot-starter](https://github.
-com/graphql-java-kickstart/graphql-spring-boot))
-.
+([com.graphql-java-kickstart:graphql-spring-boot-starter](https://github.com/graphql-java-kickstart/graphql-spring-boot)).
 
 # Serialization
 
@@ -59,7 +57,7 @@ spring boot stack) to your project first.
 
 #### Maven
 
-Add folowing to your `pom.xml`:
+Add the following to your `pom.xml`:
 
 for **Spring MVC**:
 
@@ -85,7 +83,7 @@ for **Spring WebFlux**:
 
 #### Gradle
 
-Add folowing to your `build.gradle`:
+Add the following to your `build.gradle`:
 
 for **Spring MVC**:
 
@@ -128,7 +126,7 @@ scalar YearMonth
 scalar Duration
 ```
 
-You can rename the scalar however you want with by simply adding the following properties to you application.yaml:
+You can rename the scalar however you want by simply adding the following properties to your application.yaml:
 
 ```yaml
 graphql:
@@ -184,7 +182,7 @@ spring:
 
 ### Sample
 
-Now you can use these scalars in your application. Here is graphql-datetime spring boot sample applications:
+Now you can use these scalars in your application. Here are graphql-datetime spring boot sample applications:
 
 - mvc: [graphql-datetime-kickstart-sample-app](graphql-datetime-kickstart-sample-app/)
 - weblux: [graphql-datetime-kickstart-sample-app-webflux](graphql-datetime-kickstart-sample-app-webflux/)
