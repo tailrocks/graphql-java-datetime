@@ -13,7 +13,7 @@ dependencies {
     api(project(":graphql-datetime-spring-boot-autoconfigure"))
 
     // Spring Boot
-    api("org.springframework.boot:spring-boot-starter-graphql:2.7.0-M2")
+    api("org.springframework.boot:spring-boot-starter-graphql:2.7.0-M3")
 }
 
 java {
