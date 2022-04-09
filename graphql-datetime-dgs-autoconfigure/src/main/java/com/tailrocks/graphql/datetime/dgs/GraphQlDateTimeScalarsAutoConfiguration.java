@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.tailrocks.graphql.datetime.spring.boot;
+package com.tailrocks.graphql.datetime.dgs;
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsRuntimeWiring;
