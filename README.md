@@ -50,8 +50,12 @@ implementation ([graphql-java](https://github.com/graphql-java/graphql-java)) an
 
 ## Spring Boot
 
-Add `graphql-datetime-spring-boot-starter` or `graphql-datetime-spring-boot-starter-webflux` starter (according to your
-spring boot stack) to your project first.
+This library supports the following popular graphql-java framework:
+- [graphql-java-kickstart](https://www.graphql-java-kickstart.com/spring-boot/)
+- [dgs-framework](https://netflix.github.io/dgs/)
+- [spring-graphql](https://spring.io/projects/spring-graphql)
+
+Add one of the following starters according to your project.
 
 ### Installation
 
@@ -59,7 +63,7 @@ spring boot stack) to your project first.
 
 Add the following to your `pom.xml`:
 
-for **Spring MVC**:
+for **GraphQL Java Kickstart**:
 
 ```xml
 <dependency>
@@ -69,14 +73,22 @@ for **Spring MVC**:
 </dependency>
 ```
 
-or
-
-for **Spring WebFlux**:
+for **DGS**:
 
 ```xml
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
-    <artifactId>graphql-datetime-kickstart-spring-boot-starter-webflux</artifactId>
+    <artifactId>graphql-datetime-dgs-starter</artifactId>
+    <version>5.0.0-SNAPSHOT</version>
+</dependency>
+```
+
+for **Spring GraphQL**:
+
+```xml
+<dependency>
+    <groupId>com.tailrocks.graphql</groupId>
+    <artifactId>graphql-datetime-spring-boot-starter</artifactId>
     <version>5.0.0-SNAPSHOT</version>
 </dependency>
 ```
@@ -85,18 +97,22 @@ for **Spring WebFlux**:
 
 Add the following to your `build.gradle`:
 
-for **Spring MVC**:
+for **GraphQL Java Kickstart (Spring Boot)**:
 
 ```groovy
 implementation("com.tailrocks.graphql:graphql-datetime-kickstart-spring-boot-starter:5.0.0-SNAPSHOT")
 ```
 
-or
-
-for **Spring WebFlux**:
+for **DGS**:
 
 ```groovy
-implementation("com.tailrocks.graphql:graphql-datetime-kickstart-spring-boot-starter-webflux:5.0.0-SNAPSHOT")
+implementation("com.tailrocks.graphql:graphql-datetime-dgs-starter:5.0.0-SNAPSHOT")
+```
+
+for **Spring GraphQL**:
+
+```groovy
+implementation("com.tailrocks.graphql:graphql-datetime-spring-boot-starter:5.0.0-SNAPSHOT")
 ```
 
 ### Scalars
@@ -184,8 +200,12 @@ spring:
 
 Now you can use these scalars in your application. Here are graphql-datetime spring boot sample applications:
 
-- mvc: [graphql-datetime-kickstart-sample-app](graphql-datetime-kickstart-sample-app/)
-- weblux: [graphql-datetime-kickstart-sample-app-webflux](graphql-datetime-kickstart-sample-app-webflux/)
+- **webmvc:**
+  - dgs: [sample-graphql-datetime-dgs-webmvc](samples/dgs-webmvc)
+  - kickstart: [sample-graphql-datetime-kickstart-webmvc](samples/kickstart-webmvc)
+  - spring-graphql: [sample-graphql-datetime-spring-boot-webmvc](samples/spring-boot-webmvc)
+- **webflux:** 
+  - kickstart: [sample-graphql-datetime-kickstart-webflux](samples/kickstart-webflux)
 
 ## Bugs
 
