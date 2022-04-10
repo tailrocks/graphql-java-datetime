@@ -37,7 +37,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @DgsComponent
 @EnableConfigurationProperties(GraphQlDateTimeProperties.class)
-@AutoConfigureBefore(com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration.class)
 public class GraphQlDateTimeScalarsAutoConfiguration {
 
     @Autowired
