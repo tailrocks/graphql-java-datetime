@@ -19,10 +19,7 @@ boms-dgs  = { module = "com.netflix.graphql.dgs:graphql-dgs-platform-dependencie
 # Libraries
 groovy-all = { module = "org.codehaus.groovy:groovy-all", version.ref = "groovy" }
 graphql-kickstart-spring-boot-starter = { module = "com.graphql-java-kickstart:graphql-spring-boot-starter", version.ref = "graphql-kickstart-spring-boot" }
-graphql-kickstart-spring-boot-autoconfigure = { module = "com.graphql-java-kickstart:graphql-spring-boot-autoconfigure", version.ref = "graphql-kickstart-spring-boot" }
 commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
 spock-core = { module = "org.spockframework:spock-core", version.ref = "spock" }
 spock-spring = { module = "org.spockframework:spock-spring", version.ref = "spock" }
 graphql-java = { module = "com.graphql-java:graphql-java", version.ref = "graphql-java" }
-spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "spring-boot" }
-spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }
