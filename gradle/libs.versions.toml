@@ -8,11 +8,13 @@ graphql-kickstart-spring-boot = "12.0.0"
 commons-text = "1.9"
 spring-boot = "2.6.4"
 spock = "2.1-groovy-3.0"
+dgs = "4.9.25"
 
 [libraries]
 # BOMs
 boms-junit = { module = "org.junit:junit-bom", version.ref = "junit" }
 boms-spring-boot = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+boms-dgs  = { module = "com.netflix.graphql.dgs:graphql-dgs-platform-dependencies", version.ref = "dgs" }
 
 # Libraries
 groovy-all = { module = "org.codehaus.groovy:groovy-all", version.ref = "groovy" }
@@ -22,3 +24,5 @@ commons-text = { module = "org.apache.commons:commons-text", version.ref = "comm
 spock-core = { module = "org.spockframework:spock-core", version.ref = "spock" }
 spock-spring = { module = "org.spockframework:spock-spring", version.ref = "spock" }
 graphql-java = { module = "com.graphql-java:graphql-java", version.ref = "graphql-java" }
+spring-boot = { module = "org.springframework.boot:spring-boot", version.ref = "spring-boot" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor", version.ref = "spring-boot" }

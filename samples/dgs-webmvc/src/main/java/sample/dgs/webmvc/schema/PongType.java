@@ -23,7 +23,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 
 /**
- * @author Alexey Zhokhov
+ * @author Adam Setch
  */
 public class PongType {
 

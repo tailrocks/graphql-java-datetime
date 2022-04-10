@@ -21,7 +21,7 @@ import com.netflix.graphql.dgs.DgsMutation;
 import java.time.LocalDateTime;
 
 /**
- * @author Alexey Zhokhov
+ * @author Adam Setch
  */
 @DgsComponent
 public class Mutation {

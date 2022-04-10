@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author Alexey Zhokhov
+ * @author Adam Setch
  */
 @DgsComponent
 public class Query {

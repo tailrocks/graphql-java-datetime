@@ -18,7 +18,7 @@ package sample.dgs.webmvc.schema;
 import java.time.LocalDate;
 
 /**
- * @author Alexey Zhokhov
+ * @author Adam Setch
  */
 public class EmperorType {
 

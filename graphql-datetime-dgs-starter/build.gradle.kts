@@ -13,7 +13,7 @@ dependencies {
     api(project(":graphql-datetime-dgs-autoconfigure"))
 
     // DGS Framework
-    api(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release"))
+    api(platform(libs.boms.dgs))
     api("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
 }
 

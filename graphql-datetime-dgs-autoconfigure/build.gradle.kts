@@ -11,12 +11,13 @@ java {
 }
 
 dependencies {
-    api(project(":graphql-java-datetime"))
+    api(project(":graphql-datetime-spring-boot-common"))
 
+    // Spring Boot
     compileOnly("org.springframework.boot:spring-boot-autoconfigure")
 
     // DGS Framework
-    compileOnly(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release"))
+    compileOnly(platform(libs.boms.dgs))
     compileOnly("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
 }
 

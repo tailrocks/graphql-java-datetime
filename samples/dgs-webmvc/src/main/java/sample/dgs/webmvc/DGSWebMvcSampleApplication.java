@@ -21,10 +21,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author Adam Setch
  */
-@SpringBootApplication(scanBasePackages = {"sample","com.tailrocks.graphql.datetime" })
+@SpringBootApplication
 public class DGSWebMvcSampleApplication {
 
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         SpringApplication.run(DGSWebMvcSampleApplication.class, args);
     }
+
 }
