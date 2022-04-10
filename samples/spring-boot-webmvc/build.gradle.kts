@@ -2,7 +2,7 @@ plugins {
     groovy
     id("com.adarshr.test-logger")
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.springframework.boot") version "2.7.0-M2"
+    id("org.springframework.boot") version "2.7.0-M3"
 }
 
 the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
