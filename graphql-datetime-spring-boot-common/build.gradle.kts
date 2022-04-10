@@ -11,10 +11,13 @@ java {
 }
 
 dependencies {
-    api(project(":graphql-datetime-spring-boot-common"))
+    api(project(":graphql-java-datetime"))
 
     // Spring Boot
-    compileOnly("org.springframework.boot:spring-boot-starter-graphql:2.7.0-M3")
+    annotationProcessor(platform(libs.boms.spring.boot))
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    implementation(platform(libs.boms.spring.boot))
+    implementation("org.springframework.boot:spring-boot-autoconfigure")
 }
 
 java {

@@ -1,6 +1,5 @@
 plugins {
     `java-library`
-    id("com.adarshr.test-logger")
     id("com.tailrocks.maven-publish")
     id("com.tailrocks.signing")
 }
@@ -11,10 +10,11 @@ java {
 }
 
 dependencies {
-    api(project(":graphql-datetime-spring-boot-common"))
+    api(project(":graphql-datetime-dgs-autoconfigure"))
 
-    // Spring Boot
-    compileOnly("org.springframework.boot:spring-boot-starter-graphql:2.7.0-M3")
+    // DGS Framework
+    api(platform(libs.boms.dgs))
+    api("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
 }
 
 java {
