@@ -35,14 +35,6 @@ plugins {
     kotlin("plugin.allopen") version libs.versions.kotlin.get() apply false
 }
 
-val javaVersion = 17
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(javaVersion))
-    }
-}
-
 val projectVersion: String by project
 
 allprojects {
