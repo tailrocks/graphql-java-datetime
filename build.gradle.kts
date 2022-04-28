@@ -10,7 +10,7 @@ plugins {
     id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
 
     // https://plugins.gradle.org/plugin/com.tailrocks.spotless
-    id("com.tailrocks.spotless") version "0.1.3"
+    id("com.tailrocks.spotless") version "0.1.4"
 
     // https://plugins.gradle.org/plugin/com.tailrocks.java
     id("com.tailrocks.java") version "0.1.4" apply false
