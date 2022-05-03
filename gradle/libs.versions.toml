@@ -3,7 +3,7 @@
 kotlin = "1.5.21"
 groovy = "3.0.10"
 junit = "5.8.2"
-graphql-java = "18.0"
+graphql-java = "18.1"
 graphql-kickstart-spring-boot = "12.0.0"
 commons-text = "1.9"
 spring-boot = "2.6.7"
