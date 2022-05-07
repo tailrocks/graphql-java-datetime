@@ -44,9 +44,6 @@ allprojects {
 
     spotless {
         java {
-            // TODO remove me after this issue will be fixed: https://github.com/diffplug/spotless/issues/834
-            googleJavaFormat("1.15.0")
-
             licenseHeaderFile("$rootDir/gradle/licenseHeader.txt")
         }
         kotlin {
