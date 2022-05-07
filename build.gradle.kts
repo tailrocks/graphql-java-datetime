@@ -6,9 +6,6 @@ plugins {
     // https://plugins.gradle.org/plugin/com.adarshr.test-logger
     id("com.adarshr.test-logger") version "3.2.0" apply false
 
-    // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-
     // https://plugins.gradle.org/plugin/com.tailrocks.spotless
     id("com.tailrocks.spotless") version "0.1.4"
 
@@ -47,6 +44,9 @@ allprojects {
 
     spotless {
         java {
+            // TODO remove me after this issue will be fixed: https://github.com/diffplug/spotless/issues/834
+            googleJavaFormat("1.15.0")
+
             licenseHeaderFile("$rootDir/gradle/licenseHeader.txt")
         }
         kotlin {
@@ -77,15 +77,6 @@ subprojects {
     tasks.withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = "8"
-        }
-    }
-}
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            username.set(System.getenv("OSSRH_USER") ?: return@sonatype)
-            password.set(System.getenv("OSSRH_PASSWORD") ?: return@sonatype)
         }
     }
 }
