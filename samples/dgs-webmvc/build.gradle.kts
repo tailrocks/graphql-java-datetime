@@ -17,7 +17,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     // DGS Framework
-    implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release"))
+    implementation(platform(libs.boms.dgs))
     implementation("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
