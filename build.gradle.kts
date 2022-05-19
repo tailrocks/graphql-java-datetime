@@ -2,34 +2,19 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     java
-
-    // https://plugins.gradle.org/plugin/com.adarshr.test-logger
-    id("com.adarshr.test-logger") version "3.2.0" apply false
-
-    // https://plugins.gradle.org/plugin/com.tailrocks.spotless
-    id("com.tailrocks.spotless") version "0.1.4"
-
-    // https://plugins.gradle.org/plugin/com.tailrocks.java
-    id("com.tailrocks.java") version "0.1.4" apply false
-
-    // https://plugins.gradle.org/plugin/com.tailrocks.idea
-    id("com.tailrocks.idea") version "0.1.3" apply false
-
-    // https://plugins.gradle.org/plugin/com.tailrocks.junit
-    id("com.tailrocks.junit") version "0.1.5" apply false
-
-    // https://plugins.gradle.org/plugin/com.tailrocks.versions
-    id("com.tailrocks.versions") version "0.1.4" apply false
-
-    // https://plugins.gradle.org/plugin/com.tailrocks.maven-publish
-    id("com.tailrocks.maven-publish") version "0.1.6" apply false
-
-    // https://plugins.gradle.org/plugin/com.tailrocks.signing
-    id("com.tailrocks.signing") version "0.1.3" apply false
-
-    kotlin("jvm") version libs.versions.kotlin.get() apply false
-    kotlin("kapt") version libs.versions.kotlin.get() apply false
-    kotlin("plugin.allopen") version libs.versions.kotlin.get() apply false
+    alias(libs.plugins.test.logger) apply false
+    alias(libs.plugins.tailrocks.spotless)
+    alias(libs.plugins.tailrocks.java) apply false
+    alias(libs.plugins.tailrocks.idea) apply false
+    alias(libs.plugins.tailrocks.junit) apply false
+    alias(libs.plugins.tailrocks.versions) apply false
+    alias(libs.plugins.tailrocks.maven.publish) apply false
+    alias(libs.plugins.tailrocks.signing) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.kapt) apply false
+    alias(libs.plugins.kotlin.plugin.allopen) apply false
+    alias(libs.plugins.spring.dependency.management) apply false
+    alias(libs.plugins.spring.boot) apply false
 }
 
 val projectVersion: String by project
