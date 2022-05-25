@@ -69,6 +69,8 @@ Add the following to your `pom.xml`:
 
 for **GraphQL Java Kickstart**:
 
+*Note: requires graphql-java:17.x until graphql-java-kickstart:graphql-spring-boot:13.x is released*
+
 ```xml
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
