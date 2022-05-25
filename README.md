@@ -6,18 +6,23 @@
 
 ---
 
-# graphql-java-datetime &middot; [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/tailrocks/graphql-java-datetime/blob/master/LICENSE) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tailrocks/graphql-java-datetime/pulls)
+# graphql-java-datetime
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/tailrocks/graphql-java-datetime/blob/master/LICENSE) 
+[![Build Status](https://travis-ci.org/tailrocks/graphql-java-datetime.svg?branch=master)](https://travis-ci.org/tailrocks/graphql-java-datetime)
+[![Latest Release](https://img.shields.io/maven-central/v/tailrocks/graphql-java-datetime)](https://maven-badges.herokuapp.com/maven-central/tailrocks/graphql-java-datetime/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tailrocks/graphql-java-datetime/pulls)
 
 GraphQL ISO Date is a set of RFC 3339 compliant date/time scalar types to be used with
 [graphql-java](https://github.com/graphql-java/graphql-java).
 
-[![Build Status](https://travis-ci.org/tailrocks/graphql-java-datetime.svg?branch=master)](https://travis-ci.org/tailrocks/graphql-java-datetime)
 
 # Summary
 
-A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java
-implementation ([graphql-java](https://github.com/graphql-java/graphql-java)) and GraphQL Java Kickstart
-([com.graphql-java-kickstart:graphql-spring-boot-starter](https://github.com/graphql-java-kickstart/graphql-spring-boot)).
+A set of ISO 33601, RFC 3339 compatible date time scalars for GraphQL Java implementation ([graphql-java](https://github.com/graphql-java/graphql-java)), as well as starters for
+- GraphQL Java Kickstart [graphql-java-kickstart](https://www.graphql-java-kickstart.com/spring-boot/)
+- Netflix DGS Framework [dgs-framework](https://netflix.github.io/dgs/)
+- Spring GraphQL [spring-graphql](https://spring.io/projects/spring-graphql)
 
 # Serialization
 
@@ -51,9 +56,9 @@ implementation ([graphql-java](https://github.com/graphql-java/graphql-java)) an
 ## Spring Boot
 
 This library supports the following popular graphql-java framework:
-- [graphql-java-kickstart](https://www.graphql-java-kickstart.com/spring-boot/)
-- [dgs-framework](https://netflix.github.io/dgs/)
-- [spring-graphql](https://spring.io/projects/spring-graphql)
+- GraphQL Java Kickstart [graphql-java-kickstart](https://www.graphql-java-kickstart.com/spring-boot/)
+- Netflix DGS Framework [dgs-framework](https://netflix.github.io/dgs/)
+- Spring GraphQL [spring-graphql](https://spring.io/projects/spring-graphql)
 
 Add one of the following starters according to your project.
 
@@ -73,7 +78,7 @@ for **GraphQL Java Kickstart**:
 </dependency>
 ```
 
-for **DGS**:
+for **Netflix DGS**:
 
 ```xml
 <dependency>
