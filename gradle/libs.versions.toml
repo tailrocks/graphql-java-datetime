@@ -8,7 +8,7 @@ graphql-kickstart-spring-boot = "12.0.0"
 commons-text = "1.9"
 spring-boot = "2.7.1"
 spock = "2.1-groovy-3.0"
-dgs = "5.0.4"
+dgs = "5.0.5"
 
 [libraries]
 # BOMs
