@@ -75,7 +75,7 @@ for **GraphQL Java Kickstart**:
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
     <artifactId>graphql-datetime-kickstart-spring-boot-starter</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.0.0</version>
 </dependency>
 ```
 
@@ -85,7 +85,7 @@ for **Netflix DGS**:
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
     <artifactId>graphql-datetime-dgs-starter</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.0.0</version>
 </dependency>
 ```
 
@@ -95,7 +95,7 @@ for **Spring GraphQL**:
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
     <artifactId>graphql-datetime-spring-boot-starter</artifactId>
-    <version>5.0.0-SNAPSHOT</version>
+    <version>5.0.0</version>
 </dependency>
 ```
 
@@ -106,19 +106,19 @@ Add the following to your `build.gradle`:
 for **GraphQL Java Kickstart (Spring Boot)**:
 
 ```groovy
-implementation("com.tailrocks.graphql:graphql-datetime-kickstart-spring-boot-starter:5.0.0-SNAPSHOT")
+implementation("com.tailrocks.graphql:graphql-datetime-kickstart-spring-boot-starter:5.0.0")
 ```
 
 for **DGS**:
 
 ```groovy
-implementation("com.tailrocks.graphql:graphql-datetime-dgs-starter:5.0.0-SNAPSHOT")
+implementation("com.tailrocks.graphql:graphql-datetime-dgs-starter:5.0.0")
 ```
 
 for **Spring GraphQL**:
 
 ```groovy
-implementation("com.tailrocks.graphql:graphql-datetime-spring-boot-starter:5.0.0-SNAPSHOT")
+implementation("com.tailrocks.graphql:graphql-datetime-spring-boot-starter:5.0.0")
 ```
 
 ### Scalars
