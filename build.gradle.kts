@@ -8,8 +8,6 @@ plugins {
     alias(libs.plugins.tailrocks.idea) apply false
     alias(libs.plugins.tailrocks.junit) apply false
     alias(libs.plugins.tailrocks.versions) apply false
-    alias(libs.plugins.tailrocks.maven.publish) apply false
-    alias(libs.plugins.tailrocks.signing) apply false
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.kapt) apply false
     alias(libs.plugins.kotlin.plugin.allopen) apply false

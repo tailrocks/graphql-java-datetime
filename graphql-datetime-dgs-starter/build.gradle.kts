@@ -1,7 +1,5 @@
 plugins {
-    `java-library`
-    id("com.tailrocks.maven-publish")
-    id("com.tailrocks.signing")
+    id("graphql-datetime-library-conventions")
 }
 
 java {

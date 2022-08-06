@@ -1,9 +1,7 @@
 plugins {
-    `java-library`
     groovy
-    id("com.tailrocks.maven-publish")
-    id("com.tailrocks.signing")
     id("com.adarshr.test-logger")
+    id("graphql-datetime-library-conventions")
 }
 
 java {
