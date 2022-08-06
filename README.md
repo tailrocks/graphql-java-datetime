@@ -155,19 +155,19 @@ graphql:
   datetime:
     scalars:
       date:
-        scalarName: MyDate
-      localDate:
-        scalarName: MyLocalDate
-      localDateTime:
-        scalarName: MyLocalDateTime
-      localTime:
-        scalarName: MyLocalTime
-      offsetDateTime:
-        scalarName: MyOffsetDateTime
-      yearMonth:
-        scalarName: MyYearMonth
+        scalar-name: MyDate
+      local-date:
+        scalar-name: MyLocalDate
+      local-date-time:
+        scalar-name: MyLocalDateTime
+      local-time:
+        scalar-name: MyLocalTime
+      offset-date-time:
+        scalar-name: MyOffsetDateTime
+      year-month:
+        scalar-name: MyYearMonth
       duration:
-        scalarName: MyDuration
+        scalar-name: MyDuration
 ```
 
 A custom format can be set for LocalDate and LocalDateTime only using the following properties in application.yaml
@@ -176,9 +176,9 @@ A custom format can be set for LocalDate and LocalDateTime only using the follow
 graphql:
   datetime:
     scalars:
-      localDate:
+      local-date:
         format: MM/dd/yyyy
-      localDateTime:
+      local-date-time:
         format: yyyy-MM-dd'T'HH:mm:ss
 ```
 

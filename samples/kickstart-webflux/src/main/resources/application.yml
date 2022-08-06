@@ -12,5 +12,5 @@ graphql:
     scalars:
       date:
         scalar-name: MyDate
-      localDate:
+      local-date:
         scalar-name: MyLocalDate
