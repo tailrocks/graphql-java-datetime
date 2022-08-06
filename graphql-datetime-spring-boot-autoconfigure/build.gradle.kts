@@ -14,7 +14,8 @@ dependencies {
     api(project(":graphql-datetime-spring-boot-common"))
 
     // Spring Boot
-    compileOnly("org.springframework.boot:spring-boot-starter-graphql:2.7.2")
+    compileOnly(platform(libs.boms.spring.boot))
+    compileOnly("org.springframework.boot:spring-boot-starter-graphql")
 }
 
 tasks.withType<JavaCompile> {
