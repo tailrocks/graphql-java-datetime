@@ -31,7 +31,7 @@ tailrocks-java = { id = "com.tailrocks.java", version = "0.1.4" }
 tailrocks-idea = { id = "com.tailrocks.idea", version = "0.1.3" }
 tailrocks-junit = { id = "com.tailrocks.junit", version = "0.1.5" }
 tailrocks-versions = { id = "com.tailrocks.versions", version = "0.1.4" }
-tailrocks-maven-publish = { id = "com.tailrocks.maven-publish", version = "0.1.6" }
+tailrocks-maven-publish = { id = "com.tailrocks.maven-publish", version = "0.1.8" }
 tailrocks-signing = { id = "com.tailrocks.signing", version = "0.1.3" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
