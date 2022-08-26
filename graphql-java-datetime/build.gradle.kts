@@ -4,11 +4,6 @@ plugins {
     id("graphql-datetime-library-conventions")
 }
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 dependencies {
     api(libs.graphql.java)
 

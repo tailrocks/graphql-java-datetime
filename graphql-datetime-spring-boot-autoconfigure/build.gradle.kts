@@ -3,11 +3,6 @@ plugins {
     id("graphql-datetime-library-conventions")
 }
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
 dependencies {
     api(project(":graphql-datetime-spring-boot-common"))
 
