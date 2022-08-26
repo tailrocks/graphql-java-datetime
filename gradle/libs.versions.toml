@@ -6,7 +6,7 @@ junit = "5.8.2"
 graphql-java = "18.3"
 graphql-kickstart-spring-boot = "13.0.1"
 commons-text = "1.9"
-spring-boot = "2.7.2"
+spring-boot = "2.7.3"
 spock = "2.1-groovy-3.0"
 dgs = "5.1.1"
 
