@@ -36,5 +36,5 @@ tailrocks-versions = { id = "com.tailrocks.versions", version = "0.1.4" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-plugin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
-spring-dependency-management = { id = "io.spring.dependency-management", version = "1.0.13.RELEASE" }
+spring-dependency-management = { id = "io.spring.dependency-management", version = "1.0.14.RELEASE" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
