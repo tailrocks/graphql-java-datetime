@@ -1,6 +1,6 @@
 [versions]
 # Libraries
-kotlin = "1.6.21"
+kotlin = "1.7.20"
 groovy = "3.0.13"
 junit = "5.8.2"
 graphql-java = "18.3"
