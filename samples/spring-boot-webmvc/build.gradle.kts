@@ -1,5 +1,4 @@
 plugins {
-    groovy
     id("com.adarshr.test-logger")
     id("io.spring.dependency-management")
     id("org.springframework.boot")
@@ -19,7 +18,5 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    testImplementation(libs.groovy.all)
-    testImplementation(libs.spock.spring)
     testImplementation(libs.commons.text)
 }

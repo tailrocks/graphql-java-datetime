@@ -8,9 +8,7 @@ plugins {
     alias(libs.plugins.tailrocks.idea) apply false
     alias(libs.plugins.tailrocks.junit) apply false
     alias(libs.plugins.tailrocks.versions) apply false
-    alias(libs.plugins.kotlin.jvm) apply false
-    alias(libs.plugins.kotlin.kapt) apply false
-    alias(libs.plugins.kotlin.plugin.allopen) apply false
+    alias(libs.plugins.tailrocks.kotlin) apply false
     alias(libs.plugins.spring.dependency.management) apply false
     alias(libs.plugins.spring.boot) apply false
 }
@@ -49,8 +47,5 @@ subprojects {
         implementation(platform(rootProject.libs.boms.junit))
         testImplementation("org.junit.jupiter:junit-jupiter-api")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
-        // TODO remove after Spock started supports junit-jupiter engine
-        testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
     }
 }
