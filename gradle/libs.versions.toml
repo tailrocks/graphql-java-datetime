@@ -22,6 +22,7 @@ tailrocks-kotlin-conventions = { module = "com.tailrocks.gradle:kotlin-conventio
 tailrocks-junit-conventions = { module = "com.tailrocks.gradle:junit-conventions", version = "0.2.0" }
 kotest-runner-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
 
 [plugins]
 test-logger = { id = "com.adarshr.test-logger", version = "3.2.0" }

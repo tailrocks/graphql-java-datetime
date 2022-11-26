@@ -19,21 +19,21 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
-import spock.lang.Specification
-import spock.lang.Unroll
+import io.kotest.core.spec.style.FunSpec
 
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-import static java.time.ZoneOffset.UTC
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
+import java.time.ZoneOffset.UTC
+import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
 
 /**
  * @author Alexey Zhokhov
  */
-class GraphQLLocalDateTest extends Specification {
+class GraphQLLocalDateTest : FunSpec({
 
+    /*
     def setup() {
         TimeZone.setDefault(TimeZone.getTimeZone(UTC))
     }
@@ -149,5 +149,6 @@ class GraphQLLocalDateTest extends Specification {
             value                    | result
             LocalDate.of(2020, 7, 6) | '07/06/2020'
     }
+     */
 
-}
+})

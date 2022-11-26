@@ -3,8 +3,12 @@ plugins {
     id("com.tailrocks.kotlin")
 }
 
+val catalogs = extensions.getByType<VersionCatalogsExtension>()
+
+val libs = catalogs.named("libs")
+
 dependencies {
-    // Kotest
-    //testImplementation(libs.kotest.runner.junit)
-    //testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.findLibrary("kotest.runner.junit").orElseThrow())
+    testImplementation(libs.findLibrary("kotest.assertions.core").orElseThrow())
+    testImplementation(libs.findLibrary("kotest.framework.datatest").orElseThrow())
 }

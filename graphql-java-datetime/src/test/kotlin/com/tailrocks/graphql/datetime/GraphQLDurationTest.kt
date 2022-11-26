@@ -19,20 +19,20 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
-import spock.lang.Specification
-import spock.lang.Unroll
+import io.kotest.core.spec.style.FunSpec
 
 import java.time.Duration
 
-import static java.time.ZoneOffset.UTC
+import java.time.ZoneOffset.UTC
 
 /**
  * @author Alexey Zhokhov
  *
  * Test Java 8 ISO 8601 Duration
  */
-class GraphQLDurationTest extends Specification {
+class GraphQLDurationTest : FunSpec({
 
+    /*
     def setup() {
         TimeZone.setDefault(TimeZone.getTimeZone(UTC))
     }
@@ -114,5 +114,6 @@ class GraphQLDurationTest extends Specification {
             '1DT3H'      | _
             new Object() | _
     }
+     */
 
-}
+})

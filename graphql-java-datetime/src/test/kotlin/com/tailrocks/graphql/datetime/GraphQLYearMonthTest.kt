@@ -19,18 +19,18 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
-import spock.lang.Specification
-import spock.lang.Unroll
+import io.kotest.core.spec.style.FunSpec
 
 import java.time.YearMonth
 
-import static java.time.ZoneOffset.UTC
+import java.time.ZoneOffset.UTC
 
 /**
  * @author Alexey Zhokhov
  */
-class GraphQLYearMonthTest extends Specification {
+class GraphQLYearMonthTest : FunSpec({
 
+    /*
     def setup() {
         TimeZone.setDefault(TimeZone.getTimeZone(UTC))
     }
@@ -112,5 +112,6 @@ class GraphQLYearMonthTest extends Specification {
             'not a date' | _
             new Object() | _
     }
+     */
 
-}
+})

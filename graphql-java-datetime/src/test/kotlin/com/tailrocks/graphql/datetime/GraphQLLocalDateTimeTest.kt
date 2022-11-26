@@ -19,8 +19,7 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
-import spock.lang.Specification
-import spock.lang.Unroll
+import io.kotest.core.spec.style.FunSpec
 
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -28,15 +27,16 @@ import java.time.LocalTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-import static java.time.ZoneOffset.UTC
-import static java.time.format.DateTimeFormatter.ISO_INSTANT
-import static java.util.concurrent.TimeUnit.MILLISECONDS
+import java.time.ZoneOffset.UTC
+import java.time.format.DateTimeFormatter.ISO_INSTANT
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 /**
  * @author Alexey Zhokhov
  */
-class GraphQLLocalDateTimeTest extends Specification {
+class GraphQLLocalDateTimeTest : FunSpec({
 
+    /*
     def setup() {
         TimeZone.setDefault(TimeZone.getTimeZone(UTC))
     }
@@ -183,5 +183,6 @@ class GraphQLLocalDateTimeTest extends Specification {
             value                                    | result
             LocalDateTime.of(1993, 2, 9, 13, 15, 59) | '1993-02-09T13:15:59'
     }
+     */
 
-}
+})
