@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     java
     alias(libs.plugins.test.logger) apply false
@@ -41,11 +39,4 @@ allprojects {
 subprojects {
     apply(plugin = "com.tailrocks.java")
     apply(plugin = "com.tailrocks.junit")
-
-    dependencies {
-        // JUnit
-        implementation(platform(rootProject.libs.boms.junit))
-        testImplementation("org.junit.jupiter:junit-jupiter-api")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-    }
 }

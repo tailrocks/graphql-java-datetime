@@ -6,4 +6,5 @@ plugins {
 
 dependencies {
     api(libs.graphql.java)
+    testImplementation(libs.kotest.runner.junit)
 }

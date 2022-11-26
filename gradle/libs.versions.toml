@@ -1,6 +1,6 @@
 [versions]
 # Libraries
-junit = "5.9.1"
+kotest = "5.5.4"
 graphql-java = "18.3"
 graphql-kickstart-spring-boot = "14.1.0"
 commons-text = "1.10.0"
@@ -9,7 +9,6 @@ dgs = "5.4.3"
 
 [libraries]
 # BOMs
-boms-junit = { module = "org.junit:junit-bom", version.ref = "junit" }
 boms-spring-boot = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 boms-dgs = { module = "com.netflix.graphql.dgs:graphql-dgs-platform-dependencies", version.ref = "dgs" }
 
@@ -19,6 +18,7 @@ commons-text = { module = "org.apache.commons:commons-text", version.ref = "comm
 graphql-java = { module = "com.graphql-java:graphql-java", version.ref = "graphql-java" }
 tailrocks-maven-publish-conventions = { module = "com.tailrocks.gradle:maven-publish-conventions", version = "0.2.0" }
 tailrocks-signing-conventions = { module = "com.tailrocks.gradle:signing-conventions", version = "0.2.0" }
+kotest-runner-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 
 [plugins]
 test-logger = { id = "com.adarshr.test-logger", version = "3.2.0" }
