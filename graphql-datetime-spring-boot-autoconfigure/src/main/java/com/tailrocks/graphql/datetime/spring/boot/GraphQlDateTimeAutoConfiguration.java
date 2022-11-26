@@ -17,7 +17,6 @@ package com.tailrocks.graphql.datetime.spring.boot;
 
 import graphql.schema.GraphQLScalarType;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +24,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * @author Alexey Zhokhov
  */
-@AutoConfiguration
-@AutoConfigureBefore({org.springframework.boot.autoconfigure.graphql.GraphQlAutoConfiguration.class})
+@AutoConfiguration(before = {org.springframework.boot.autoconfigure.graphql.GraphQlAutoConfiguration.class})
 @ConditionalOnClass({org.springframework.graphql.execution.RuntimeWiringConfigurer.class})
 public class GraphQlDateTimeAutoConfiguration {
 
