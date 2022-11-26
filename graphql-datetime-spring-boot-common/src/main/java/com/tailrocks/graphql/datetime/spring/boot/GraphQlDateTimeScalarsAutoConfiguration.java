@@ -23,18 +23,18 @@ import com.tailrocks.graphql.datetime.LocalTimeScalar;
 import com.tailrocks.graphql.datetime.OffsetDateTimeScalar;
 import com.tailrocks.graphql.datetime.YearMonthScalar;
 import graphql.schema.GraphQLScalarType;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.time.format.DateTimeFormatter;
 
 /**
  * @author Alexey Zhokhov
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @AutoConfigureBefore(name = {"graphql.kickstart.autoconfigure.tools.GraphQLJavaToolsAutoConfiguration"})
 @EnableConfigurationProperties(GraphQlDateTimeProperties.class)
 public class GraphQlDateTimeScalarsAutoConfiguration {
