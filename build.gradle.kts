@@ -4,9 +4,7 @@ plugins {
     alias(libs.plugins.tailrocks.spotless)
     alias(libs.plugins.tailrocks.java) apply false
     alias(libs.plugins.tailrocks.idea) apply false
-    alias(libs.plugins.tailrocks.junit) apply false
     alias(libs.plugins.tailrocks.versions) apply false
-    alias(libs.plugins.tailrocks.kotlin) apply false
     alias(libs.plugins.spring.dependency.management) apply false
     alias(libs.plugins.spring.boot) apply false
 }
@@ -38,5 +36,4 @@ allprojects {
 
 subprojects {
     apply(plugin = "com.tailrocks.java")
-    apply(plugin = "com.tailrocks.junit")
 }
