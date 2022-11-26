@@ -2,7 +2,7 @@
 # Libraries
 kotlin = "1.7.21"
 groovy = "3.0.13"
-junit = "5.8.2"
+junit = "5.9.1"
 graphql-java = "18.3"
 graphql-kickstart-spring-boot = "14.1.0"
 commons-text = "1.10.0"
