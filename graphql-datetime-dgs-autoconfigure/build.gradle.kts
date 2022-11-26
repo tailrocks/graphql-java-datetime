@@ -14,7 +14,3 @@ dependencies {
     compileOnly(platform(libs.boms.dgs))
     compileOnly("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
 }
-
-tasks.withType<JavaCompile> {
-    options.release.set(8)
-}

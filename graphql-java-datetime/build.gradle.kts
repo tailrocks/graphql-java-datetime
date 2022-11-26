@@ -10,7 +10,3 @@ dependencies {
     testImplementation(libs.groovy.all)
     testImplementation(libs.spock.core)
 }
-
-tasks.withType<JavaCompile> {
-    options.release.set(8)
-}

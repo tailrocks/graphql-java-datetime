@@ -10,7 +10,3 @@ dependencies {
     compileOnly(platform(libs.boms.spring.boot))
     compileOnly("org.springframework.boot:spring-boot-starter-graphql")
 }
-
-tasks.withType<JavaCompile> {
-    options.release.set(8)
-}

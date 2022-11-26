@@ -53,10 +53,4 @@ subprojects {
         // TODO remove after Spock started supports junit-jupiter engine
         testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
     }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "1.8"
-        }
-    }
 }

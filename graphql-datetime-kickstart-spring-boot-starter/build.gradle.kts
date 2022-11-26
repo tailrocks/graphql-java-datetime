@@ -8,7 +8,3 @@ dependencies {
     // GraphQL Kickstart
     api(libs.graphql.kickstart.spring.boot.starter)
 }
-
-tasks.withType<JavaCompile> {
-    options.release.set(8)
-}

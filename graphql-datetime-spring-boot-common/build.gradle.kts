@@ -12,7 +12,3 @@ dependencies {
     implementation(platform(libs.boms.spring.boot))
     implementation("org.springframework.boot:spring-boot-autoconfigure")
 }
-
-tasks.withType<JavaCompile> {
-    options.release.set(8)
-}
