@@ -19,6 +19,7 @@ import com.tailrocks.graphql.datetime.DateTimeHelper.createDate
 import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
+import graphql.schema.CoercingSerializeException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
@@ -60,36 +61,35 @@ class GraphQLDateTest : FreeSpec({
         }
     }
 
-    /*
+    "serialize -> success" - {
+        listOf(
+            createDate(2017, 7, 9, 11, 54, 42, 277)
+                    to "2017-07-09T11:54:42.277Z",
+            createDate(2017, 7, 9, 13, 14, 45, 947)
+                    to "2017-07-09T13:14:45.947Z",
+            createDate(2017, 7, 9, 11, 54, 42)
+                    to "2017-07-09T11:54:42Z",
+            createDate(2017, 7, 9) to "2017-07-09T00:00:00Z"
+        ).forEach { (value, result) ->
+            "serialize $value into $result (${result::class})" {
+                GraphqlDateCoercing().serialize(value) shouldBe result
+            }
+        }
+    }
 
-@Unroll
-def "Date serialize #value into #result (#result.class)"() {
-    expect:
-        new GraphqlDateCoercing().serialize(value) == result
-
-    where:
-        value                                   | result
-        createDate(2017, 7, 9, 11, 54, 42, 277) | '2017-07-09T11:54:42.277Z'
-        createDate(2017, 7, 9, 13, 14, 45, 947) | '2017-07-09T13:14:45.947Z'
-        createDate(2017, 7, 9, 11, 54, 42)      | '2017-07-09T11:54:42Z'
-        createDate(2017, 7, 9)                  | '2017-07-09T00:00:00Z'
-}
-
-@Unroll
-def "serialize throws exception for invalid input #value"() {
-    when:
-        new GraphqlDateCoercing().serialize(value)
-    then:
-        thrown(CoercingSerializeException)
-
-    where:
-        value        | _
-        ''           | _
-        'not a date' | _
-        new Object() | _
-}
-
- */
+    "serialize -> fail" - {
+        listOf(
+            "",
+            "not a date",
+            Object()
+        ).forEach { value ->
+            "serialize throws exception for invalid input: $value" {
+                shouldThrow<CoercingSerializeException> {
+                    GraphqlDateCoercing().serialize(value)
+                }
+            }
+        }
+    }
 
     "parseValue -> success" - {
         listOf(
