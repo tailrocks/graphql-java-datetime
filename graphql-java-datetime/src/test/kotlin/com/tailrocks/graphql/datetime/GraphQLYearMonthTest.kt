@@ -19,16 +19,18 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
+import io.kotest.core.spec.style.FreeSpec
 import io.kotest.core.spec.style.FunSpec
 
 import java.time.YearMonth
 
 import java.time.ZoneOffset.UTC
+import java.util.*
 
 /**
  * @author Alexey Zhokhov
  */
-class GraphQLYearMonthTest : FunSpec({
+class GraphQLYearMonthTest : FreeSpec({
 
     /*
     def setup() {
@@ -42,10 +44,10 @@ class GraphQLYearMonthTest : FunSpec({
 
         where:
             literal                                     | result
-            new StringValue('2017-07-09T11:54:42.277Z') | YearMonth.of(2017, 7)
-            new StringValue('2017-07-09T13:14:45.947Z') | YearMonth.of(2017, 7)
-            new StringValue('2017-07-09T11:54:42Z')     | YearMonth.of(2017, 7)
-            new StringValue('2017-07-09')               | YearMonth.of(2017, 7)
+            new StringValue("2017-07-09T11:54:42.277Z") | YearMonth.of(2017, 7)
+            new StringValue("2017-07-09T13:14:45.947Z") | YearMonth.of(2017, 7)
+            new StringValue("2017-07-09T11:54:42Z")     | YearMonth.of(2017, 7)
+            new StringValue("2017-07-09")               | YearMonth.of(2017, 7)
     }
 
     @Unroll
@@ -58,8 +60,8 @@ class GraphQLYearMonthTest : FunSpec({
 
         where:
             literal                       | _
-            new StringValue('')           | _
-            new StringValue('not a date') | _
+            new StringValue("")           | _
+            new StringValue("not a date") | _
     }
 
     @Unroll
@@ -69,7 +71,7 @@ class GraphQLYearMonthTest : FunSpec({
 
         where:
             value                 | result
-            YearMonth.of(2017, 7) | '2017-07'
+            YearMonth.of(2017, 7) | "2017-07"
     }
 
     @Unroll
@@ -81,8 +83,8 @@ class GraphQLYearMonthTest : FunSpec({
 
         where:
             value        | _
-            ''           | _
-            'not a date' | _
+            ""           | _
+            "not a date" | _
             new Object() | _
     }
 
@@ -93,10 +95,10 @@ class GraphQLYearMonthTest : FunSpec({
 
         where:
             value                      | result
-            '2020-07-09T11:54:42.277Z' | YearMonth.of(2020, 7)
-            '2020-07-09T13:14:45.947Z' | YearMonth.of(2020, 7)
-            '2020-1'                   | YearMonth.of(2020, 1)
-            '2020-11'                  | YearMonth.of(2020, 11)
+            "2020-07-09T11:54:42.277Z" | YearMonth.of(2020, 7)
+            "2020-07-09T13:14:45.947Z" | YearMonth.of(2020, 7)
+            "2020-1"                   | YearMonth.of(2020, 1)
+            "2020-11"                  | YearMonth.of(2020, 11)
     }
 
     @Unroll
@@ -108,10 +110,14 @@ class GraphQLYearMonthTest : FunSpec({
 
         where:
             value        | _
-            ''           | _
-            'not a date' | _
+            ""           | _
+            "not a date" | _
             new Object() | _
     }
      */
 
-})
+}) {
+    init {
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    }
+}

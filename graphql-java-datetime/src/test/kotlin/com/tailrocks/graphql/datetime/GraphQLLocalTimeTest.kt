@@ -19,17 +19,19 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
+import io.kotest.core.spec.style.FreeSpec
 import io.kotest.core.spec.style.FunSpec
 
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
 
 import java.time.ZoneOffset.UTC
+import java.util.*
 
 /**
  * @author Alexey Zhokhov
  */
-class GraphQLLocalTimeTest : FunSpec({
+class GraphQLLocalTimeTest : FreeSpec({
 
     /*
     def setup() {
@@ -43,9 +45,9 @@ class GraphQLLocalTimeTest : FunSpec({
 
         where:
             literal                     | result
-            new StringValue('00:00:00') | LocalTime.MIDNIGHT
-            new StringValue('10:15:30') | LocalTime.of(10, 15, 30)
-            new StringValue('17:59:59') | LocalTime.of(17, 59, 59)
+            new StringValue("00:00:00") | LocalTime.MIDNIGHT
+            new StringValue("10:15:30") | LocalTime.of(10, 15, 30)
+            new StringValue("17:59:59") | LocalTime.of(17, 59, 59)
     }
 
     @Unroll
@@ -58,8 +60,8 @@ class GraphQLLocalTimeTest : FunSpec({
 
         where:
             literal                            | _
-            new StringValue('')                | _
-            new StringValue('not a localtime') | _
+            new StringValue("")                | _
+            new StringValue("not a localtime") | _
     }
 
     @Unroll
@@ -69,10 +71,10 @@ class GraphQLLocalTimeTest : FunSpec({
 
         where:
             value                                                              | result
-            LocalTime.MIDNIGHT                                                 | '00:00:00'
-            LocalTime.of(10, 15, 30)                                           | '10:15:30'
-            LocalTime.of(17, 59, 59)                                           | '17:59:59'
-            LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277)) | '17:59:59.277'
+            LocalTime.MIDNIGHT                                                 | "00:00:00"
+            LocalTime.of(10, 15, 30)                                           | "10:15:30"
+            LocalTime.of(17, 59, 59)                                           | "17:59:59"
+            LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277)) | "17:59:59.277"
     }
 
     @Unroll
@@ -84,8 +86,8 @@ class GraphQLLocalTimeTest : FunSpec({
 
         where:
             value             | _
-            ''                | _
-            'not a localtime' | _
+            ""                | _
+            "not a localtime" | _
             new Object()      | _
     }
 
@@ -96,10 +98,10 @@ class GraphQLLocalTimeTest : FunSpec({
 
         where:
             value          | result
-            '00:00:00'     | LocalTime.MIDNIGHT
-            '10:15:30'     | LocalTime.of(10, 15, 30)
-            '17:59:59'     | LocalTime.of(17, 59, 59)
-            '17:59:59.277' | LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277))
+            "00:00:00"     | LocalTime.MIDNIGHT
+            "10:15:30"     | LocalTime.of(10, 15, 30)
+            "17:59:59"     | LocalTime.of(17, 59, 59)
+            "17:59:59.277" | LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277))
     }
 
     @Unroll
@@ -111,10 +113,14 @@ class GraphQLLocalTimeTest : FunSpec({
 
         where:
             value             | _
-            ''                | _
-            'not a localtime' | _
+            ""                | _
+            "not a localtime" | _
             new Object()      | _
     }
      */
 
-})
+}) {
+    init {
+        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    }
+}
