@@ -74,7 +74,7 @@ class GraphQLLocalTimeTest : FreeSpec({
             LocalTime.MIDNIGHT                                                 | "00:00:00"
             LocalTime.of(10, 15, 30)                                           | "10:15:30"
             LocalTime.of(17, 59, 59)                                           | "17:59:59"
-            LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277)) | "17:59:59.277"
+            LocalTime.of(17, 59, 59, TimeUnit.MILLISECONDS.toNanos(277)) | "17:59:59.277"
     }
 
     @Unroll
@@ -101,7 +101,7 @@ class GraphQLLocalTimeTest : FreeSpec({
             "00:00:00"     | LocalTime.MIDNIGHT
             "10:15:30"     | LocalTime.of(10, 15, 30)
             "17:59:59"     | LocalTime.of(17, 59, 59)
-            "17:59:59.277" | LocalTime.of(17, 59, 59, (int) TimeUnit.MILLISECONDS.toNanos(277))
+            "17:59:59.277" | LocalTime.of(17, 59, 59, TimeUnit.MILLISECONDS.toNanos(277))
     }
 
     @Unroll

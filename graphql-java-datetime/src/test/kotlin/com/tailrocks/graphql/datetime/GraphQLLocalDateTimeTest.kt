@@ -19,8 +19,10 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -36,156 +38,171 @@ import java.util.concurrent.TimeUnit.MILLISECONDS
 /**
  * @author Alexey Zhokhov
  */
-class GraphQLLocalDateTimeTest: FreeSpec({
+class GraphQLLocalDateTimeTest : FreeSpec({
 
-    /*
-    def setup() {
-        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    "parseLiteral -> success" - {
+        listOf(
+            StringValue("2017-07-09T11:54:42.277Z")
+                    to LocalDateTime.of(2017, 7, 9, 11, 54, 42, MILLISECONDS.toNanos(277).toInt()),
+            StringValue("2017-07-09T13:14:45.947Z")
+                    to LocalDateTime.of(2017, 7, 9, 13, 14, 45, MILLISECONDS.toNanos(947).toInt()),
+            StringValue("2017-07-09T11:54:42Z")
+                    to LocalDateTime.of(2017, 7, 9, 11, 54, 42),
+            StringValue("2017-07-09T13:14:45.947")
+                    to LocalDateTime.of(2017, 7, 9, 13, 14, 45, MILLISECONDS.toNanos(947).toInt()),
+            StringValue("2017-07-09T11:54:42")
+                    to LocalDateTime.of(2017, 7, 9, 11, 54, 42),
+            StringValue("2017-07-09")
+                    to LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+        ).forEach { (literal, result) ->
+            "parse literal ${literal.value} as $result" {
+                GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseLiteral(literal) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "LocalDateTime parse literal #literal.value as #result"() {
-        expect:
-            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseLiteral(literal) == result
-
-        where:
-            literal                                     | result
-            new StringValue("2017-07-09T11:54:42.277Z") | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
-            new StringValue("2017-07-09T13:14:45.947Z") | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
-            new StringValue("2017-07-09T11:54:42Z")     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
-            new StringValue("2017-07-09T13:14:45.947")  | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
-            new StringValue("2017-07-09T11:54:42")      | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
-            new StringValue("2017-07-09")               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+    "parseLiteral -> fail" - {
+        listOf(
+            StringValue(""),
+            StringValue("not a localdatetime")
+        ).forEach { literal ->
+            "throws exception for invalid $literal" {
+                shouldThrow<CoercingParseLiteralException> {
+                    GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseLiteral(literal)
+                }
+            }
+        }
     }
 
-    @Unroll
-    def "LocalDateTime parseLiteral throws exception for invalid #literal"() {
-        when:
-            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseLiteral(literal)
-
-        then:
-            thrown(CoercingParseLiteralException)
-
-        where:
-            literal                                | _
-            new StringValue("")                    | _
-            new StringValue("not a localdatetime") | _
+    "serialize -> success" - {
+        listOf(
+            LocalDateTime.of(2017, 7, 9, 11, 54, 42, MILLISECONDS.toNanos(277).toInt())
+                    to "2017-07-09T11:54:42.277Z",
+            LocalDateTime.of(2017, 7, 9, 13, 14, 45, MILLISECONDS.toNanos(947).toInt())
+                    to "2017-07-09T13:14:45.947Z",
+            LocalDateTime.of(2017, 7, 9, 11, 54, 42)
+                    to "2017-07-09T11:54:42Z",
+            LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+                    to "2017-07-09T00:00:00Z"
+        ).forEach { (value, result) ->
+            "serialize $value into $result (${result::class.java})" {
+                GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).serialize(value) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "LocalDateTime serialize #value into #result (#result.class)"() {
-        expect:
-            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).serialize(value) == result
-
-        where:
-            value                                                                     | result
-            LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277)) | "2017-07-09T11:54:42.277Z"
-            LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947)) | "2017-07-09T13:14:45.947Z"
-            LocalDateTime.of(2017, 7, 9, 11, 54, 42)                                  | "2017-07-09T11:54:42Z"
-            LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)            | "2017-07-09T00:00:00Z"
+    "serialize -> fail" - {
+        listOf(
+            "",
+            "not a localdatetime",
+            Object()
+        ).forEach { value ->
+            "throws exception for invalid input $value" {
+                shouldThrow<CoercingSerializeException> {
+                    GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).serialize(value)
+                }
+            }
+        }
     }
 
-    @Unroll
-    def "serialize throws exception for invalid input #value"() {
-        when:
-            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).serialize(value)
-        then:
-            thrown(CoercingSerializeException)
-
-        where:
-            value                 | _
-            ""                    | _
-            "not a localdatetime" | _
-            new Object()          | _
+    "parseValue -> success" - {
+        listOf(
+            "2017-07-09T11:54:42.277Z"
+                    to LocalDateTime.of(2017, 7, 9, 11, 54, 42, MILLISECONDS.toNanos(277).toInt()),
+            "2017-07-09T13:14:45.947Z"
+                    to LocalDateTime.of(2017, 7, 9, 13, 14, 45, MILLISECONDS.toNanos(947).toInt()),
+            "2017-07-09T11:54:42Z"
+                    to LocalDateTime.of(2017, 7, 9, 11, 54, 42),
+            "2017-07-09T13:14:45.947"
+                    to LocalDateTime.of(2017, 7, 9, 13, 14, 45, MILLISECONDS.toNanos(947).toInt()),
+            "2017-07-09T11:54:42"
+                    to LocalDateTime.of(2017, 7, 9, 11, 54, 42),
+            "2017-07-09"
+                    to LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+        ).forEach { (value, result) ->
+            "parse $value into $result (${result::class.java})" {
+                GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseValue(value) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "LocalDateTime parse #value into #result (#result.class)"() {
-        expect:
-            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseValue(value) == result
-
-        where:
-            value                      | result
-            "2017-07-09T11:54:42.277Z" | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
-            "2017-07-09T13:14:45.947Z" | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
-            "2017-07-09T11:54:42Z"     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
-            "2017-07-09T13:14:45.947"  | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
-            "2017-07-09T11:54:42"      | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
-            "2017-07-09"               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+    "parseValue -> fail" - {
+        listOf(
+            "",
+            "not a localdatetime",
+            Object()
+        ).forEach { value ->
+            "throws exception for invalid $value" {
+                shouldThrow<CoercingParseValueException> {
+                    GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseValue(value)
+                }
+            }
+        }
     }
 
-    @Unroll
-    def "parseValue throws exception for invalid input #value"() {
-        when:
-            new GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseValue(value)
-        then:
-            thrown(CoercingParseValueException)
+    "zone conversion" - {
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(1)))
 
-        where:
-            value                 | _
-            ""                    | _
-            "not a localdatetime" | _
-            new Object()          | _
+        "serialize -> success" - {
+            listOf(
+                LocalDateTime.of(2017, 7, 9, 11, 54, 42, MILLISECONDS.toNanos(277).toInt())
+                        to "2017-07-09T10:54:42.277Z",
+                LocalDateTime.of(2017, 7, 9, 13, 14, 45, MILLISECONDS.toNanos(947).toInt())
+                        to "2017-07-09T12:14:45.947Z",
+                LocalDateTime.of(2017, 7, 9, 11, 54, 42)
+                        to "2017-07-09T10:54:42Z",
+                LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT.plusHours(1))
+                        to "2017-07-09T00:00:00Z"
+            ).forEach { (value, result) ->
+                "serialize $value into $result (${result::class.java}) using zone conversion" {
+                    GraphqlLocalDateTimeCoercing(true, ISO_INSTANT).serialize(value) shouldBe result
+                }
+            }
+        }
+
+        "parseValue -> success" - {
+            listOf(
+                "2017-07-09T10:54:42.277Z"
+                        to LocalDateTime.of(2017, 7, 9, 11, 54, 42, MILLISECONDS.toNanos(277).toInt()),
+                "2017-07-09T12:14:45.947Z"
+                        to LocalDateTime.of(2017, 7, 9, 13, 14, 45, MILLISECONDS.toNanos(947).toInt()),
+                "2017-07-09T10:54:42Z"
+                        to LocalDateTime.of(2017, 7, 9, 11, 54, 42),
+                "2017-07-09"
+                        to LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
+            ).forEach { (value, result) ->
+                "parse $value into $result (${result::class.java}) using zone conversion" {
+                    GraphqlLocalDateTimeCoercing(true, ISO_INSTANT).parseValue(value) shouldBe result
+                }
+            }
+        }
     }
 
-    @Unroll
-    def "serialize #value into #result (#result.class) using zone conversion"() {
-        when:
-            TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(1)))
+    "custom formatter" - {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
 
-        then:
-            new GraphqlLocalDateTimeCoercing(true, ISO_INSTANT).serialize(value) == result
+        "parseValue -> success" - {
+            listOf(
+                "1993-02-09T13:15:59"
+                        to LocalDateTime.of(1993, 2, 9, 13, 15, 59)
+            ).forEach { (value, result) ->
+                "parse $value into $result (${result::class.java}) with custom formatter" {
+                    GraphqlLocalDateTimeCoercing(false, formatter).parseValue(value) shouldBe result
+                }
+            }
+        }
 
-        where:
-            value                                                                       | result
-            LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))   | "2017-07-09T10:54:42.277Z"
-            LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))   | "2017-07-09T12:14:45.947Z"
-            LocalDateTime.of(2017, 7, 9, 11, 54, 42)                                    | "2017-07-09T10:54:42Z"
-            LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT.plusHours(1)) | "2017-07-09T00:00:00Z"
+        "serialize -> success" - {
+            listOf(
+                LocalDateTime.of(1993, 2, 9, 13, 15, 59)
+                        to "1993-02-09T13:15:59"
+            ).forEach { (value, result) ->
+                "serialize $value into $result (${result::class.java}) with custom formatting" {
+                    GraphqlLocalDateTimeCoercing(false, formatter).serialize(value) shouldBe result
+                }
+            }
+        }
     }
-
-    @Unroll
-    def "parse #value into #result (#result.class) using zone conversion"() {
-        when:
-            TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(1)))
-
-        then:
-            new GraphqlLocalDateTimeCoercing(true, ISO_INSTANT).parseValue(value) == result
-
-        where:
-            value                      | result
-            "2017-07-09T10:54:42.277Z" | LocalDateTime.of(2017, 7, 9, 11, 54, 42, (int) MILLISECONDS.toNanos(277))
-            "2017-07-09T12:14:45.947Z" | LocalDateTime.of(2017, 7, 9, 13, 14, 45, (int) MILLISECONDS.toNanos(947))
-            "2017-07-09T10:54:42Z"     | LocalDateTime.of(2017, 7, 9, 11, 54, 42)
-            "2017-07-09"               | LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
-    }
-
-    @Unroll
-    def "LocalDateTime parse #value into #result (#result.class) with custom formatter"() {
-        given:
-            def formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd\"T\"HH:mm:ss")
-
-        expect:
-            new GraphqlLocalDateTimeCoercing(false, formatter).parseValue(value) == result
-
-        where:
-            value                 | result
-            "1993-02-09T13:15:59" | LocalDateTime.of(1993, 2, 9, 13, 15, 59)
-    }
-
-    @Unroll
-    def "Date serialize #value into #result (#result.class) with custom formatting"() {
-        given:
-            def formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd\"T\"HH:mm:ss")
-
-        expect:
-            new GraphqlLocalDateTimeCoercing(false, formatter).serialize(value) == result
-
-        where:
-            value                                    | result
-            LocalDateTime.of(1993, 2, 9, 13, 15, 59) | "1993-02-09T13:15:59"
-    }
-     */
 
 }) {
     init {
