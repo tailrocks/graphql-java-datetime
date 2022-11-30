@@ -19,8 +19,10 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
 import java.time.YearMonth
 
@@ -32,89 +34,82 @@ import java.util.*
  */
 class GraphQLYearMonthTest : FreeSpec({
 
-    /*
-    def setup() {
-        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    "parseLiteral -> success" - {
+        listOf(
+            StringValue("2017-07-09T11:54:42.277Z") to YearMonth.of(2017, 7),
+            StringValue("2017-07-09T13:14:45.947Z") to YearMonth.of(2017, 7),
+            StringValue("2017-07-09T11:54:42Z") to YearMonth.of(2017, 7),
+            StringValue("2017-07-09") to YearMonth.of(2017, 7)
+        ).forEach { (literal, result) ->
+            "parse literal ${literal.value} as $result" {
+                GraphqlYearMonthCoercing().parseLiteral(literal) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "YearMonth parse literal #literal.value as #result"() {
-        expect:
-            new GraphqlYearMonthCoercing().parseLiteral(literal) == result
-
-        where:
-            literal                                     | result
-            new StringValue("2017-07-09T11:54:42.277Z") | YearMonth.of(2017, 7)
-            new StringValue("2017-07-09T13:14:45.947Z") | YearMonth.of(2017, 7)
-            new StringValue("2017-07-09T11:54:42Z")     | YearMonth.of(2017, 7)
-            new StringValue("2017-07-09")               | YearMonth.of(2017, 7)
+    "parseLiteral -> fail" - {
+        listOf(
+            StringValue(""),
+            StringValue("not a date")
+        ).forEach { literal ->
+            "throws exception for invalid $literal" {
+                shouldThrow<CoercingParseLiteralException> {
+                    GraphqlYearMonthCoercing().parseLiteral(literal)
+                }
+            }
+        }
     }
 
-    @Unroll
-    def "YearMonth parseLiteral throws exception for invalid #literal"() {
-        when:
-            new GraphqlYearMonthCoercing().parseLiteral(literal)
-
-        then:
-            thrown(CoercingParseLiteralException)
-
-        where:
-            literal                       | _
-            new StringValue("")           | _
-            new StringValue("not a date") | _
+    "serialize -> success" - {
+        listOf(
+            YearMonth.of(2017, 7) to "2017-07"
+        ).forEach { (value, result) ->
+            "serialize $value into $result (${result::class.java})" {
+                GraphqlYearMonthCoercing().serialize(value) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "YearMonth serialize #value into #result (#result.class)"() {
-        expect:
-            new GraphqlYearMonthCoercing().serialize(value) == result
-
-        where:
-            value                 | result
-            YearMonth.of(2017, 7) | "2017-07"
+    "serialize -> fail" - {
+        listOf(
+            "",
+            "not a date",
+            Object()
+        ).forEach { value ->
+            "throws exception for invalid input $value" {
+                shouldThrow<CoercingSerializeException> {
+                    GraphqlYearMonthCoercing().serialize(value)
+                }
+            }
+        }
     }
 
-    @Unroll
-    def "serialize throws exception for invalid input #value"() {
-        when:
-            new GraphqlYearMonthCoercing().serialize(value)
-        then:
-            thrown(CoercingSerializeException)
-
-        where:
-            value        | _
-            ""           | _
-            "not a date" | _
-            new Object() | _
+    "parseValue -> success" - {
+        listOf(
+            "2020-07-09T11:54:42.277Z" to YearMonth.of(2020, 7),
+            "2020-07-09T13:14:45.947Z" to YearMonth.of(2020, 7),
+            "2020-1" to YearMonth.of(2020, 1),
+            "2020-11" to YearMonth.of(2020, 11),
+        ).forEach { (value, result) ->
+            "parse $value into $result (${result::class.java})" {
+                GraphqlYearMonthCoercing().parseValue(value) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "YearMonth parse #value into #result (#result.class)"() {
-        expect:
-            new GraphqlYearMonthCoercing().parseValue(value) == result
-
-        where:
-            value                      | result
-            "2020-07-09T11:54:42.277Z" | YearMonth.of(2020, 7)
-            "2020-07-09T13:14:45.947Z" | YearMonth.of(2020, 7)
-            "2020-1"                   | YearMonth.of(2020, 1)
-            "2020-11"                  | YearMonth.of(2020, 11)
+    "parseValue -> fail" - {
+        listOf(
+            "",
+            "not a date",
+            Object(),
+        ).forEach { value ->
+            "throws exception for invalid input $value" {
+                shouldThrow<CoercingParseValueException> {
+                    GraphqlYearMonthCoercing().parseValue(value)
+                }
+            }
+        }
     }
-
-    @Unroll
-    def "parseValue throws exception for invalid input #value"() {
-        when:
-            new GraphqlYearMonthCoercing().parseValue(value)
-        then:
-            thrown(CoercingParseValueException)
-
-        where:
-            value        | _
-            ""           | _
-            "not a date" | _
-            new Object() | _
-    }
-     */
 
 }) {
     init {
