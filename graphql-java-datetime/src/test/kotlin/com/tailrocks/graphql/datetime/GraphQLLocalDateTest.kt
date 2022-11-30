@@ -19,8 +19,10 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
 import java.time.LocalDate
 import java.time.ZoneOffset
@@ -35,123 +37,109 @@ import java.util.*
  */
 class GraphQLLocalDateTest : FreeSpec({
 
-    /*
-    def setup() {
-        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    "parseLiteral -> success" - {
+        listOf(
+            StringValue("2017-07-09") to LocalDate.of(2017, 7, 9)
+        ).forEach { (literal, result) ->
+            "parse literal ${literal.value} as $result" {
+                GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "LocalDate parse literal #literal.value as #result"() {
-        expect:
-            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal) == result
-
-        where:
-            literal                       | result
-            new StringValue("2017-07-09") | LocalDate.of(2017, 7, 9)
+    "parseLiteral -> fail" - {
+        listOf(
+            StringValue(""),
+            StringValue("not a localdate"),
+            Object()
+        ).forEach { literal ->
+            shouldThrow<CoercingParseLiteralException> {
+                GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal)
+            }
+        }
     }
 
-    @Unroll
-    def "LocalDate parseLiteral throws exception for invalid #literal"() {
-        when:
-            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal)
-
-        then:
-            thrown(CoercingParseLiteralException)
-
-        where:
-            literal                            | _
-            new StringValue("")                | _
-            new StringValue("not a localdate") | _
+    "serialize -> success" - {
+        listOf(
+            LocalDate.of(2017, 7, 9) to "2017-07-09"
+        ).forEach { (value, result) ->
+            "serialize $value into $result (${result::class.java})" {
+                GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).serialize(value) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "LocalDate serialize #value into #result (#result.class)"() {
-        expect:
-            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).serialize(value) == result
+    "serialize -> fail" - {
+        listOf(
+            "",
+            "not a localdate",
+            Object()
+        ).forEach { value ->
+            "throws exception for invalid input $value" {
+                shouldThrow<CoercingSerializeException> {
+                    GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).serialize(value)
+                }
 
-        where:
-            value                    | result
-            LocalDate.of(2017, 7, 9) | "2017-07-09"
+            }
+        }
     }
 
-    @Unroll
-    def "serialize throws exception for invalid input #value"() {
-        when:
-            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).serialize(value)
-        then:
-            thrown(CoercingSerializeException)
-
-        where:
-            value             | _
-            ""                | _
-            "not a localdate" | _
-            new Object()      | _
+    "parseValue -> success" - {
+        listOf(
+            "2017-07-09" to LocalDate.of(2017, 7, 9)
+        ).forEach { (value, result) ->
+            "parse $value into $result (${result::class.java})" {
+                GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseValue(value) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "LocalDate parse #value into #result (#result.class)"() {
-        expect:
-            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseValue(value) == result
-
-        where:
-            value        | result
-            "2017-07-09" | LocalDate.of(2017, 7, 9)
+    "parseValue -> fail" - {
+        listOf(
+            "",
+            "not a date",
+            Object()
+        ).forEach { value ->
+            shouldThrow<CoercingParseValueException> {
+                GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseValue(value)
+            }
+        }
     }
 
-    @Unroll
-    def "LocalDate parse #value into #result (#result.class) using zone conversion"() {
-        when:
-            TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(2)))
+    "zone conversion" - {
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneOffset.ofHours(2)))
 
-        then:
-            new GraphqlLocalDateCoercing(true, ISO_LOCAL_DATE).parseValue(value) == result
-
-        where:
-            value                  | result
-            "2019-03-01"           | LocalDate.of(2019, 3, 1)
-            "2019-03-01T22:00:00Z" | LocalDate.of(2019, 3, 2)
+        "parseValue -> success" - {
+            listOf(
+                "2019-03-01" to LocalDate.of(2019, 3, 1),
+                "2019-03-01T22:00:00Z" to LocalDate.of(2019, 3, 2)
+            ).forEach { (value, result) ->
+                "parse $value into $result (${result::class.java}) using zone conversion" {
+                    GraphqlLocalDateCoercing(true, ISO_LOCAL_DATE).parseValue(value) shouldBe result
+                }
+            }
+        }
     }
 
-    @Unroll
-    def "parseValue throws exception for invalid input #value"() {
-        when:
-            new GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseValue(value)
-        then:
-            thrown(CoercingParseValueException)
+    "custom formatter" - {
+        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
 
-        where:
-            value        | _
-            ""           | _
-            "not a date" | _
-            new Object() | _
+        "parseValue -> success" - {
+            listOf(
+                "02/09/1993" to LocalDate.of(1993, 2, 9)
+            ).forEach { (value, result) ->
+                GraphqlLocalDateCoercing(false, formatter).parseValue(value) shouldBe result
+            }
+        }
+
+        "serialize -> success" - {
+            listOf(
+                LocalDate.of(2020, 7, 6) to "07/06/2020"
+            ).forEach { (value, result) ->
+                GraphqlLocalDateCoercing(false, formatter).serialize(value) shouldBe result
+            }
+        }
     }
-
-    @Unroll
-    def "LocalDate parse #value into #result (#result.class) with custom formatter"() {
-        given:
-            def formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
-
-        expect:
-            new GraphqlLocalDateCoercing(false, formatter).parseValue(value) == result
-
-        where:
-            value        | result
-            "02/09/1993" | LocalDate.of(1993, 2, 9)
-    }
-
-    @Unroll
-    def "LocalDate serialize #value into #result (#result.class) with custom formatting"() {
-        given:
-            def formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
-
-        expect:
-            new GraphqlLocalDateCoercing(false, formatter).serialize(value) == result
-
-        where:
-            value                    | result
-            LocalDate.of(2020, 7, 6) | "07/06/2020"
-    }
-     */
 
 }) {
     init {
