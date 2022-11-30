@@ -19,8 +19,10 @@ import graphql.language.StringValue
 import graphql.schema.CoercingParseLiteralException
 import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
 import java.time.LocalTime
 import java.util.concurrent.TimeUnit
@@ -33,91 +35,85 @@ import java.util.*
  */
 class GraphQLLocalTimeTest : FreeSpec({
 
-    /*
-    def setup() {
-        TimeZone.setDefault(TimeZone.getTimeZone(UTC))
+    "parseLiteral -> success" - {
+        listOf(
+            StringValue("00:00:00") to LocalTime.MIDNIGHT,
+            StringValue("10:15:30") to LocalTime.of(10, 15, 30),
+            StringValue("17:59:59") to LocalTime.of(17, 59, 59),
+        ).forEach { (literal, result) ->
+            "parse literal ${literal.value} as $result" {
+                GraphqlLocalTimeCoercing().parseLiteral(literal) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "LocalTime parse literal #literal.value as #result"() {
-        expect:
-            new GraphqlLocalTimeCoercing().parseLiteral(literal) == result
-
-        where:
-            literal                     | result
-            new StringValue("00:00:00") | LocalTime.MIDNIGHT
-            new StringValue("10:15:30") | LocalTime.of(10, 15, 30)
-            new StringValue("17:59:59") | LocalTime.of(17, 59, 59)
+    "parseLiteral -> fail" - {
+        listOf(
+            StringValue(""),
+            StringValue("not a localtime"),
+            Object()
+        ).forEach { literal ->
+            "throws exception for invalid $literal" {
+                shouldThrow<CoercingParseLiteralException> {
+                    GraphqlLocalTimeCoercing().parseLiteral(literal)
+                }
+            }
+        }
     }
 
-    @Unroll
-    def "LocalTime parseLiteral throws exception for invalid #literal"() {
-        when:
-            new GraphqlLocalTimeCoercing().parseLiteral(literal)
-
-        then:
-            thrown(CoercingParseLiteralException)
-
-        where:
-            literal                            | _
-            new StringValue("")                | _
-            new StringValue("not a localtime") | _
+    "serialize -> success" - {
+        listOf(
+            LocalTime.MIDNIGHT to "00:00:00",
+            LocalTime.of(10, 15, 30) to "10:15:30",
+            LocalTime.of(17, 59, 59) to "17:59:59",
+            LocalTime.of(17, 59, 59, TimeUnit.MILLISECONDS.toNanos(277).toInt()) to "17:59:59.277",
+        ).forEach { (value, result) ->
+            "serialize $value into $result (${result::class.java})" {
+                GraphqlLocalTimeCoercing().serialize(value) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "LocalTime serialize #value into #result (#result.class)"() {
-        expect:
-            new GraphqlLocalTimeCoercing().serialize(value) == result
-
-        where:
-            value                                                              | result
-            LocalTime.MIDNIGHT                                                 | "00:00:00"
-            LocalTime.of(10, 15, 30)                                           | "10:15:30"
-            LocalTime.of(17, 59, 59)                                           | "17:59:59"
-            LocalTime.of(17, 59, 59, TimeUnit.MILLISECONDS.toNanos(277)) | "17:59:59.277"
+    "serialize -> fail" - {
+        listOf(
+            "",
+            "not a localtime",
+            Object()
+        ).forEach { value ->
+            "throws exception for invalid input $value" {
+                shouldThrow<CoercingSerializeException> {
+                    GraphqlLocalTimeCoercing().serialize(value)
+                }
+            }
+        }
     }
 
-    @Unroll
-    def "serialize throws exception for invalid input #value"() {
-        when:
-            new GraphqlLocalTimeCoercing().serialize(value)
-        then:
-            thrown(CoercingSerializeException)
-
-        where:
-            value             | _
-            ""                | _
-            "not a localtime" | _
-            new Object()      | _
+    "parseValue -> success" - {
+        listOf(
+            "00:00:00" to LocalTime.MIDNIGHT,
+            "10:15:30" to LocalTime.of(10, 15, 30),
+            "17:59:59" to LocalTime.of(17, 59, 59),
+            "17:59:59.277" to LocalTime.of(17, 59, 59, TimeUnit.MILLISECONDS.toNanos(277).toInt())
+        ).forEach { (value, result) ->
+            "parse $value into $result (${result::class.java})" {
+                GraphqlLocalTimeCoercing().parseValue(value) shouldBe result
+            }
+        }
     }
 
-    @Unroll
-    def "LocalTime parse #value into #result (#result.class)"() {
-        expect:
-            new GraphqlLocalTimeCoercing().parseValue(value) == result
-
-        where:
-            value          | result
-            "00:00:00"     | LocalTime.MIDNIGHT
-            "10:15:30"     | LocalTime.of(10, 15, 30)
-            "17:59:59"     | LocalTime.of(17, 59, 59)
-            "17:59:59.277" | LocalTime.of(17, 59, 59, TimeUnit.MILLISECONDS.toNanos(277))
+    "parseValue -> fail" - {
+        listOf(
+            "",
+            "not a localtime",
+            Object()
+        ).forEach { value ->
+            "throws exception for invalid input $value" {
+                shouldThrow<CoercingParseValueException> {
+                    GraphqlLocalTimeCoercing().parseValue(value)
+                }
+            }
+        }
     }
-
-    @Unroll
-    def "parseValue throws exception for invalid input #value"() {
-        when:
-            new GraphqlLocalTimeCoercing().parseValue(value)
-        then:
-            thrown(CoercingParseValueException)
-
-        where:
-            value             | _
-            ""                | _
-            "not a localtime" | _
-            new Object()      | _
-    }
-     */
 
 }) {
     init {
