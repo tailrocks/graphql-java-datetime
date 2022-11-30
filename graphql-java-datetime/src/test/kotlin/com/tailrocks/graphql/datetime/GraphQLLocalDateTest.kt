@@ -51,10 +51,11 @@ class GraphQLLocalDateTest : FreeSpec({
         listOf(
             StringValue(""),
             StringValue("not a localdate"),
-            Object()
         ).forEach { literal ->
-            shouldThrow<CoercingParseLiteralException> {
-                GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal)
+            "throws exception for invalid $literal" {
+                shouldThrow<CoercingParseLiteralException> {
+                    GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal)
+                }
             }
         }
     }
@@ -100,8 +101,10 @@ class GraphQLLocalDateTest : FreeSpec({
             "not a date",
             Object()
         ).forEach { value ->
-            shouldThrow<CoercingParseValueException> {
-                GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseValue(value)
+            "throws exception for invalid $value" {
+                shouldThrow<CoercingParseValueException> {
+                    GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseValue(value)
+                }
             }
         }
     }
@@ -128,7 +131,9 @@ class GraphQLLocalDateTest : FreeSpec({
             listOf(
                 "02/09/1993" to LocalDate.of(1993, 2, 9)
             ).forEach { (value, result) ->
-                GraphqlLocalDateCoercing(false, formatter).parseValue(value) shouldBe result
+                "parse $value into $result (${result::class.java}) with custom formatter" {
+                    GraphqlLocalDateCoercing(false, formatter).parseValue(value) shouldBe result
+                }
             }
         }
 
@@ -136,7 +141,9 @@ class GraphQLLocalDateTest : FreeSpec({
             listOf(
                 LocalDate.of(2020, 7, 6) to "07/06/2020"
             ).forEach { (value, result) ->
-                GraphqlLocalDateCoercing(false, formatter).serialize(value) shouldBe result
+                "serialize $value into $result (${result::class.java}) with custom formatting" {
+                    GraphqlLocalDateCoercing(false, formatter).serialize(value) shouldBe result
+                }
             }
         }
     }

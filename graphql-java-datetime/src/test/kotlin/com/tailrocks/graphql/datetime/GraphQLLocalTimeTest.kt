@@ -51,7 +51,6 @@ class GraphQLLocalTimeTest : FreeSpec({
         listOf(
             StringValue(""),
             StringValue("not a localtime"),
-            Object()
         ).forEach { literal ->
             "throws exception for invalid $literal" {
                 shouldThrow<CoercingParseLiteralException> {
