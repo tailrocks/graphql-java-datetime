@@ -34,8 +34,11 @@ import java.time.format.DateTimeFormatter
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class SpringBootWebMvcSampleApplicationTests {
+class SpringBootWebMvcSampleApplicationTests : io.kotest.core.spec.style.FreeSpec() {
 
+        override fun extensions() = listOf(SpringExtension)
+
+        /*
     @Autowired TestRestTemplate restTemplate
 
     @Test
@@ -122,5 +125,7 @@ class SpringBootWebMvcSampleApplicationTests {
         assert response.body.data.noonTime == "12:00:00"
         assert response.body.data.springFirstRelease == "2002-10"
     }
+
+         */
 
 }
