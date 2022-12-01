@@ -15,18 +15,21 @@
  */
 package sample.spring.boot.webmvc
 
+import graphql.schema.GraphQLScalarType
+import io.kotest.core.spec.style.FreeSpec
+import io.kotest.extensions.spring.SpringExtension
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import org.apache.commons.text.StringEscapeUtils
-import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
+import org.springframework.context.ApplicationContext
+import org.springframework.graphql.execution.GraphQlSource
+import org.springframework.http.*
 import org.springframework.test.context.ActiveProfiles
-
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -34,17 +37,33 @@ import java.time.format.DateTimeFormatter
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class SpringBootWebMvcSampleApplicationTests : io.kotest.core.spec.style.FreeSpec() {
+class SpringBootWebMvcSampleApplicationTests : FreeSpec() {
 
-        override fun extensions() = listOf(SpringExtension)
+    override fun extensions() = listOf(SpringExtension)
 
-        /*
-    @Autowired TestRestTemplate restTemplate
+    data class GraphQLResponse(val data: ResponseData)
 
-    @Test
-    void "basic usage"() {
-        // given
-        String graphQlQuery = """
+    data class ResponseData(
+        val emperors: List<Emperor>,
+        val now: String,
+        val yesterday: String,
+        val tomorrowMidnight: String,
+        val noonTime: String,
+        val springFirstRelease: String
+    )
+
+    data class Emperor(val givenName: String, val title: String, val reignStart: String, val reignStop: String)
+
+    @Autowired
+    lateinit var restTemplate: TestRestTemplate
+
+    @Autowired
+    lateinit var applicationContext: ApplicationContext
+
+    init {
+        "basic usage" {
+            // given:
+            val graphQlQuery = """
 {
   emperors {
     givenName
@@ -60,72 +79,132 @@ class SpringBootWebMvcSampleApplicationTests : io.kotest.core.spec.style.FreeSpe
 }
 """.trim()
 
-        // when
-        String json = """
+            // when:
+            val json = """
 {
     "query": "${StringEscapeUtils.escapeJson(graphQlQuery)}"
 }
 """
 
-        HttpHeaders headers = new HttpHeaders()
-        headers.setContentType(MediaType.APPLICATION_JSON)
+            val headers = HttpHeaders()
+            headers.contentType = MediaType.APPLICATION_JSON
 
-        HttpEntity entity = new HttpEntity(json, headers)
+            val entity = HttpEntity(json, headers)
 
-        ResponseEntity<Map> response = restTemplate.postForEntity('/graphql', entity, Map.class)
+            val response = restTemplate.postForEntity("/graphql", entity, GraphQLResponse::class.java)
 
-        // then
-        assert response
-        assert response.statusCode == HttpStatus.OK
-        assert response.body
-        assert response.body.data
-        assert response.body.data.emperors.size() == 5
+            // then:
+            response.shouldNotBeNull()
+            response.statusCode shouldBe HttpStatus.OK
+            response.body.shouldNotBeNull().apply {
+                data.shouldNotBeNull().apply {
+                    emperors.shouldNotBeNull().apply {
+                        size shouldBe 5
 
-        def emperor = response.body.data.emperors[0]
+                        get(0).apply {
+                            givenName shouldBe "旻寧"
+                            title shouldBe "Daoguang Emperor"
+                            reignStart shouldBe "1820-10-03"
+                            reignStop shouldBe "1850-02-25"
+                        }
 
-        assert emperor.givenName == '旻寧'
-        assert emperor.title == 'Daoguang Emperor'
-        assert emperor.reignStart == '1820-10-03'
-        assert emperor.reignStop == '1850-02-25'
+                        get(1).apply {
+                            givenName shouldBe "奕詝"
+                            title shouldBe "Xianfeng Emperor"
+                            reignStart shouldBe "1850-03-09"
+                            reignStop shouldBe "1861-08-22"
+                        }
 
-        emperor = response.body.data.emperors[1]
+                        get(2).apply {
+                            givenName shouldBe "載淳"
+                            title shouldBe "Tongzhi Emperor"
+                            reignStart shouldBe "1861-11-11"
+                            reignStop shouldBe "1875-01-12"
+                        }
 
-        assert emperor.givenName == '奕詝'
-        assert emperor.title == 'Xianfeng Emperor'
-        assert emperor.reignStart == '1850-03-09'
-        assert emperor.reignStop == '1861-08-22'
+                        get(3).apply {
+                            givenName shouldBe "載湉"
+                            title shouldBe "Guangxu Emperor"
+                            reignStart shouldBe "1875-02-25"
+                            reignStop shouldBe "1908-11-14"
+                        }
 
-        emperor = response.body.data.emperors[2]
+                        get(4).apply {
+                            givenName shouldBe "溥儀"
+                            title shouldBe "Xuantong Emperor"
+                            reignStart shouldBe "1908-11-14"
+                            reignStop shouldBe "1912-02-12"
+                        }
+                    }
+                }
 
-        assert emperor.givenName == '載淳'
-        assert emperor.title == 'Tongzhi Emperor'
-        assert emperor.reignStart == '1861-11-11'
-        assert emperor.reignStop == '1875-01-12'
+                data.now.shouldNotBeNull().also {
+                    LocalDateTime.parse(it, DateTimeFormatter.ISO_DATE_TIME)
+                }
 
-        emperor = response.body.data.emperors[3]
+                data.yesterday.shouldNotBeNull().also {
+                    it shouldBe LocalDate.now().minusDays(1).toString()
+                }
 
-        assert emperor.givenName == '載湉'
-        assert emperor.title == 'Guangxu Emperor'
-        assert emperor.reignStart == '1875-02-25'
-        assert emperor.reignStop == '1908-11-14'
+                data.tomorrowMidnight.shouldNotBeNull().also {
+                    it shouldBe DateTimeFormatter.ISO_DATE_TIME.format(
+                        LocalDate.now().plusDays(1).atStartOfDay().atZone(ZoneOffset.UTC)
+                    )
+                }
 
-        emperor = response.body.data.emperors[4]
+                data.noonTime.shouldNotBeNull().also {
+                    it shouldBe "12:00:00"
+                }
 
-        assert emperor.givenName == '溥儀'
-        assert emperor.title == 'Xuantong Emperor'
-        assert emperor.reignStart == '1908-11-14'
-        assert emperor.reignStop == '1912-02-12'
+                data.springFirstRelease.shouldNotBeNull().also {
+                    it shouldBe "2002-10"
+                }
+            }
+        }
 
-        LocalDateTime.parse(response.body.data.now, DateTimeFormatter.ISO_DATE_TIME)
+        "check beans" {
+            applicationContext.getBean("graphQlDateScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlLocalDateScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlLocalDateTimeScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlLocalTimeScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlOffsetDateTimeScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlYearMonthScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlDurationScalar").shouldBeInstanceOf<GraphQLScalarType>()
+        }
 
-        assert response.body.data.yesterday == LocalDate.now().minusDays(1).toString()
-        assert response.body.data.tomorrowMidnight == DateTimeFormatter.ISO_DATE_TIME.format(
-                LocalDate.now().plusDays(1).atStartOfDay().atZone(ZoneOffset.UTC)
-        )
-        assert response.body.data.noonTime == "12:00:00"
-        assert response.body.data.springFirstRelease == "2002-10"
+        "ping" {
+            // given:
+            val query = """
+{
+    ping {
+        date
+        localDate
+        localDateTime
+        localTime
+        offsetDateTime
     }
+}
+"""
 
-         */
+            // when:
+            val graphQL = applicationContext.getBean(GraphQlSource::class.java).graphQl()
+
+            val executionResult = graphQL.execute(query)
+
+            // then:
+            executionResult.errors.isEmpty().shouldBeTrue()
+            executionResult.isDataPresent.shouldBeTrue()
+
+            executionResult.getData<Map<String, Map<String, String>>>().apply {
+                get("ping").shouldNotBeNull().apply {
+                    get("date") shouldBe "2017-07-10T06:12:46.754Z"
+                    get("localDate") shouldBe "2017-01-01"
+                    get("localDateTime") shouldBe "2017-01-01T00:00:00Z"
+                    get("offsetDateTime") shouldBe "2017-01-01T00:00:00Z"
+                    get("localTime") shouldBe "00:00:00"
+                }
+            }
+        }
+    }
 
 }
