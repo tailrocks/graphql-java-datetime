@@ -1,10 +1,9 @@
 plugins {
-    java
-    alias(libs.plugins.test.logger) apply false
+    alias(libs.plugins.tailrocks.java)
     alias(libs.plugins.tailrocks.spotless)
-    alias(libs.plugins.tailrocks.java) apply false
     alias(libs.plugins.tailrocks.idea) apply false
     alias(libs.plugins.tailrocks.versions) apply false
+    alias(libs.plugins.test.logger) apply false
     alias(libs.plugins.spring.dependency.management) apply false
     alias(libs.plugins.spring.boot) apply false
 }
