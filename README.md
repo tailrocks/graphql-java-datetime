@@ -85,7 +85,7 @@ for **Spring GraphQL**:
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
     <artifactId>graphql-datetime-spring-boot-starter</artifactId>
-    <version>5.0.1</version>
+    <version>6.0.0</version>
 </dependency>
 ```
 
@@ -108,7 +108,7 @@ implementation("com.tailrocks.graphql:graphql-datetime-dgs-starter:5.0.1")
 for **Spring GraphQL**:
 
 ```groovy
-implementation("com.tailrocks.graphql:graphql-datetime-spring-boot-starter:5.0.1")
+implementation("com.tailrocks.graphql:graphql-datetime-spring-boot-starter:6.0.0")
 ```
 
 ### Scalars
