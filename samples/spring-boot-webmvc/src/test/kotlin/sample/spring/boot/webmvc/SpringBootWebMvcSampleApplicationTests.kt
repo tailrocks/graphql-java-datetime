@@ -96,8 +96,9 @@ class SpringBootWebMvcSampleApplicationTests : FreeSpec() {
 }
 """
 
-            val headers = HttpHeaders()
-            headers.contentType = MediaType.APPLICATION_JSON
+            val headers = HttpHeaders().apply {
+                contentType = MediaType.APPLICATION_JSON
+            }
 
             val entity = HttpEntity(json, headers)
 
