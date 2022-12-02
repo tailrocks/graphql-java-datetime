@@ -8,3 +8,9 @@ dependencies {
     implementation(libs.tailrocks.kotlin.conventions)
     implementation(libs.tailrocks.junit.conventions)
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
