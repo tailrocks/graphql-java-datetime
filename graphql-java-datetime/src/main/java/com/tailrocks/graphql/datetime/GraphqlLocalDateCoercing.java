@@ -40,27 +40,14 @@ public class GraphqlLocalDateCoercing implements Coercing<LocalDate, String> {
         this.converter = new LocalDateTimeConverter(zoneConversionEnabled, formatter);
     }
 
-    private LocalDate convertImpl(Object input) {
-        if (input instanceof String) {
-            LocalDateTime localDateTime = converter.parseDate((String) input);
-
-            if (localDateTime != null) {
-                return localDateTime.toLocalDate();
-            }
-        } else if (input instanceof LocalDate) {
-            return (LocalDate) input;
-        }
-        return null;
-    }
-
     @Override
     public String serialize(Object input) {
-        if (input instanceof LocalDate) {
-            return converter.formatDate((LocalDate) input, formatter);
+        if (input instanceof LocalDate localDate) {
+            return converter.formatDate(localDate, formatter);
         } else {
             LocalDate result = convertImpl(input);
             if (result == null) {
-                throw new CoercingSerializeException("Invalid value '" + input + "' for LocalDate");
+                throw new CoercingSerializeException(getErrorMessage(input));
             }
             return converter.formatDate(result, formatter);
         }
@@ -70,7 +57,7 @@ public class GraphqlLocalDateCoercing implements Coercing<LocalDate, String> {
     public LocalDate parseValue(Object input) {
         LocalDate result = convertImpl(input);
         if (result == null) {
-            throw new CoercingParseValueException("Invalid value '" + input + "' for LocalDate");
+            throw new CoercingParseValueException(getErrorMessage(input));
         }
         return result;
     }
@@ -84,10 +71,27 @@ public class GraphqlLocalDateCoercing implements Coercing<LocalDate, String> {
         String value = ((StringValue) input).getValue();
         LocalDate result = convertImpl(value);
         if (result == null) {
-            throw new CoercingParseLiteralException("Invalid value '" + input + "' for LocalDate");
+            throw new CoercingParseLiteralException(getErrorMessage(input));
         }
 
         return result;
+    }
+
+    private LocalDate convertImpl(Object input) {
+        if (input instanceof String string) {
+            LocalDateTime localDateTime = converter.parseDate(string);
+
+            if (localDateTime != null) {
+                return localDateTime.toLocalDate();
+            }
+        } else if (input instanceof LocalDate localDate) {
+            return localDate;
+        }
+        return null;
+    }
+
+    private String getErrorMessage(Object input) {
+        return "Invalid value '" + input + "' for LocalDate";
     }
 
 }

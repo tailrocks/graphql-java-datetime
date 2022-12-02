@@ -51,6 +51,43 @@ public class GraphqlDateCoercing implements Coercing<Date, String> {
         initBasicFormatters();
     }
 
+    @Override
+    public String serialize(Object input) {
+        if (input instanceof Date date) {
+            return DateTimeHelper.toISOString(date);
+        } else {
+            Date result = convertImpl(input);
+            if (result == null) {
+                throw new CoercingSerializeException(getErrorMessage(input));
+            }
+            return DateTimeHelper.toISOString(result);
+        }
+    }
+
+    @Override
+    public Date parseValue(Object input) {
+        Date result = convertImpl(input);
+        if (result == null) {
+            throw new CoercingParseValueException(getErrorMessage(input));
+        }
+        return result;
+    }
+
+    @Override
+    public Date parseLiteral(Object input) {
+        if (!(input instanceof StringValue)) {
+            throw new CoercingParseLiteralException("Expected AST type 'StringValue' but was '" + CoercingUtil.typeName(input) + "'.");
+        }
+
+        String value = ((StringValue) input).getValue();
+        Date result = convertImpl(value);
+        if (result == null) {
+            throw new CoercingParseLiteralException(getErrorMessage(input));
+        }
+
+        return result;
+    }
+
     private void initBasicFormatters() {
         formatters.add(DateTimeFormatter.ISO_INSTANT.withZone(ZoneOffset.UTC));
         formatters.add(DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneOffset.UTC));
@@ -68,43 +105,6 @@ public class GraphqlDateCoercing implements Coercing<Date, String> {
             return date;
         }
         return null;
-    }
-
-    @Override
-    public String serialize(Object input) {
-        if (input instanceof Date date) {
-            return DateTimeHelper.toISOString(date);
-        } else {
-            Date result = convertImpl(input);
-            if (result == null) {
-                throw new CoercingSerializeException("Invalid value '" + input + "' for Date");
-            }
-            return DateTimeHelper.toISOString(result);
-        }
-    }
-
-    @Override
-    public Date parseValue(Object input) {
-        Date result = convertImpl(input);
-        if (result == null) {
-            throw new CoercingParseValueException("Invalid value '" + input + "' for Date");
-        }
-        return result;
-    }
-
-    @Override
-    public Date parseLiteral(Object input) {
-        if (!(input instanceof StringValue)) {
-            throw new CoercingParseLiteralException("Expected AST type 'StringValue' but was '" + CoercingUtil.typeName(input) + "'.");
-        }
-
-        String value = ((StringValue) input).getValue();
-        Date result = convertImpl(value);
-        if (result == null) {
-            throw new CoercingParseLiteralException("Invalid value '" + input + "' for Date");
-        }
-
-        return result;
     }
 
     private LocalDateTime parseDate(String date) {

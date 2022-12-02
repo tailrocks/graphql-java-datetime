@@ -33,26 +33,26 @@ import java.time.format.DateTimeParseException;
 public class GraphqlOffsetDateTimeCoercing implements Coercing<OffsetDateTime, String> {
 
     private OffsetDateTime convertImpl(Object input) {
-        if (input instanceof String) {
+        if (input instanceof String string) {
             try {
-                return OffsetDateTime.parse((String) input, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                return OffsetDateTime.parse(string, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
             } catch (DateTimeParseException ignored) {
                 // nothing to-do
             }
-        } else if (input instanceof OffsetDateTime) {
-            return (OffsetDateTime) input;
+        } else if (input instanceof OffsetDateTime offsetDateTime) {
+            return offsetDateTime;
         }
         return null;
     }
 
     @Override
     public String serialize(Object input) {
-        if (input instanceof OffsetDateTime) {
-            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format((OffsetDateTime) input);
+        if (input instanceof OffsetDateTime offsetDateTime) {
+            return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(offsetDateTime);
         } else {
             OffsetDateTime result = convertImpl(input);
             if (result == null) {
-                throw new CoercingSerializeException("Invalid value '" + input + "' for OffsetDateTime");
+                throw new CoercingSerializeException(getErrorMessage(input));
             }
             return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(result);
         }
@@ -62,7 +62,7 @@ public class GraphqlOffsetDateTimeCoercing implements Coercing<OffsetDateTime, S
     public OffsetDateTime parseValue(Object input) {
         OffsetDateTime result = convertImpl(input);
         if (result == null) {
-            throw new CoercingParseValueException("Invalid value '" + input + "' for OffsetDateTime");
+            throw new CoercingParseValueException(getErrorMessage(input));
         }
         return result;
     }
@@ -76,10 +76,14 @@ public class GraphqlOffsetDateTimeCoercing implements Coercing<OffsetDateTime, S
         String value = ((StringValue) input).getValue();
         OffsetDateTime result = convertImpl(value);
         if (result == null) {
-            throw new CoercingParseLiteralException("Invalid value '" + input + "' for OffsetDateTime");
+            throw new CoercingParseLiteralException(getErrorMessage(input));
         }
 
         return result;
+    }
+
+    private String getErrorMessage(Object input) {
+        return "Invalid value '" + input + "' for OffsetDateTime";
     }
 
 }

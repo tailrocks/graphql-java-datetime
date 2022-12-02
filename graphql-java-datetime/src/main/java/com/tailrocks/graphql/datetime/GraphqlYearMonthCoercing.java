@@ -35,22 +35,6 @@ public class GraphqlYearMonthCoercing implements Coercing<YearMonth, String> {
 
     private static final Pattern YEAR_MONTH_PATTERN = Pattern.compile("(\\d{1,4})-(\\d{1,2})");
 
-    private YearMonth convertImpl(Object input) {
-        if (input instanceof String) {
-            Matcher m = YEAR_MONTH_PATTERN.matcher(input.toString());
-            if (m.find()) {
-                try {
-                    return YearMonth.of(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
-                } catch (NumberFormatException | DateTimeException ignored) {
-                    // nothing to-do
-                }
-            }
-        } else if (input instanceof YearMonth yearMonth) {
-            return yearMonth;
-        }
-        return null;
-    }
-
     @Override
     public String serialize(Object input) {
         if (input instanceof YearMonth) {
@@ -86,6 +70,22 @@ public class GraphqlYearMonthCoercing implements Coercing<YearMonth, String> {
         }
 
         return result;
+    }
+
+    private YearMonth convertImpl(Object input) {
+        if (input instanceof String) {
+            Matcher m = YEAR_MONTH_PATTERN.matcher(input.toString());
+            if (m.find()) {
+                try {
+                    return YearMonth.of(Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
+                } catch (NumberFormatException | DateTimeException ignored) {
+                    // nothing to-do
+                }
+            }
+        } else if (input instanceof YearMonth yearMonth) {
+            return yearMonth;
+        }
+        return null;
     }
 
     private String getErrorMessage(Object input) {

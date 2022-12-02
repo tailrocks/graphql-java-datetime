@@ -31,31 +31,14 @@ import java.time.format.DateTimeParseException;
 @Internal
 public class GraphqlDurationCoercing implements Coercing<Duration, String> {
 
-    /**
-     * @param input - the input string with an ISO 8601 Duration, e.g. P3Y6M4DT12H30M5S or PT1H30M
-     * @return - a java.time.Duration object
-     */
-    private Duration convertImpl(Object input) {
-        if (input instanceof String) {
-            try {
-                return Duration.parse((String) input);
-            } catch (DateTimeParseException ignored) {
-                // nothing to-do
-            }
-        } else if (input instanceof Duration) {
-            return (Duration) input;
-        }
-        return null;
-    }
-
     @Override
     public String serialize(Object input) {
-        if (input instanceof Duration) {
-            return ((Duration) input).toString();
+        if (input instanceof Duration duration) {
+            return duration.toString();
         } else {
             Duration result = convertImpl(input);
             if (result == null) {
-                throw new CoercingSerializeException("Invalid value '" + input + "' for Duration");
+                throw new CoercingSerializeException(getErrorMessage(input));
             }
             return result.toString();
         }
@@ -65,7 +48,7 @@ public class GraphqlDurationCoercing implements Coercing<Duration, String> {
     public Duration parseValue(Object input) {
         Duration result = convertImpl(input);
         if (result == null) {
-            throw new CoercingParseValueException("Invalid value '" + input + "' for Duration");
+            throw new CoercingParseValueException(getErrorMessage(input));
         }
         return result;
     }
@@ -79,10 +62,31 @@ public class GraphqlDurationCoercing implements Coercing<Duration, String> {
         String value = ((StringValue) input).getValue();
         Duration result = convertImpl(value);
         if (result == null) {
-            throw new CoercingParseLiteralException("Invalid value '" + input + "' for Duration");
+            throw new CoercingParseLiteralException(getErrorMessage(input));
         }
 
         return result;
+    }
+
+    /**
+     * @param input - the input string with an ISO 8601 Duration, e.g. P3Y6M4DT12H30M5S or PT1H30M
+     * @return - a java.time.Duration object
+     */
+    private Duration convertImpl(Object input) {
+        if (input instanceof String string) {
+            try {
+                return Duration.parse(string);
+            } catch (DateTimeParseException ignored) {
+                // nothing to-do
+            }
+        } else if (input instanceof Duration duration) {
+            return duration;
+        }
+        return null;
+    }
+
+    private String getErrorMessage(Object input) {
+        return "Invalid value '" + input + "' for Duration";
     }
 
 }
