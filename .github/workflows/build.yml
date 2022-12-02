@@ -23,7 +23,7 @@ jobs:
       - name: Spotless Check
         run: ./gradlew spotlessCheck
       - name: Test
-        run: ./gradlew test
+        run: ./gradlew test --rerun-tasks
       - name: Build
         run: ./gradlew generatePomFileForMavenJavaPublication build
   publish:
