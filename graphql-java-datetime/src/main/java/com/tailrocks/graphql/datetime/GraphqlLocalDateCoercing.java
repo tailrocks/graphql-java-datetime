@@ -77,6 +77,10 @@ public class GraphqlLocalDateCoercing implements Coercing<LocalDate, String> {
 
     @Override
     public LocalDate parseLiteral(Object input) {
+        if (!(input instanceof StringValue)) {
+            throw new CoercingParseLiteralException("Expected AST type 'StringValue' but was '" + CoercingUtil.typeName(input) + "'.");
+        }
+
         String value = ((StringValue) input).getValue();
         LocalDate result = convertImpl(value);
         if (result == null) {

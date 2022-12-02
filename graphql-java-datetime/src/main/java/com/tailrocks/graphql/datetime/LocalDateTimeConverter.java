@@ -15,6 +15,8 @@
  */
 package com.tailrocks.graphql.datetime;
 
+import graphql.Internal;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -28,6 +30,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 /**
  * @author Alexey Zhokhov
  */
+@Internal
 class LocalDateTimeConverter {
 
     private final boolean zoneConversionEnabled;

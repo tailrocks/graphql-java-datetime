@@ -21,11 +21,8 @@ import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
-import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-
 import java.time.YearMonth
-
 import java.time.ZoneOffset.UTC
 import java.util.*
 
@@ -41,7 +38,7 @@ class GraphQLYearMonthTest : FreeSpec({
             StringValue("2017-07-09T11:54:42Z") to YearMonth.of(2017, 7),
             StringValue("2017-07-09") to YearMonth.of(2017, 7)
         ).forEach { (literal, result) ->
-            "parse literal ${literal.value} as $result" {
+            "parse literal $literal as $result (${result::class.java})" {
                 GraphqlYearMonthCoercing().parseLiteral(literal) shouldBe result
             }
         }
@@ -50,9 +47,10 @@ class GraphQLYearMonthTest : FreeSpec({
     "parseLiteral -> fail" - {
         listOf(
             StringValue(""),
-            StringValue("not a date")
+            StringValue("not a date"),
+            Object(),
         ).forEach { literal ->
-            "throws exception for invalid $literal" {
+            "throws exception for the input: $literal" {
                 shouldThrow<CoercingParseLiteralException> {
                     GraphqlYearMonthCoercing().parseLiteral(literal)
                 }
@@ -64,7 +62,7 @@ class GraphQLYearMonthTest : FreeSpec({
         listOf(
             YearMonth.of(2017, 7) to "2017-07"
         ).forEach { (value, result) ->
-            "serialize $value into $result (${result::class.java})" {
+            "serialize $value (${value::class}) into $result" {
                 GraphqlYearMonthCoercing().serialize(value) shouldBe result
             }
         }
@@ -76,7 +74,7 @@ class GraphQLYearMonthTest : FreeSpec({
             "not a date",
             Object()
         ).forEach { value ->
-            "throws exception for invalid input $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingSerializeException> {
                     GraphqlYearMonthCoercing().serialize(value)
                 }
@@ -103,7 +101,7 @@ class GraphQLYearMonthTest : FreeSpec({
             "not a date",
             Object(),
         ).forEach { value ->
-            "throws exception for invalid input $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingParseValueException> {
                     GraphqlYearMonthCoercing().parseValue(value)
                 }

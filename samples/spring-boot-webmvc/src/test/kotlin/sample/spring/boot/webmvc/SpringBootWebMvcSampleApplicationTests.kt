@@ -61,7 +61,17 @@ class SpringBootWebMvcSampleApplicationTests : FreeSpec() {
     lateinit var applicationContext: ApplicationContext
 
     init {
-        "basic usage" {
+        "check beans" {
+            applicationContext.getBean("graphQlDateScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlLocalDateScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlLocalDateTimeScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlLocalTimeScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlOffsetDateTimeScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlYearMonthScalar").shouldBeInstanceOf<GraphQLScalarType>()
+            applicationContext.getBean("graphQlDurationScalar").shouldBeInstanceOf<GraphQLScalarType>()
+        }
+
+        "check HTTP response" {
             // given:
             val graphQlQuery = """
 {
@@ -162,17 +172,7 @@ class SpringBootWebMvcSampleApplicationTests : FreeSpec() {
             }
         }
 
-        "check beans" {
-            applicationContext.getBean("graphQlDateScalar").shouldBeInstanceOf<GraphQLScalarType>()
-            applicationContext.getBean("graphQlLocalDateScalar").shouldBeInstanceOf<GraphQLScalarType>()
-            applicationContext.getBean("graphQlLocalDateTimeScalar").shouldBeInstanceOf<GraphQLScalarType>()
-            applicationContext.getBean("graphQlLocalTimeScalar").shouldBeInstanceOf<GraphQLScalarType>()
-            applicationContext.getBean("graphQlOffsetDateTimeScalar").shouldBeInstanceOf<GraphQLScalarType>()
-            applicationContext.getBean("graphQlYearMonthScalar").shouldBeInstanceOf<GraphQLScalarType>()
-            applicationContext.getBean("graphQlDurationScalar").shouldBeInstanceOf<GraphQLScalarType>()
-        }
-
-        "ping" {
+        "check GraphQL engine execution" {
             // given:
             val query = """
 {

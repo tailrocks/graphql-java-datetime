@@ -30,7 +30,7 @@ public final class OffsetDateTimeScalar {
     public static GraphQLScalarType create(String name) {
         return GraphQLScalarType.newScalar()
                 .name(name != null ? name : "OffsetDateTime")
-                .description("A Java OffsetDateTime")
+                .description("A Java OffsetDateTime type")
                 .coercing(new GraphqlOffsetDateTimeCoercing())
                 .build();
     }

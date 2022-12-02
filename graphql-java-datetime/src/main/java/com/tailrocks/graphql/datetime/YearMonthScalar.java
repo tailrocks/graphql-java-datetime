@@ -30,7 +30,7 @@ public final class YearMonthScalar {
     public static GraphQLScalarType create(String name) {
         return GraphQLScalarType.newScalar()
                 .name(name != null ? name : "YearMonth")
-                .description("YearMonth type")
+                .description("A Java YearMonth type")
                 .coercing(new GraphqlYearMonthCoercing())
                 .build();
     }

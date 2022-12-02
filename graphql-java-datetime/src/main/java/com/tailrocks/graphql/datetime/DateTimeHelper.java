@@ -15,6 +15,8 @@
  */
 package com.tailrocks.graphql.datetime;
 
+import graphql.Internal;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
@@ -27,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Alexey Zhokhov
  */
+@Internal
 final class DateTimeHelper {
 
     private DateTimeHelper() {

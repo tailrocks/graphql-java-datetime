@@ -21,16 +21,13 @@ import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
-import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-
 import java.time.ZoneOffset.UTC
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ISO_INSTANT
 import java.util.*
 import java.util.concurrent.TimeUnit.MILLISECONDS
@@ -55,7 +52,7 @@ class GraphQLLocalDateTimeTest : FreeSpec({
             StringValue("2017-07-09")
                     to LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
         ).forEach { (literal, result) ->
-            "parse literal ${literal.value} as $result" {
+            "parse literal $literal as $result (${result::class.java})" {
                 GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseLiteral(literal) shouldBe result
             }
         }
@@ -64,9 +61,10 @@ class GraphQLLocalDateTimeTest : FreeSpec({
     "parseLiteral -> fail" - {
         listOf(
             StringValue(""),
-            StringValue("not a localdatetime")
+            StringValue("not a localdatetime"),
+            Object(),
         ).forEach { literal ->
-            "throws exception for invalid $literal" {
+            "throws exception for the input: $literal" {
                 shouldThrow<CoercingParseLiteralException> {
                     GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseLiteral(literal)
                 }
@@ -85,7 +83,7 @@ class GraphQLLocalDateTimeTest : FreeSpec({
             LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT)
                     to "2017-07-09T00:00:00Z"
         ).forEach { (value, result) ->
-            "serialize $value into $result (${result::class.java})" {
+            "serialize $value (${value::class}) into $result" {
                 GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).serialize(value) shouldBe result
             }
         }
@@ -97,7 +95,7 @@ class GraphQLLocalDateTimeTest : FreeSpec({
             "not a localdatetime",
             Object()
         ).forEach { value ->
-            "throws exception for invalid input $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingSerializeException> {
                     GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).serialize(value)
                 }
@@ -132,7 +130,7 @@ class GraphQLLocalDateTimeTest : FreeSpec({
             "not a localdatetime",
             Object()
         ).forEach { value ->
-            "throws exception for invalid $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingParseValueException> {
                     GraphqlLocalDateTimeCoercing(false, ISO_INSTANT).parseValue(value)
                 }
@@ -154,7 +152,7 @@ class GraphQLLocalDateTimeTest : FreeSpec({
                 LocalDateTime.of(LocalDate.of(2017, 7, 9), LocalTime.MIDNIGHT.plusHours(1))
                         to "2017-07-09T00:00:00Z"
             ).forEach { (value, result) ->
-                "serialize $value into $result (${result::class.java}) using zone conversion" {
+                "serialize $value (${value::class.java}) into $result using zone conversion" {
                     GraphqlLocalDateTimeCoercing(true, ISO_INSTANT).serialize(value) shouldBe result
                 }
             }
@@ -197,7 +195,7 @@ class GraphQLLocalDateTimeTest : FreeSpec({
                 LocalDateTime.of(1993, 2, 9, 13, 15, 59)
                         to "1993-02-09T13:15:59"
             ).forEach { (value, result) ->
-                "serialize $value into $result (${result::class.java}) with custom formatting" {
+                "serialize $value (${value::class.java}) into $result with custom formatting" {
                     GraphqlLocalDateTimeCoercing(false, formatter).serialize(value) shouldBe result
                 }
             }

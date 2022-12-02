@@ -32,7 +32,7 @@ public final class LocalDateScalar {
     public static GraphQLScalarType create(String name, boolean zoneConversionEnabled, DateTimeFormatter formatter) {
         return GraphQLScalarType.newScalar()
                 .name(name != null ? name : "LocalDate")
-                .description("Local Date type")
+                .description("A Java LocalDate type")
                 .coercing(
                         new GraphqlLocalDateCoercing(
                                 zoneConversionEnabled,

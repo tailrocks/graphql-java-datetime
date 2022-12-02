@@ -21,11 +21,8 @@ import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
-import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-
 import java.time.Duration
-
 import java.time.ZoneOffset.UTC
 import java.util.*
 
@@ -41,7 +38,7 @@ class GraphQLDurationTest : FreeSpec({
             StringValue("PT1H30M") to Duration.ofMinutes(90),
             StringValue("P1DT3H") to Duration.ofHours(27)
         ).forEach { (literal, result) ->
-            "parse literal ${literal.value} as $result" {
+            "parse literal $literal as $result (${result::class.java})" {
                 GraphqlDurationCoercing().parseLiteral(literal) shouldBe result
             }
         }
@@ -50,9 +47,10 @@ class GraphQLDurationTest : FreeSpec({
     "parseLiteral -> fail" - {
         listOf(
             StringValue(""),
-            StringValue("not a duration")
+            StringValue("not a duration"),
+            Object(),
         ).forEach { literal ->
-            "throws exception for invalid $literal" {
+            "throws exception for the input: $literal" {
                 shouldThrow<CoercingParseLiteralException> {
                     GraphqlDurationCoercing().parseLiteral(literal)
                 }
@@ -64,7 +62,7 @@ class GraphQLDurationTest : FreeSpec({
         listOf(
             Duration.ofHours(27) to "PT27H"
         ).forEach { (value, result) ->
-            "serialize $value into $result (${result::class.java})" {
+            "serialize $value (${value::class}) into $result" {
                 GraphqlDurationCoercing().serialize(value) shouldBe result
             }
         }
@@ -77,7 +75,7 @@ class GraphQLDurationTest : FreeSpec({
             "1DT3H",
             Object()
         ).forEach { value ->
-            "throws exception for invalid input: $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingSerializeException> {
                     GraphqlDurationCoercing().serialize(value)
                 }
@@ -103,7 +101,7 @@ class GraphQLDurationTest : FreeSpec({
             "1DT3H",
             Object()
         ).forEach { value ->
-            "throws exception for invalid input: $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingParseValueException> {
                     GraphqlDurationCoercing().parseValue(value)
                 }

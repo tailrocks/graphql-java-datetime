@@ -45,8 +45,8 @@ public class GraphqlYearMonthCoercing implements Coercing<YearMonth, String> {
                     // nothing to-do
                 }
             }
-        } else if (input instanceof YearMonth) {
-            return (YearMonth) input;
+        } else if (input instanceof YearMonth yearMonth) {
+            return yearMonth;
         }
         return null;
     }
@@ -58,9 +58,7 @@ public class GraphqlYearMonthCoercing implements Coercing<YearMonth, String> {
         } else {
             YearMonth result = convertImpl(input);
             if (result == null) {
-                throw new CoercingSerializeException(
-                        "Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM"
-                );
+                throw new CoercingSerializeException(getErrorMessage(input));
             }
             return result.toString();
         }
@@ -70,24 +68,28 @@ public class GraphqlYearMonthCoercing implements Coercing<YearMonth, String> {
     public YearMonth parseValue(Object input) {
         YearMonth result = convertImpl(input);
         if (result == null) {
-            throw new CoercingParseValueException(
-                    "Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM"
-            );
+            throw new CoercingParseValueException(getErrorMessage(input));
         }
         return result;
     }
 
     @Override
     public YearMonth parseLiteral(Object input) {
+        if (!(input instanceof StringValue)) {
+            throw new CoercingParseLiteralException("Expected AST type 'StringValue' but was '" + CoercingUtil.typeName(input) + "'.");
+        }
+
         String value = ((StringValue) input).getValue();
         YearMonth result = convertImpl(value);
         if (result == null) {
-            throw new CoercingParseLiteralException(
-                    "Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM"
-            );
+            throw new CoercingParseLiteralException(getErrorMessage(input));
         }
 
         return result;
+    }
+
+    private String getErrorMessage(Object input) {
+        return "Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM";
     }
 
 }

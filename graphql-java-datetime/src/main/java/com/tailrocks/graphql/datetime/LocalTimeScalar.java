@@ -30,7 +30,7 @@ public final class LocalTimeScalar {
     public static GraphQLScalarType create(String name) {
         return GraphQLScalarType.newScalar()
                 .name(name != null ? name : "LocalTime")
-                .description("Local Time type")
+                .description("A Java LocalTime type")
                 .coercing(new GraphqlLocalTimeCoercing())
                 .build();
     }

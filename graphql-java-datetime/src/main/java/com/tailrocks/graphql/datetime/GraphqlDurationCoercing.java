@@ -72,6 +72,10 @@ public class GraphqlDurationCoercing implements Coercing<Duration, String> {
 
     @Override
     public Duration parseLiteral(Object input) {
+        if (!(input instanceof StringValue)) {
+            throw new CoercingParseLiteralException("Expected AST type 'StringValue' but was '" + CoercingUtil.typeName(input) + "'.");
+        }
+
         String value = ((StringValue) input).getValue();
         Duration result = convertImpl(value);
         if (result == null) {

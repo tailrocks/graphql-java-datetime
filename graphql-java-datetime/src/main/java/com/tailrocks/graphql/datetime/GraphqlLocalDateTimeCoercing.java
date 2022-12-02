@@ -76,6 +76,10 @@ public class GraphqlLocalDateTimeCoercing implements Coercing<LocalDateTime, Str
 
     @Override
     public LocalDateTime parseLiteral(Object input) {
+        if (!(input instanceof StringValue)) {
+            throw new CoercingParseLiteralException("Expected AST type 'StringValue' but was '" + CoercingUtil.typeName(input) + "'.");
+        }
+
         String value = ((StringValue) input).getValue();
         LocalDateTime result = convertImpl(value);
         if (result == null) {

@@ -42,7 +42,7 @@ class GraphQLDateTest : FreeSpec({
             StringValue("2017-07-09")
                     to createDate(2017, 7, 9)
         ).forEach { (literal, result) ->
-            "parse literal ${literal.value} as $result" {
+            "parse literal $literal as $result (${result::class.java})" {
                 GraphqlDateCoercing().parseLiteral(literal) shouldBe result
             }
         }
@@ -51,9 +51,10 @@ class GraphQLDateTest : FreeSpec({
     "parseLiteral -> fail" - {
         listOf(
             StringValue(""),
-            StringValue("not a date")
+            StringValue("not a date"),
+            Object(),
         ).forEach { literal ->
-            "throws exception for input: $literal" {
+            "throws exception for the input: $literal" {
                 shouldThrow<CoercingParseLiteralException> {
                     GraphqlDateCoercing().parseLiteral(literal)
                 }
@@ -71,7 +72,7 @@ class GraphQLDateTest : FreeSpec({
                     to "2017-07-09T11:54:42Z",
             createDate(2017, 7, 9) to "2017-07-09T00:00:00Z"
         ).forEach { (value, result) ->
-            "serialize $value into $result (${result::class})" {
+            "serialize $value (${value::class}) into $result" {
                 GraphqlDateCoercing().serialize(value) shouldBe result
             }
         }
@@ -83,7 +84,7 @@ class GraphQLDateTest : FreeSpec({
             "not a date",
             Object()
         ).forEach { value ->
-            "serialize throws exception for invalid input: $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingSerializeException> {
                     GraphqlDateCoercing().serialize(value)
                 }
@@ -102,7 +103,7 @@ class GraphQLDateTest : FreeSpec({
             "2017-07-09"
                     to createDate(2017, 7, 9)
         ).forEach { (value, result) ->
-            "parse $value into $result ($result.class)" {
+            "parse $value into $result (${result::class.java})" {
                 GraphqlDateCoercing().parseValue(value) shouldBe result
             }
         }
@@ -114,7 +115,7 @@ class GraphQLDateTest : FreeSpec({
             "not a date",
             Object()
         ).forEach { value ->
-            "throws exception for invalid input: $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingParseValueException> {
                     GraphqlDateCoercing().parseValue(value)
                 }

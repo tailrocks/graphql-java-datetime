@@ -58,22 +58,22 @@ public class GraphqlDateCoercing implements Coercing<Date, String> {
     }
 
     private Date convertImpl(Object input) {
-        if (input instanceof String) {
-            LocalDateTime localDateTime = parseDate((String) input);
+        if (input instanceof String string) {
+            LocalDateTime localDateTime = parseDate(string);
 
             if (localDateTime != null) {
                 return DateTimeHelper.toDate(localDateTime);
             }
-        } else if (input instanceof Date) {
-            return (Date) input;
+        } else if (input instanceof Date date) {
+            return date;
         }
         return null;
     }
 
     @Override
     public String serialize(Object input) {
-        if (input instanceof Date) {
-            return DateTimeHelper.toISOString((Date) input);
+        if (input instanceof Date date) {
+            return DateTimeHelper.toISOString(date);
         } else {
             Date result = convertImpl(input);
             if (result == null) {
@@ -94,6 +94,10 @@ public class GraphqlDateCoercing implements Coercing<Date, String> {
 
     @Override
     public Date parseLiteral(Object input) {
+        if (!(input instanceof StringValue)) {
+            throw new CoercingParseLiteralException("Expected AST type 'StringValue' but was '" + CoercingUtil.typeName(input) + "'.");
+        }
+
         String value = ((StringValue) input).getValue();
         Date result = convertImpl(value);
         if (result == null) {
@@ -121,6 +125,10 @@ public class GraphqlDateCoercing implements Coercing<Date, String> {
         }
 
         return null;
+    }
+
+    private String getErrorMessage(Object input) {
+        return "Invalid value '" + input + "' for Date";
     }
 
 }

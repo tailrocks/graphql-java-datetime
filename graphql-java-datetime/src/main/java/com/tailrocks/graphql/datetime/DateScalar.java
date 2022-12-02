@@ -30,7 +30,7 @@ public final class DateScalar {
     public static GraphQLScalarType create(String name) {
         return GraphQLScalarType.newScalar()
                 .name(name != null ? name : "Date")
-                .description("Date type")
+                .description("A Java Date type")
                 .coercing(new GraphqlDateCoercing())
                 .build();
     }

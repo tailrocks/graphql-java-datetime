@@ -30,7 +30,7 @@ public final class DurationScalar {
     public static GraphQLScalarType create(String name) {
         return GraphQLScalarType.newScalar()
                 .name(name != null ? name : "Duration")
-                .description("A Java 8 ISO 8601 Duration")
+                .description("A Java Duration type")
                 .coercing(new GraphqlDurationCoercing())
                 .build();
     }

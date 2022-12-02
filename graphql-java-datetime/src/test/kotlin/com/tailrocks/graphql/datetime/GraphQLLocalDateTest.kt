@@ -21,14 +21,11 @@ import graphql.schema.CoercingParseValueException
 import graphql.schema.CoercingSerializeException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
-import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-
 import java.time.LocalDate
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-
 import java.time.ZoneOffset.UTC
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
 import java.util.*
 
@@ -41,7 +38,7 @@ class GraphQLLocalDateTest : FreeSpec({
         listOf(
             StringValue("2017-07-09") to LocalDate.of(2017, 7, 9)
         ).forEach { (literal, result) ->
-            "parse literal ${literal.value} as $result" {
+            "parse literal $literal as $result (${result::class.java})" {
                 GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal) shouldBe result
             }
         }
@@ -51,8 +48,9 @@ class GraphQLLocalDateTest : FreeSpec({
         listOf(
             StringValue(""),
             StringValue("not a localdate"),
+            Object(),
         ).forEach { literal ->
-            "throws exception for invalid $literal" {
+            "throws exception for the input: $literal" {
                 shouldThrow<CoercingParseLiteralException> {
                     GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseLiteral(literal)
                 }
@@ -64,7 +62,7 @@ class GraphQLLocalDateTest : FreeSpec({
         listOf(
             LocalDate.of(2017, 7, 9) to "2017-07-09"
         ).forEach { (value, result) ->
-            "serialize $value into $result (${result::class.java})" {
+            "serialize $value (${value::class}) into $result" {
                 GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).serialize(value) shouldBe result
             }
         }
@@ -76,7 +74,7 @@ class GraphQLLocalDateTest : FreeSpec({
             "not a localdate",
             Object()
         ).forEach { value ->
-            "throws exception for invalid input $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingSerializeException> {
                     GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).serialize(value)
                 }
@@ -101,7 +99,7 @@ class GraphQLLocalDateTest : FreeSpec({
             "not a date",
             Object()
         ).forEach { value ->
-            "throws exception for invalid $value" {
+            "throws exception for the input: $value" {
                 shouldThrow<CoercingParseValueException> {
                     GraphqlLocalDateCoercing(false, ISO_LOCAL_DATE).parseValue(value)
                 }
@@ -141,7 +139,7 @@ class GraphQLLocalDateTest : FreeSpec({
             listOf(
                 LocalDate.of(2020, 7, 6) to "07/06/2020"
             ).forEach { (value, result) ->
-                "serialize $value into $result (${result::class.java}) with custom formatting" {
+                "serialize $value (${value::class.java}) into $result with custom formatting" {
                     GraphqlLocalDateCoercing(false, formatter).serialize(value) shouldBe result
                 }
             }
