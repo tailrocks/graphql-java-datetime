@@ -89,7 +89,7 @@ public class GraphqlYearMonthCoercing implements Coercing<YearMonth, String> {
     }
 
     private String getErrorMessage(Object input) {
-        return "Invalid value '" + input + "' is not a valid YearMonth, please use format yyyy-MM";
+        return "Invalid value '" + input + "' for YearMonth";
     }
 
 }
