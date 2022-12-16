@@ -26,11 +26,6 @@ allprojects {
             licenseHeaderFile("$rootDir/gradle/licenseHeader.txt")
         }
     }
-
-    // TODO remove me later, this is temp hack to remove deprecated dependencies from classpath
-    configurations.all {
-        exclude(group = "javax.validation", module = "validation-api")
-    }
 }
 
 subprojects {
