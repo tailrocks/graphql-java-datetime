@@ -65,7 +65,7 @@ for **GraphQL Java Kickstart**:
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
     <artifactId>graphql-datetime-kickstart-spring-boot-starter</artifactId>
-    <version>5.0.1</version>
+    <version>6.0.0</version>
 </dependency>
 ```
 
