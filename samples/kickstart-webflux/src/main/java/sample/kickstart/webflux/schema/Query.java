@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -83,6 +84,10 @@ public class Query implements GraphQLQueryResolver {
 
     public CompletableFuture<LocalTime> getNoonTime() {
         return CompletableFuture.completedFuture(LocalTime.NOON);
+    }
+
+    public CompletableFuture<YearMonth> getSpringFirstRelease() {
+        return CompletableFuture.completedFuture(YearMonth.of(2002, 10));
     }
 
     public CompletableFuture<PongType> ping() {

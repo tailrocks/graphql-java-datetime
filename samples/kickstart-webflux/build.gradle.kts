@@ -1,8 +1,8 @@
 plugins {
-    id("com.tailrocks.kotlin")
     id("com.adarshr.test-logger")
     id("io.spring.dependency-management")
     id("org.springframework.boot")
+    id("kotest-conventions")
 }
 
 the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
@@ -19,4 +19,10 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     testImplementation(libs.commons.text)
+
+    // Kotest
+    testImplementation(libs.kotest.extensions.spring)
+
+    // Jackson
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
