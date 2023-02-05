@@ -16,5 +16,5 @@ include(
     "samples:kickstart-webflux",
     "samples:kickstart-webmvc",
     "samples:spring-boot-webmvc",
-    "samples:dgs-webmvc",
+    "samples:dgs-webmvc"
 )
