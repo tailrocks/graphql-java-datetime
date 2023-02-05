@@ -215,6 +215,6 @@ and [open a pull request](https://github.com/tailrocks/graphql-java-datetime/com
 
 ## License
 
-Copyright © 2017-2022 [Alexey Zhokhov](http://www.zhokhov.com). All rights reserved.
+Copyright © 2017-2023 [Alexey Zhokhov](http://www.zhokhov.com). All rights reserved.
 
 This project is licensed under the Apache License, Version 2.0 - see the [LICENSE](LICENSE) file for details.
