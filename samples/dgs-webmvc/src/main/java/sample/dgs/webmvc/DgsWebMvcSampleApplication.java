@@ -22,10 +22,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Adam Setch
  */
 @SpringBootApplication
-public class DGSWebMvcSampleApplication {
+public class DgsWebMvcSampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DGSWebMvcSampleApplication.class, args);
+        SpringApplication.run(DgsWebMvcSampleApplication.class, args);
     }
 
 }

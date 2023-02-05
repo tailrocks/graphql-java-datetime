@@ -19,8 +19,8 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsRuntimeWiring;
 import graphql.schema.GraphQLScalarType;
 import graphql.schema.idl.RuntimeWiring;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ import java.util.List;
  * @author Adam Setch
  * @author Alexey Zhokhov
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 public class GraphQlDateTimeAutoConfiguration {
 
     @Bean
