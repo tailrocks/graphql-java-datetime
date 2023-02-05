@@ -75,7 +75,7 @@ for **Netflix DGS**:
 <dependency>
     <groupId>com.tailrocks.graphql</groupId>
     <artifactId>graphql-datetime-dgs-starter</artifactId>
-    <version>5.0.1</version>
+    <version>6.0.0</version>
 </dependency>
 ```
 
@@ -96,13 +96,13 @@ Add the following to your `build.gradle`:
 for **GraphQL Java Kickstart (Spring Boot)**:
 
 ```groovy
-implementation("com.tailrocks.graphql:graphql-datetime-kickstart-spring-boot-starter:5.0.1")
+implementation("com.tailrocks.graphql:graphql-datetime-kickstart-spring-boot-starter:6.0.0")
 ```
 
 for **DGS**:
 
 ```groovy
-implementation("com.tailrocks.graphql:graphql-datetime-dgs-starter:5.0.1")
+implementation("com.tailrocks.graphql:graphql-datetime-dgs-starter:6.0.0")
 ```
 
 for **Spring GraphQL**:
