@@ -1,7 +1,7 @@
 # graphql-java-datetime
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/tailrocks/graphql-java-datetime/blob/master/LICENSE) 
-[![Latest Release](https://img.shields.io/maven-central/v/tailrocks/graphql-java-datetime)](https://maven-badges.herokuapp.com/maven-central/tailrocks/graphql-java-datetime/)
+[![Latest Release](https://img.shields.io/maven-central/v/com.tailrocks.graphql/graphql-java-datetime)](https://maven-badges.herokuapp.com/maven-central/com.tailrocks.graphql/graphql-java-datetime/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/tailrocks/graphql-java-datetime/pulls)
 
 GraphQL ISO Date is a set of RFC 3339 compliant date/time scalar types to be used with
