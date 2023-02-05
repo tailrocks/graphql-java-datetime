@@ -1,6 +1,6 @@
 [versions]
 # Libraries
-kotest = "5.5.4"
+kotest = "5.5.5"
 kotest-spring = "1.1.2"
 graphql-java = "19.3"
 graphql-kickstart-spring-boot = "15.0.0"
