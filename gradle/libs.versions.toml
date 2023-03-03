@@ -1,12 +1,12 @@
 [versions]
 # Libraries
-kotest = "5.5.4"
+kotest = "5.5.5"
 kotest-spring = "1.1.2"
 graphql-java = "19.3"
 graphql-kickstart-spring-boot = "15.0.0"
 commons-text = "1.10.0"
-spring-boot = "3.0.2"
-dgs = "6.0.0"
+spring-boot = "3.0.3"
+dgs = "6.0.1"
 
 [libraries]
 # BOMs
