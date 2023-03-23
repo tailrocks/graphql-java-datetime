@@ -2,7 +2,7 @@
 # Libraries
 kotest = "5.5.5"
 kotest-spring = "1.1.2"
-graphql-java = "19.3"
+graphql-java = "19.4"
 graphql-kickstart-spring-boot = "15.0.0"
 commons-text = "1.10.0"
 spring-boot = "3.0.5"
