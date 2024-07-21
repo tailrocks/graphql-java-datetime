@@ -6,7 +6,7 @@ graphql-java = "21.3"
 graphql-kickstart-spring-boot = "15.0.0"
 commons-text = "1.10.0"
 spring-boot = "3.1.5"
-dgs = "7.6.0"
+dgs = "9.0.4"
 
 [libraries]
 # BOMs
