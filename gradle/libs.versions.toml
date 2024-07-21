@@ -31,6 +31,6 @@ test-logger = { id = "com.adarshr.test-logger", version = "4.0.0" }
 tailrocks-spotless = { id = "com.tailrocks.spotless", version = "0.2.0" }
 tailrocks-java = { id = "com.tailrocks.java", version = "0.5.1" }
 tailrocks-idea = { id = "com.tailrocks.idea", version = "0.2.1" }
-tailrocks-versions = { id = "com.tailrocks.versions", version = "0.2.0" }
+tailrocks-versions = { id = "com.tailrocks.versions", version = "0.5.2" }
 spring-dependency-management = { id = "io.spring.dependency-management", version = "1.1.4" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
