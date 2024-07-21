@@ -27,7 +27,7 @@ kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", ve
 kotest-extensions-spring = { module = "io.kotest.extensions:kotest-extensions-spring", version.ref = "kotest-spring" }
 
 [plugins]
-test-logger = { id = "com.adarshr.test-logger", version = "3.2.0" }
+test-logger = { id = "com.adarshr.test-logger", version = "4.0.0" }
 tailrocks-spotless = { id = "com.tailrocks.spotless", version = "0.2.0" }
 tailrocks-java = { id = "com.tailrocks.java", version = "0.5.1" }
 tailrocks-idea = { id = "com.tailrocks.idea", version = "0.2.1" }
