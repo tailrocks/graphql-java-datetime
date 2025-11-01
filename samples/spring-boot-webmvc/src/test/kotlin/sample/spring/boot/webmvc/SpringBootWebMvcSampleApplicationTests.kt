@@ -16,6 +16,7 @@
 package sample.spring.boot.webmvc
 
 import graphql.schema.GraphQLScalarType
+import io.kotest.core.extensions.ApplyExtension
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.extensions.spring.SpringExtension
 import io.kotest.matchers.booleans.shouldBeTrue
@@ -28,18 +29,20 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.context.ApplicationContext
 import org.springframework.graphql.execution.GraphQlSource
-import org.springframework.http.*
+import org.springframework.http.HttpEntity
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
+@ApplyExtension(SpringExtension::class)
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SpringBootWebMvcSampleApplicationTests : FreeSpec() {
-
-    override fun extensions() = listOf(SpringExtension)
 
     data class GraphQLResponse(val data: ResponseData?)
 

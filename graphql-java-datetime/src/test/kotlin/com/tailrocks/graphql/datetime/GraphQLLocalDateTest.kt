@@ -27,7 +27,7 @@ import java.time.ZoneOffset
 import java.time.ZoneOffset.UTC
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE
-import java.util.*
+import java.util.TimeZone
 
 /**
  * @author Alexey Zhokhov

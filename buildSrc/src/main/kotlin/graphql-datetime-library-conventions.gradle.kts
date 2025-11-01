@@ -1,6 +1,3 @@
-import org.gradle.kotlin.dsl.`java-library`
-import org.gradle.kotlin.dsl.`maven-publish`
-
 plugins {
     `java-library`
     `maven-publish`
@@ -8,6 +5,7 @@ plugins {
     id("com.tailrocks.signing")
 }
 
+/*
 java {
     withJavadocJar()
     withSourcesJar()
@@ -28,3 +26,4 @@ publishing {
         }
     }
 }
+*/

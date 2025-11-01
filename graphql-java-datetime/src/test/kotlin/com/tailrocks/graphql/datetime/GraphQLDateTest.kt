@@ -24,7 +24,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import java.time.ZoneOffset.UTC
-import java.util.*
+import java.util.TimeZone
 
 /**
  * @author Alexey Zhokhov

@@ -1,7 +1,6 @@
 [versions]
 # Libraries
 kotest = "6.0.4"
-kotest-spring = "1.3.0"
 graphql-java = "24.3"
 graphql-kickstart-spring-boot = "15.1.0"
 commons-text = "1.14.0"
@@ -17,20 +16,19 @@ boms-dgs = { module = "com.netflix.graphql.dgs:graphql-dgs-platform-dependencies
 graphql-kickstart-spring-boot-starter = { module = "com.graphql-java-kickstart:graphql-spring-boot-starter", version.ref = "graphql-kickstart-spring-boot" }
 commons-text = { module = "org.apache.commons:commons-text", version.ref = "commons-text" }
 graphql-java = { module = "com.graphql-java:graphql-java", version.ref = "graphql-java" }
-tailrocks-maven-publish-conventions = { module = "com.tailrocks.gradle:maven-publish-conventions", version = "0.6.0" }
-tailrocks-signing-conventions = { module = "com.tailrocks.gradle:signing-conventions", version = "0.5.1" }
-tailrocks-kotlin-conventions = { module = "com.tailrocks.gradle:kotlin-conventions", version = "0.6.2" }
-tailrocks-junit-conventions = { module = "com.tailrocks.gradle:junit-conventions", version = "0.5.1" }
+tailrocks-maven-publish-conventions = { module = "com.tailrocks.gradle:maven-publish-conventions", version = "0.7.0" }
+tailrocks-signing-conventions = { module = "com.tailrocks.gradle:signing-conventions", version = "0.6.0" }
+tailrocks-kotlin-conventions = { module = "com.tailrocks.gradle:kotlin-conventions", version = "0.7.0" }
+tailrocks-junit-conventions = { module = "com.tailrocks.gradle:junit-conventions", version = "0.6.0" }
 kotest-runner-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-kotest-framework-datatest = { module = "io.kotest:kotest-framework-datatest", version.ref = "kotest" }
-kotest-extensions-spring = { module = "io.kotest.extensions:kotest-extensions-spring", version.ref = "kotest-spring" }
+kotest-extensions-spring = { module = "io.kotest:kotest-extensions-spring", version.ref = "kotest" }
 
 [plugins]
 test-logger = { id = "com.adarshr.test-logger", version = "4.0.0" }
-tailrocks-spotless = { id = "com.tailrocks.spotless", version = "0.5.2" }
-tailrocks-java = { id = "com.tailrocks.java", version = "0.5.1" }
-tailrocks-idea = { id = "com.tailrocks.idea", version = "0.5.1" }
-tailrocks-versions = { id = "com.tailrocks.versions", version = "0.5.2" }
+tailrocks-spotless = { id = "com.tailrocks.spotless", version = "0.6.0" }
+tailrocks-java = { id = "com.tailrocks.java", version = "0.6.0" }
+tailrocks-idea = { id = "com.tailrocks.idea", version = "0.6.0" }
+tailrocks-versions = { id = "com.tailrocks.versions", version = "0.6.0" }
 spring-dependency-management = { id = "io.spring.dependency-management", version = "1.1.7" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

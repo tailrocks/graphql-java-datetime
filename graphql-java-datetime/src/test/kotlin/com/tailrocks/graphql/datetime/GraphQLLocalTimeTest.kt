@@ -24,7 +24,7 @@ import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import java.time.LocalTime
 import java.time.ZoneOffset.UTC
-import java.util.*
+import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
 /**

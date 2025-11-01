@@ -12,5 +12,5 @@ dependencies {
 
     // DGS Framework
     compileOnly(platform(libs.boms.dgs))
-    compileOnly("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
+    compileOnly("com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter")
 }

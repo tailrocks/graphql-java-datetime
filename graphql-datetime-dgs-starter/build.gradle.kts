@@ -7,5 +7,5 @@ dependencies {
 
     // DGS Framework
     api(platform(libs.boms.dgs))
-    api("com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter")
+    api("com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter")
 }
