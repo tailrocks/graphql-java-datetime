@@ -18,7 +18,7 @@ commons-text = { module = "org.apache.commons:commons-text", version.ref = "comm
 graphql-java = { module = "com.graphql-java:graphql-java", version.ref = "graphql-java" }
 tailrocks-maven-publish-conventions = { module = "com.tailrocks.gradle:maven-publish-conventions", version = "0.7.0" }
 tailrocks-signing-conventions = { module = "com.tailrocks.gradle:signing-conventions", version = "0.6.0" }
-tailrocks-kotlin-conventions = { module = "com.tailrocks.gradle:kotlin-conventions", version = "0.7.0" }
+tailrocks-kotlin-conventions = { module = "com.tailrocks.gradle:kotlin-conventions", version = "0.9.0" }
 tailrocks-junit-conventions = { module = "com.tailrocks.gradle:junit-conventions", version = "0.6.0" }
 kotest-runner-junit = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
