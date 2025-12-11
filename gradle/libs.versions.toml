@@ -3,7 +3,7 @@
 kotest = "6.0.5"
 graphql-java = "24.3"
 graphql-kickstart-spring-boot = "15.1.0"
-commons-text = "1.14.0"
+commons-text = "1.15.0"
 spring-boot = "3.5.7"
 dgs = "11.0.0"
 
