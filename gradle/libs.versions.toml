@@ -4,7 +4,7 @@ kotest = "6.0.7"
 graphql-java = "25.0"
 graphql-kickstart-spring-boot = "15.1.0"
 commons-text = "1.15.0"
-spring-boot = "3.5.8"
+spring-boot = "3.5.9"
 dgs = "11.0.0"
 
 [libraries]
