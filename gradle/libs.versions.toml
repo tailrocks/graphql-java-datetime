@@ -5,7 +5,11 @@ graphql-java = "26.0"
 graphql-kickstart-spring-boot = "15.1.0"
 commons-text = "1.15.0"
 <<<<<<< HEAD
+spring-boot = "4.0.6"
+=======
+<<<<<<< HEAD
 spring-boot = "3.5.14"
+>>>>>>> origin/main
 dgs = "11.1.0"
 =======
 spring-boot = "3.5.13"
