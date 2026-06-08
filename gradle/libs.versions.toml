@@ -4,8 +4,13 @@ kotest = "6.1.11"
 graphql-java = "26.0"
 graphql-kickstart-spring-boot = "15.1.0"
 commons-text = "1.15.0"
+<<<<<<< HEAD
+spring-boot = "3.5.14"
+dgs = "11.1.0"
+=======
 spring-boot = "3.5.13"
 dgs = "12.0.1"
+>>>>>>> origin/main
 
 [libraries]
 # BOMs
