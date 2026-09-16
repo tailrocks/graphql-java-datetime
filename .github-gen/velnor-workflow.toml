@@ -2,7 +2,7 @@ schema = 1
 
 [generator]
 repository = "tailrocks/graphql-java-datetime"
-revision = "5e311cace1fdfc1b58bf2f620c93cd815a9f005c"
+revision = "2ca16370b4a1d67fe9e9ccedbbb0cd6452429d6e"
 
 [workflow]
 runners = "both"
