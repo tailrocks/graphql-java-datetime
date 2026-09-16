@@ -79,7 +79,7 @@ jobs:
         run: |
           set -euo pipefail
           for workflow in ci-main.yml nightly.yml; do
-            if [[ "$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$workflow" --status in_progress --limit 1 --json databaseId --jq 'length')" != "0" ]]; then
+            if [[ "$(gh run list --workflow "$workflow" --status in_progress --limit 1 --json databaseId --jq 'length')" != "0" ]]; then
               echo "skip=true" >> "$GITHUB_OUTPUT"
               echo "$workflow is in_progress; skipping cache retention" >> "$GITHUB_STEP_SUMMARY"
               exit 0
