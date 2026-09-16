@@ -51,7 +51,7 @@ jobs:
         with:
           backend: github
           version: 1.11.1
-          cache-key: velnor-policy-mbx-1.11.1-${{ runner.os }}-${{ runner.arch }}-92c3478694ef423fb4160b8c934d6671ca85b51a
+          cache-key: velnor-policy-mbx-1.11.1-${{ runner.os }}-${{ runner.arch }}-b9c3156cdb88e63c11b9e595a3e694b02238c09a
           restore-keys: |
             velnor-policy-mbx-1.11.1-${{ runner.os }}-${{ runner.arch }}-
       - name: Install pinned Velnor workflow runtime
@@ -71,7 +71,7 @@ jobs:
             cargo install \
             --locked \
             --git https://github.com/tailrocks/velnor \
-            --rev 92c3478694ef423fb4160b8c934d6671ca85b51a \
+            --rev b9c3156cdb88e63c11b9e595a3e694b02238c09a \
             --root "$VELNOR_WORKFLOW_ROOT" \
             velnor-workflow \
             --bin velnor-workflow
@@ -80,20 +80,31 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           DEFAULT_BRANCH: main
+          DECLARED_RULESET_CONTEXTS: DCO,Policy,ci-required
         run: |
           set -euo pipefail
-          contexts="$(gh api "repos/$GITHUB_REPOSITORY/rulesets?includes_parents=true" \
+          stderr="$(mktemp)"
+          trap 'rm -f "$stderr"' EXIT
+          if contexts="$(gh api "repos/$GITHUB_REPOSITORY/rulesets?includes_parents=true" 2>"$stderr" \
             | jq -r '.[] | select(.target == "branch" and .enforcement == "active") | .id' \
             | while read -r id; do gh api "repos/$GITHUB_REPOSITORY/rulesets/$id"; done \
             | jq -r --arg branch "refs/heads/$DEFAULT_BRANCH" 'select(.conditions.ref_name.include | any(. == "~DEFAULT_BRANCH" or . == "~ALL" or . == $branch)) | .rules[] | select(.type == "required_status_checks") | .parameters.required_status_checks[].context' \
-            | sort -u | paste -sd, -)"
+            | sort -u | paste -sd, -)"; then
+            :
+          elif grep -qE '(HTTP 403|Upgrade to GitHub Team)' "$stderr"; then
+            echo "::warning::rulesets API returned 403; falling back to declared contexts [$DECLARED_RULESET_CONTEXTS]"
+            contexts="$DECLARED_RULESET_CONTEXTS"
+          else
+            cat "$stderr" >&2
+            exit 1
+          fi
           echo "RULESET_CONTEXTS=$contexts" >> "$GITHUB_ENV"
       - name: Enforce workflow policy
         env:
           WORKFLOW_ROOT: ${{ github.workspace }}/policy-checkout
           HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
-          VELNOR_WORKFLOW_POLICY_REVISION: 92c3478694ef423fb4160b8c934d6671ca85b51a
+          VELNOR_WORKFLOW_POLICY_REVISION: b9c3156cdb88e63c11b9e595a3e694b02238c09a
         run: |
           set -euo pipefail
           velnor-workflow policy \
