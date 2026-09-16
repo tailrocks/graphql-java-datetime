@@ -11,3 +11,7 @@ default_dispatch_runner = "github"
 github_runner = "ubuntu-24.04"
 velnor_labels = ["self-hosted", "velnor-target-mvp"]
 default_branch = "main"
+
+[policy]
+ruleset_required_status_checks = ["ci-required", "Control / Planning", "Control / Required"]
+ruleset_external_status_checks = ["DCO"]
