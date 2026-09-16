@@ -3,8 +3,8 @@ schema = 1
 repository = "tailrocks/graphql-java-datetime"
 revision = "92c3478694ef423fb4160b8c934d6671ca85b51a"
 [policy]
-ruleset_required_status_checks = []
-ruleset_external_status_checks = []
+ruleset_required_status_checks = ["ci-required"]
+ruleset_external_status_checks = ["DCO"]
 [workflow]
 runners = "both"
 automatic_lanes = "github"
