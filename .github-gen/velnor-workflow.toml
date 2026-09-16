@@ -2,19 +2,12 @@ schema = 1
 
 [generator]
 repository = "tailrocks/graphql-java-datetime"
+revision = "e05aee6de1d1614d752b4d1b1d26a49ac2c5ef91"
 
 [workflow]
 runners = "both"
-automatic = "both"
-default_dispatch_runner = "github"
 automatic_lanes = "github"
+default_dispatch_runner = "github"
 github_runner = "ubuntu-24.04"
 velnor_labels = ["self-hosted", "velnor-target-mvp"]
 default_branch = "main"
-
-[policy]
-exclude_workflows = ["publish-sonatype.yml"]
-
-[[static_files]]
-file = ".github/workflows/publish-sonatype.yml"
-source = ".github/workflows/publish-sonatype.yml"

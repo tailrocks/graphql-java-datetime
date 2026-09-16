@@ -57,11 +57,11 @@ jobs:
           persist-credentials: false
       - name: Set up Velnor workflow runtime
         if: ${{ runner.environment == 'github-hosted' }}
-        uses: tailrocks/velnor/.github/actions/setup-velnor-workflow@e6fabca85499be62f939243d4452438449b69c53
+        uses: tailrocks/velnor/.github/actions/setup-velnor-workflow@e05aee6de1d1614d752b4d1b1d26a49ac2c5ef91
         with:
-          rev: e6fabca85499be62f939243d4452438449b69c53
+          rev: e05aee6de1d1614d752b4d1b1d26a49ac2c5ef91
       - name: Set trusted workflow policy revision
-        run: echo "VELNOR_WORKFLOW_POLICY_REVISION=e6fabca85499be62f939243d4452438449b69c53" >> "$GITHUB_ENV"
+        run: echo "VELNOR_WORKFLOW_POLICY_REVISION=e05aee6de1d1614d752b4d1b1d26a49ac2c5ef91" >> "$GITHUB_ENV"
       - name: Select affected units
         id: plan
         env:
@@ -78,7 +78,7 @@ jobs:
       - name: Prepare Velnor workflow runtime
         shell: bash
         env:
-          EXPECTED_REVISION: e6fabca85499be62f939243d4452438449b69c53
+          EXPECTED_REVISION: e05aee6de1d1614d752b4d1b1d26a49ac2c5ef91
         run: |
           set -euo pipefail
           stage="$RUNNER_TEMP/velnor-workflow-runtime"
@@ -87,11 +87,16 @@ jobs:
           src="$(command -v velnor-workflow)"
           install -m 0755 "$src" "$stage/velnor-workflow"
           digest="$(sha256sum "$stage/velnor-workflow" | awk '{print $1}')"
-          jq -n --arg repository "$GITHUB_REPOSITORY" --arg revision "$EXPECTED_REVISION" --arg head_branch "${{ github.ref_name }}" --arg platform "${{ runner.os }}-${{ runner.arch }}" --arg run_id "$GITHUB_RUN_ID" --arg job_id "${{ github.job }}" --arg binary_sha256 "$digest" '{repository: $repository, revision: $revision, head_branch: $head_branch, platform: $platform, run_id: $run_id, job_id: $job_id, binary_sha256: $binary_sha256}' > "$stage/manifest.json"
+          policy_src="${VELNOR_WORKFLOW_PINNED_BINARY:-$src}"
+          install -m 0755 "$policy_src" "$stage/velnor-workflow-policy"
+          policy_revision="$("$stage/velnor-workflow-policy" --revision)"
+          [[ "$policy_revision" == "$EXPECTED_REVISION" ]] || { echo "::error::policy runtime reports revision $policy_revision, expected $EXPECTED_REVISION" >&2; exit 1; }
+          policy_digest="$(sha256sum "$stage/velnor-workflow-policy" | awk '{print $1}')"
+          jq -n --arg repository "$GITHUB_REPOSITORY" --arg revision "$EXPECTED_REVISION" --arg head_branch "${{ github.ref_name }}" --arg platform "${{ runner.os }}-${{ runner.arch }}" --arg run_id "$GITHUB_RUN_ID" --arg job_id "${{ github.job }}" --arg binary_sha256 "$digest" --arg policy_revision "$policy_revision" --arg policy_binary_sha256 "$policy_digest" '{repository: $repository, revision: $revision, head_branch: $head_branch, platform: $platform, run_id: $run_id, job_id: $job_id, binary_sha256: $binary_sha256, policy_revision: $policy_revision, policy_binary_sha256: $policy_binary_sha256}' > "$stage/manifest.json"
       - name: Publish Velnor workflow runtime
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: velnor-workflow-runtime-e6fabca85499be62f939243d4452438449b69c53-${{ runner.os }}-${{ runner.arch }}
+          name: velnor-workflow-runtime-e05aee6de1d1614d752b4d1b1d26a49ac2c5ef91-${{ runner.os }}-${{ runner.arch }}
           path: ${{ runner.temp }}/velnor-workflow-runtime
           if-no-files-found: error
           retention-days: 7
@@ -108,7 +113,6 @@ jobs:
     name: "Gradle · Gradle"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle
@@ -118,11 +122,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle:
     name: "Gradle · Gradle"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle
@@ -132,11 +141,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-buildsrc:
     name: "Gradle · Gradle (buildSrc)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-buildsrc,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-buildsrc
@@ -146,11 +160,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        buildSrc/gradle/wrapper/gradle-wrapper.properties
+        buildSrc/gradle/libs.versions.toml
   velnor-gradle-buildsrc:
     name: "Gradle · Gradle (buildSrc)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-buildsrc,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-buildsrc
@@ -160,11 +179,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        buildSrc/gradle/wrapper/gradle-wrapper.properties
+        buildSrc/gradle/libs.versions.toml
   github-gradle-graphql-datetime-dgs-autoconfigure:
     name: "Gradle · Gradle (graphql-datetime-dgs-autoconfigure)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-dgs-autoconfigure,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-dgs-autoconfigure
@@ -174,11 +198,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-graphql-datetime-dgs-autoconfigure:
     name: "Gradle · Gradle (graphql-datetime-dgs-autoconfigure)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-dgs-autoconfigure,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-dgs-autoconfigure
@@ -188,11 +217,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-graphql-datetime-dgs-starter:
     name: "Gradle · Gradle (graphql-datetime-dgs-starter)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-dgs-starter,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-dgs-starter
@@ -202,11 +236,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-graphql-datetime-dgs-starter:
     name: "Gradle · Gradle (graphql-datetime-dgs-starter)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-dgs-starter,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-dgs-starter
@@ -216,11 +255,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-graphql-datetime-kickstart-spring-boot-starter:
     name: "Gradle · Gradle (graphql-datetime-kickstart-spring-boot-starter)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-kickstart-spring-boot-starter,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-kickstart-spring-boot-starter
@@ -230,11 +274,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-graphql-datetime-kickstart-spring-boot-starter:
     name: "Gradle · Gradle (graphql-datetime-kickstart-spring-boot-starter)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-kickstart-spring-boot-starter,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-kickstart-spring-boot-starter
@@ -244,11 +293,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-graphql-datetime-spring-boot-autoconfigure:
     name: "Gradle · Gradle (graphql-datetime-spring-boot-autoconfigure)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-spring-boot-autoconfigure,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-spring-boot-autoconfigure
@@ -258,11 +312,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-graphql-datetime-spring-boot-autoconfigure:
     name: "Gradle · Gradle (graphql-datetime-spring-boot-autoconfigure)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-spring-boot-autoconfigure,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-spring-boot-autoconfigure
@@ -272,11 +331,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-graphql-datetime-spring-boot-common:
     name: "Gradle · Gradle (graphql-datetime-spring-boot-common)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-spring-boot-common,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-spring-boot-common
@@ -286,11 +350,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-graphql-datetime-spring-boot-common:
     name: "Gradle · Gradle (graphql-datetime-spring-boot-common)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-spring-boot-common,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-spring-boot-common
@@ -300,11 +369,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-graphql-datetime-spring-boot-starter:
     name: "Gradle · Gradle (graphql-datetime-spring-boot-starter)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-spring-boot-starter,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-spring-boot-starter
@@ -314,11 +388,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-graphql-datetime-spring-boot-starter:
     name: "Gradle · Gradle (graphql-datetime-spring-boot-starter)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-datetime-spring-boot-starter,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-datetime-spring-boot-starter
@@ -328,11 +407,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-graphql-java-datetime:
     name: "Gradle · Gradle (graphql-java-datetime)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-java-datetime,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-java-datetime
@@ -342,11 +426,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-graphql-java-datetime:
     name: "Gradle · Gradle (graphql-java-datetime)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-graphql-java-datetime,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-graphql-java-datetime
@@ -356,11 +445,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-samples-dgs-webmvc:
     name: "Gradle · Gradle (samples/dgs-webmvc)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-samples-dgs-webmvc,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-samples-dgs-webmvc
@@ -370,11 +464,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-samples-dgs-webmvc:
     name: "Gradle · Gradle (samples/dgs-webmvc)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-samples-dgs-webmvc,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-samples-dgs-webmvc
@@ -384,11 +483,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-samples-kickstart-webflux:
     name: "Gradle · Gradle (samples/kickstart-webflux)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-samples-kickstart-webflux,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-samples-kickstart-webflux
@@ -398,11 +502,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-samples-kickstart-webflux:
     name: "Gradle · Gradle (samples/kickstart-webflux)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-samples-kickstart-webflux,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-samples-kickstart-webflux
@@ -412,11 +521,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-samples-kickstart-webmvc:
     name: "Gradle · Gradle (samples/kickstart-webmvc)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-samples-kickstart-webmvc,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-samples-kickstart-webmvc
@@ -426,11 +540,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-samples-kickstart-webmvc:
     name: "Gradle · Gradle (samples/kickstart-webmvc)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-samples-kickstart-webmvc,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-samples-kickstart-webmvc
@@ -440,11 +559,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   github-gradle-samples-spring-boot-webmvc:
     name: "Gradle · Gradle (samples/spring-boot-webmvc)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-samples-spring-boot-webmvc,') }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-samples-spring-boot-webmvc
@@ -454,11 +578,16 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   velnor-gradle-samples-spring-boot-webmvc:
     name: "Gradle · Gradle (samples/spring-boot-webmvc)"
     if: ${{ always() && needs.plan.result == 'success' && contains(format(',{0},', needs.plan.outputs.units), ',gradle-samples-spring-boot-webmvc,') && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [plan]
-    cache-mode: read
     uses: ./.github/workflows/ci-unit-gradle.yml
     with:
       unit: gradle-samples-spring-boot-webmvc
@@ -468,6 +597,12 @@ jobs:
       full_units: ${{ needs.plan.outputs.full_units }}
       base_sha: ${{ needs.plan.outputs.base_sha }}
       head_sha: ${{ needs.plan.outputs.head_sha }}
+      cache_paths: |
+        ~/.gradle/caches
+        ~/.gradle/wrapper
+      cache_key_files: |
+        gradle/wrapper/gradle-wrapper.properties
+        gradle/libs.versions.toml
   ci-required:
     name: ci-required
     if: ${{ always() }}
@@ -499,17 +634,10 @@ jobs:
           selected=",$SELECTED_UNITS,"
           if [[ "$selected" == *",gradle,"* ]]; then
             result="$(result_for_job github-gradle)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle)"
             case "$result" in
@@ -519,7 +647,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle,"* ]]; then
             result="$(result_for_job velnor-gradle)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle did not pass: $result" >&2; exit 1 ;;
@@ -539,17 +667,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-buildsrc,"* ]]; then
             result="$(result_for_job github-gradle-buildsrc)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-buildsrc did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-buildsrc did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-buildsrc did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-buildsrc)"
             case "$result" in
@@ -559,7 +680,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-buildsrc,"* ]]; then
             result="$(result_for_job velnor-gradle-buildsrc)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-buildsrc did not pass: $result" >&2; exit 1 ;;
@@ -579,17 +700,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-dgs-autoconfigure,"* ]]; then
             result="$(result_for_job github-gradle-graphql-datetime-dgs-autoconfigure)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-dgs-autoconfigure did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-dgs-autoconfigure did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-dgs-autoconfigure did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-graphql-datetime-dgs-autoconfigure)"
             case "$result" in
@@ -599,7 +713,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-dgs-autoconfigure,"* ]]; then
             result="$(result_for_job velnor-gradle-graphql-datetime-dgs-autoconfigure)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-graphql-datetime-dgs-autoconfigure did not pass: $result" >&2; exit 1 ;;
@@ -619,17 +733,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-dgs-starter,"* ]]; then
             result="$(result_for_job github-gradle-graphql-datetime-dgs-starter)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-dgs-starter did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-dgs-starter did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-dgs-starter did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-graphql-datetime-dgs-starter)"
             case "$result" in
@@ -639,7 +746,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-dgs-starter,"* ]]; then
             result="$(result_for_job velnor-gradle-graphql-datetime-dgs-starter)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-graphql-datetime-dgs-starter did not pass: $result" >&2; exit 1 ;;
@@ -659,17 +766,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-kickstart-spring-boot-starter,"* ]]; then
             result="$(result_for_job github-gradle-graphql-datetime-kickstart-spring-boot-starter)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-kickstart-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-kickstart-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-kickstart-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-graphql-datetime-kickstart-spring-boot-starter)"
             case "$result" in
@@ -679,7 +779,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-kickstart-spring-boot-starter,"* ]]; then
             result="$(result_for_job velnor-gradle-graphql-datetime-kickstart-spring-boot-starter)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-graphql-datetime-kickstart-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
@@ -699,17 +799,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-autoconfigure,"* ]]; then
             result="$(result_for_job github-gradle-graphql-datetime-spring-boot-autoconfigure)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-autoconfigure did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-autoconfigure did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-autoconfigure did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-graphql-datetime-spring-boot-autoconfigure)"
             case "$result" in
@@ -719,7 +812,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-autoconfigure,"* ]]; then
             result="$(result_for_job velnor-gradle-graphql-datetime-spring-boot-autoconfigure)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-graphql-datetime-spring-boot-autoconfigure did not pass: $result" >&2; exit 1 ;;
@@ -739,17 +832,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-common,"* ]]; then
             result="$(result_for_job github-gradle-graphql-datetime-spring-boot-common)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-common did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-common did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-common did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-graphql-datetime-spring-boot-common)"
             case "$result" in
@@ -759,7 +845,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-common,"* ]]; then
             result="$(result_for_job velnor-gradle-graphql-datetime-spring-boot-common)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-graphql-datetime-spring-boot-common did not pass: $result" >&2; exit 1 ;;
@@ -779,17 +865,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-starter,"* ]]; then
             result="$(result_for_job github-gradle-graphql-datetime-spring-boot-starter)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-graphql-datetime-spring-boot-starter)"
             case "$result" in
@@ -799,7 +878,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-starter,"* ]]; then
             result="$(result_for_job velnor-gradle-graphql-datetime-spring-boot-starter)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-graphql-datetime-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
@@ -819,17 +898,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-java-datetime,"* ]]; then
             result="$(result_for_job github-gradle-graphql-java-datetime)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-graphql-java-datetime did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-graphql-java-datetime did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-java-datetime did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-graphql-java-datetime)"
             case "$result" in
@@ -839,7 +911,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-graphql-java-datetime,"* ]]; then
             result="$(result_for_job velnor-gradle-graphql-java-datetime)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-graphql-java-datetime did not pass: $result" >&2; exit 1 ;;
@@ -859,17 +931,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-samples-dgs-webmvc,"* ]]; then
             result="$(result_for_job github-gradle-samples-dgs-webmvc)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-samples-dgs-webmvc did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-samples-dgs-webmvc did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-samples-dgs-webmvc did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-samples-dgs-webmvc)"
             case "$result" in
@@ -879,7 +944,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-samples-dgs-webmvc,"* ]]; then
             result="$(result_for_job velnor-gradle-samples-dgs-webmvc)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-samples-dgs-webmvc did not pass: $result" >&2; exit 1 ;;
@@ -899,17 +964,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-samples-kickstart-webflux,"* ]]; then
             result="$(result_for_job github-gradle-samples-kickstart-webflux)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-samples-kickstart-webflux did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-samples-kickstart-webflux did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-samples-kickstart-webflux did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-samples-kickstart-webflux)"
             case "$result" in
@@ -919,7 +977,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-samples-kickstart-webflux,"* ]]; then
             result="$(result_for_job velnor-gradle-samples-kickstart-webflux)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-samples-kickstart-webflux did not pass: $result" >&2; exit 1 ;;
@@ -939,17 +997,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-samples-kickstart-webmvc,"* ]]; then
             result="$(result_for_job github-gradle-samples-kickstart-webmvc)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-samples-kickstart-webmvc did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-samples-kickstart-webmvc did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-samples-kickstart-webmvc did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-samples-kickstart-webmvc)"
             case "$result" in
@@ -959,7 +1010,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-samples-kickstart-webmvc,"* ]]; then
             result="$(result_for_job velnor-gradle-samples-kickstart-webmvc)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-samples-kickstart-webmvc did not pass: $result" >&2; exit 1 ;;
@@ -979,17 +1030,10 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-samples-spring-boot-webmvc,"* ]]; then
             result="$(result_for_job github-gradle-samples-spring-boot-webmvc)"
-            if [[ "$FORK_PR" == true && false ]]; then
-              case "$result" in
-                success|skipped) ;;
-                *) echo "selected CI job github-gradle-samples-spring-boot-webmvc did not pass: $result" >&2; exit 1 ;;
-              esac
-            else
-              case "$result" in
-                success) ;;
-                *) echo "selected CI job github-gradle-samples-spring-boot-webmvc did not pass: $result" >&2; exit 1 ;;
-              esac
-            fi
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-samples-spring-boot-webmvc did not pass: $result" >&2; exit 1 ;;
+            esac
           else
             result="$(result_for_job github-gradle-samples-spring-boot-webmvc)"
             case "$result" in
@@ -999,7 +1043,7 @@ jobs:
           fi
           if [[ "$selected" == *",gradle-samples-spring-boot-webmvc,"* ]]; then
             result="$(result_for_job velnor-gradle-samples-spring-boot-webmvc)"
-            if [[ "$FORK_PR" == true && true ]]; then
+            if [[ "$FORK_PR" == true ]]; then
               case "$result" in
                 success|skipped) ;;
                 *) echo "selected CI job velnor-gradle-samples-spring-boot-webmvc did not pass: $result" >&2; exit 1 ;;

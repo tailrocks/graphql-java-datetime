@@ -79,7 +79,7 @@ jobs:
         run: |
           set -euo pipefail
           for workflow in ci-main.yml nightly.yml; do
-            if [[ "$(gh run list --workflow "$workflow" --status in_progress --limit 1 --jq 'length')" != "0" ]]; then
+            if [[ "$(gh run list --workflow "$workflow" --status in_progress --limit 1 --json databaseId --jq 'length')" != "0" ]]; then
               echo "skip=true" >> "$GITHUB_OUTPUT"
               echo "$workflow is in_progress; skipping cache retention" >> "$GITHUB_STEP_SUMMARY"
               exit 0
@@ -88,12 +88,12 @@ jobs:
           echo "skip=false" >> "$GITHUB_OUTPUT"
       - name: Set up Velnor workflow runtime
         if: ${{ steps.retention-gate.outputs.skip != 'true' && runner.environment == 'github-hosted' }}
-        uses: tailrocks/velnor/.github/actions/setup-velnor-workflow@e6fabca85499be62f939243d4452438449b69c53
+        uses: tailrocks/velnor/.github/actions/setup-velnor-workflow@e05aee6de1d1614d752b4d1b1d26a49ac2c5ef91
         with:
-          rev: e6fabca85499be62f939243d4452438449b69c53
+          rev: e05aee6de1d1614d752b4d1b1d26a49ac2c5ef91
       - name: Set trusted workflow policy revision
         if: steps.retention-gate.outputs.skip != 'true'
-        run: echo "VELNOR_WORKFLOW_POLICY_REVISION=e6fabca85499be62f939243d4452438449b69c53" >> "$GITHUB_ENV"
+        run: echo "VELNOR_WORKFLOW_POLICY_REVISION=e05aee6de1d1614d752b4d1b1d26a49ac2c5ef91" >> "$GITHUB_ENV"
       - name: Sweep closed-PR merge-ref caches
         if: steps.retention-gate.outputs.skip != 'true'
         env:
