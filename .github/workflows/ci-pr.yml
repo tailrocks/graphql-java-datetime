@@ -603,3 +603,471 @@ jobs:
       cache_key_files: |
         gradle/wrapper/gradle-wrapper.properties
         gradle/libs.versions.toml
+  ci-required:
+    name: ci-required
+    if: ${{ always() }}
+    needs: [plan, velnor-lane-admission, github-gradle, velnor-gradle, github-gradle-buildsrc, velnor-gradle-buildsrc, github-gradle-graphql-datetime-dgs-autoconfigure, velnor-gradle-graphql-datetime-dgs-autoconfigure, github-gradle-graphql-datetime-dgs-starter, velnor-gradle-graphql-datetime-dgs-starter, github-gradle-graphql-datetime-kickstart-spring-boot-starter, velnor-gradle-graphql-datetime-kickstart-spring-boot-starter, github-gradle-graphql-datetime-spring-boot-autoconfigure, velnor-gradle-graphql-datetime-spring-boot-autoconfigure, github-gradle-graphql-datetime-spring-boot-common, velnor-gradle-graphql-datetime-spring-boot-common, github-gradle-graphql-datetime-spring-boot-starter, velnor-gradle-graphql-datetime-spring-boot-starter, github-gradle-graphql-java-datetime, velnor-gradle-graphql-java-datetime, github-gradle-samples-dgs-webmvc, velnor-gradle-samples-dgs-webmvc, github-gradle-samples-kickstart-webflux, velnor-gradle-samples-kickstart-webflux, github-gradle-samples-kickstart-webmvc, velnor-gradle-samples-kickstart-webmvc, github-gradle-samples-spring-boot-webmvc, velnor-gradle-samples-spring-boot-webmvc]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Validate generated stack results
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+          SELECTED_UNITS: ${{ needs.plan.outputs.units }}
+          FORK_PR: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          result_for_job() {
+            jq -r --arg job "$1" '.[$job].result // empty' <<<"$NEEDS_JSON"
+          }
+          result="$(result_for_job plan)"
+          if [[ "$result" != success ]]; then
+            echo "required CI prerequisite plan did not pass: $result" >&2
+            exit 1
+          fi
+          result="$(result_for_job velnor-lane-admission)"
+          case "$result" in
+            success|skipped) ;;
+            *) echo "required CI prerequisite velnor-lane-admission did not pass: $result" >&2; exit 1 ;;
+          esac
+          selected=",$SELECTED_UNITS,"
+          if [[ "$selected" == *",gradle,"* ]]; then
+            result="$(result_for_job github-gradle)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle,"* ]]; then
+            result="$(result_for_job velnor-gradle)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-buildsrc,"* ]]; then
+            result="$(result_for_job github-gradle-buildsrc)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-buildsrc did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-buildsrc)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-buildsrc failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-buildsrc,"* ]]; then
+            result="$(result_for_job velnor-gradle-buildsrc)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-buildsrc did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-buildsrc did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-buildsrc)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-buildsrc failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-dgs-autoconfigure,"* ]]; then
+            result="$(result_for_job github-gradle-graphql-datetime-dgs-autoconfigure)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-dgs-autoconfigure did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-graphql-datetime-dgs-autoconfigure)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-graphql-datetime-dgs-autoconfigure failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-dgs-autoconfigure,"* ]]; then
+            result="$(result_for_job velnor-gradle-graphql-datetime-dgs-autoconfigure)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-dgs-autoconfigure did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-dgs-autoconfigure did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-graphql-datetime-dgs-autoconfigure)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-graphql-datetime-dgs-autoconfigure failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-dgs-starter,"* ]]; then
+            result="$(result_for_job github-gradle-graphql-datetime-dgs-starter)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-dgs-starter did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-graphql-datetime-dgs-starter)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-graphql-datetime-dgs-starter failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-dgs-starter,"* ]]; then
+            result="$(result_for_job velnor-gradle-graphql-datetime-dgs-starter)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-dgs-starter did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-dgs-starter did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-graphql-datetime-dgs-starter)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-graphql-datetime-dgs-starter failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-kickstart-spring-boot-starter,"* ]]; then
+            result="$(result_for_job github-gradle-graphql-datetime-kickstart-spring-boot-starter)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-kickstart-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-graphql-datetime-kickstart-spring-boot-starter)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-graphql-datetime-kickstart-spring-boot-starter failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-kickstart-spring-boot-starter,"* ]]; then
+            result="$(result_for_job velnor-gradle-graphql-datetime-kickstart-spring-boot-starter)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-kickstart-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-kickstart-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-graphql-datetime-kickstart-spring-boot-starter)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-graphql-datetime-kickstart-spring-boot-starter failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-autoconfigure,"* ]]; then
+            result="$(result_for_job github-gradle-graphql-datetime-spring-boot-autoconfigure)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-autoconfigure did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-graphql-datetime-spring-boot-autoconfigure)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-graphql-datetime-spring-boot-autoconfigure failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-autoconfigure,"* ]]; then
+            result="$(result_for_job velnor-gradle-graphql-datetime-spring-boot-autoconfigure)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-spring-boot-autoconfigure did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-spring-boot-autoconfigure did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-graphql-datetime-spring-boot-autoconfigure)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-graphql-datetime-spring-boot-autoconfigure failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-common,"* ]]; then
+            result="$(result_for_job github-gradle-graphql-datetime-spring-boot-common)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-common did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-graphql-datetime-spring-boot-common)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-graphql-datetime-spring-boot-common failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-common,"* ]]; then
+            result="$(result_for_job velnor-gradle-graphql-datetime-spring-boot-common)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-spring-boot-common did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-spring-boot-common did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-graphql-datetime-spring-boot-common)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-graphql-datetime-spring-boot-common failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-starter,"* ]]; then
+            result="$(result_for_job github-gradle-graphql-datetime-spring-boot-starter)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-datetime-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-graphql-datetime-spring-boot-starter)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-graphql-datetime-spring-boot-starter failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-datetime-spring-boot-starter,"* ]]; then
+            result="$(result_for_job velnor-gradle-graphql-datetime-spring-boot-starter)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-graphql-datetime-spring-boot-starter did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-graphql-datetime-spring-boot-starter)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-graphql-datetime-spring-boot-starter failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-java-datetime,"* ]]; then
+            result="$(result_for_job github-gradle-graphql-java-datetime)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-graphql-java-datetime did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-graphql-java-datetime)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-graphql-java-datetime failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-graphql-java-datetime,"* ]]; then
+            result="$(result_for_job velnor-gradle-graphql-java-datetime)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-graphql-java-datetime did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-graphql-java-datetime did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-graphql-java-datetime)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-graphql-java-datetime failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-samples-dgs-webmvc,"* ]]; then
+            result="$(result_for_job github-gradle-samples-dgs-webmvc)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-samples-dgs-webmvc did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-samples-dgs-webmvc)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-samples-dgs-webmvc failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-samples-dgs-webmvc,"* ]]; then
+            result="$(result_for_job velnor-gradle-samples-dgs-webmvc)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-samples-dgs-webmvc did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-samples-dgs-webmvc did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-samples-dgs-webmvc)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-samples-dgs-webmvc failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-samples-kickstart-webflux,"* ]]; then
+            result="$(result_for_job github-gradle-samples-kickstart-webflux)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-samples-kickstart-webflux did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-samples-kickstart-webflux)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-samples-kickstart-webflux failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-samples-kickstart-webflux,"* ]]; then
+            result="$(result_for_job velnor-gradle-samples-kickstart-webflux)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-samples-kickstart-webflux did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-samples-kickstart-webflux did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-samples-kickstart-webflux)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-samples-kickstart-webflux failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-samples-kickstart-webmvc,"* ]]; then
+            result="$(result_for_job github-gradle-samples-kickstart-webmvc)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-samples-kickstart-webmvc did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-samples-kickstart-webmvc)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-samples-kickstart-webmvc failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-samples-kickstart-webmvc,"* ]]; then
+            result="$(result_for_job velnor-gradle-samples-kickstart-webmvc)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-samples-kickstart-webmvc did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-samples-kickstart-webmvc did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-samples-kickstart-webmvc)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-samples-kickstart-webmvc failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-samples-spring-boot-webmvc,"* ]]; then
+            result="$(result_for_job github-gradle-samples-spring-boot-webmvc)"
+            case "$result" in
+              success) ;;
+              *) echo "selected CI job github-gradle-samples-spring-boot-webmvc did not pass: $result" >&2; exit 1 ;;
+            esac
+          else
+            result="$(result_for_job github-gradle-samples-spring-boot-webmvc)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job github-gradle-samples-spring-boot-webmvc failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+          if [[ "$selected" == *",gradle-samples-spring-boot-webmvc,"* ]]; then
+            result="$(result_for_job velnor-gradle-samples-spring-boot-webmvc)"
+            if [[ "$FORK_PR" == true ]]; then
+              case "$result" in
+                success|skipped) ;;
+                *) echo "selected CI job velnor-gradle-samples-spring-boot-webmvc did not pass: $result" >&2; exit 1 ;;
+              esac
+            else
+              case "$result" in
+                success) ;;
+                *) echo "selected CI job velnor-gradle-samples-spring-boot-webmvc did not pass: $result" >&2; exit 1 ;;
+              esac
+            fi
+          else
+            result="$(result_for_job velnor-gradle-samples-spring-boot-webmvc)"
+            case "$result" in
+              success|skipped) ;;
+              *) echo "unselected CI job velnor-gradle-samples-spring-boot-webmvc failed unexpectedly: $result" >&2; exit 1 ;;
+            esac
+          fi
+  required:
+    name: "Control / Required"
+    if: ${{ always() }}
+    needs: [ci-required]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Mirror CI / Required
+        if: ${{ needs.ci-required.result != 'success' }}
+        run: exit 1
