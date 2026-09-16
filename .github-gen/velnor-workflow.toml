@@ -1,7 +1,7 @@
 schema = 1
 [generator]
 repository = "tailrocks/graphql-java-datetime"
-revision = "92a2b13b4d0fe9e4862c0145999d9ca2ae6450b4"
+revision = "541d8926737213542156ee32e420010817f8a323"
 [policy]
 ruleset_required_status_checks = []
 ruleset_external_status_checks = []
