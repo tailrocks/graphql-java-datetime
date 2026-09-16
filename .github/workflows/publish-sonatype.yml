@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 25.0.4+101.0.LTS
       - name: Cache Gradle packages
         uses: actions/cache@v6
         with:
