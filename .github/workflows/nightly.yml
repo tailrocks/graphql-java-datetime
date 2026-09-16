@@ -57,6 +57,7 @@ jobs:
       - name: Dispatch ci-main on default branch
         env:
           GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
           DEFAULT_BRANCH: main
           DISPATCH_RUNNER: ${{ github.event.inputs.runner || 'both' }}
           DISPATCH_SCOPE: ${{ github.event.inputs.scope || 'full' }}
@@ -65,6 +66,7 @@ jobs:
         run: |
           set -euo pipefail
           gh workflow run ci-main.yml \
+            -R "$GITHUB_REPOSITORY" \
             --ref "$DEFAULT_BRANCH" \
             -f runner="$DISPATCH_RUNNER" \
             -f scope="$DISPATCH_SCOPE" \

@@ -58,11 +58,11 @@ jobs:
           persist-credentials: false
       - name: Set up Velnor workflow runtime
         if: ${{ runner.environment == 'github-hosted' }}
-        uses: tailrocks/velnor/.github/actions/setup-velnor-workflow@92c3478694ef423fb4160b8c934d6671ca85b51a
+        uses: tailrocks/velnor/.github/actions/setup-velnor-workflow@b9c3156cdb88e63c11b9e595a3e694b02238c09a
         with:
-          rev: 92c3478694ef423fb4160b8c934d6671ca85b51a
+          rev: b9c3156cdb88e63c11b9e595a3e694b02238c09a
       - name: Set trusted workflow policy revision
-        run: echo "VELNOR_WORKFLOW_POLICY_REVISION=92c3478694ef423fb4160b8c934d6671ca85b51a" >> "$GITHUB_ENV"
+        run: echo "VELNOR_WORKFLOW_POLICY_REVISION=b9c3156cdb88e63c11b9e595a3e694b02238c09a" >> "$GITHUB_ENV"
       - name: Select affected units
         id: plan
         env:
@@ -79,7 +79,7 @@ jobs:
       - name: Prepare Velnor workflow runtime
         shell: bash
         env:
-          EXPECTED_REVISION: 92c3478694ef423fb4160b8c934d6671ca85b51a
+          EXPECTED_REVISION: b9c3156cdb88e63c11b9e595a3e694b02238c09a
         run: |
           set -euo pipefail
           stage="$RUNNER_TEMP/velnor-workflow-runtime"
@@ -97,7 +97,7 @@ jobs:
       - name: Publish Velnor workflow runtime
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: velnor-workflow-runtime-92c3478694ef423fb4160b8c934d6671ca85b51a-${{ runner.os }}-${{ runner.arch }}
+          name: velnor-workflow-runtime-b9c3156cdb88e63c11b9e595a3e694b02238c09a-${{ runner.os }}-${{ runner.arch }}
           path: ${{ runner.temp }}/velnor-workflow-runtime
           if-no-files-found: error
           retention-days: 7
@@ -147,7 +147,7 @@ jobs:
         with:
           backend: github
           version: 1.11.1
-          cache-key: velnor-policy-mbx-1.11.1-${{ runner.os }}-${{ runner.arch }}-92c3478694ef423fb4160b8c934d6671ca85b51a
+          cache-key: velnor-policy-mbx-1.11.1-${{ runner.os }}-${{ runner.arch }}-b9c3156cdb88e63c11b9e595a3e694b02238c09a
           restore-keys: |
             velnor-policy-mbx-1.11.1-${{ runner.os }}-${{ runner.arch }}-
       - name: Install pinned Velnor workflow runtime
@@ -167,7 +167,7 @@ jobs:
             cargo install \
             --locked \
             --git https://github.com/tailrocks/velnor \
-            --rev 92c3478694ef423fb4160b8c934d6671ca85b51a \
+            --rev b9c3156cdb88e63c11b9e595a3e694b02238c09a \
             --root "$VELNOR_WORKFLOW_ROOT" \
             velnor-workflow \
             --bin velnor-workflow
@@ -176,20 +176,31 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           DEFAULT_BRANCH: main
+          DECLARED_RULESET_CONTEXTS: DCO,Policy,ci-required
         run: |
           set -euo pipefail
-          contexts="$(gh api "repos/$GITHUB_REPOSITORY/rulesets?includes_parents=true" \
+          stderr="$(mktemp)"
+          trap 'rm -f "$stderr"' EXIT
+          if contexts="$(gh api "repos/$GITHUB_REPOSITORY/rulesets?includes_parents=true" 2>"$stderr" \
             | jq -r '.[] | select(.target == "branch" and .enforcement == "active") | .id' \
             | while read -r id; do gh api "repos/$GITHUB_REPOSITORY/rulesets/$id"; done \
             | jq -r --arg branch "refs/heads/$DEFAULT_BRANCH" 'select(.conditions.ref_name.include | any(. == "~DEFAULT_BRANCH" or . == "~ALL" or . == $branch)) | .rules[] | select(.type == "required_status_checks") | .parameters.required_status_checks[].context' \
-            | sort -u | paste -sd, -)"
+            | sort -u | paste -sd, -)"; then
+            :
+          elif grep -qE '(HTTP 403|Upgrade to GitHub Team)' "$stderr"; then
+            echo "::warning::rulesets API returned 403; falling back to declared contexts [$DECLARED_RULESET_CONTEXTS]"
+            contexts="$DECLARED_RULESET_CONTEXTS"
+          else
+            cat "$stderr" >&2
+            exit 1
+          fi
           echo "RULESET_CONTEXTS=$contexts" >> "$GITHUB_ENV"
       - name: Enforce workflow policy
         env:
           WORKFLOW_ROOT: ${{ github.workspace }}/policy-checkout
           HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.sha }}
-          VELNOR_WORKFLOW_POLICY_REVISION: 92c3478694ef423fb4160b8c934d6671ca85b51a
+          VELNOR_WORKFLOW_POLICY_REVISION: b9c3156cdb88e63c11b9e595a3e694b02238c09a
         run: |
           set -euo pipefail
           velnor-workflow policy \
