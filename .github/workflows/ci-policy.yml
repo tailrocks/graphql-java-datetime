@@ -16,7 +16,7 @@ permissions:
 jobs:
   policy:
     name: Policy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     # Trust invariant: this job runs the base branch's validator against the
     # audited tree under pull_request_target. It holds `contents: read` only,
