@@ -48,7 +48,7 @@ jobs:
   dispatch-ci-main:
     name: "Control / Dispatch ci-main"
     if: ${{ github.event_name != 'workflow_dispatch' || !inputs.simulate_failure }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     permissions:
       actions: write
@@ -74,7 +74,7 @@ jobs:
   nightly-red-to-signal:
     name: "Control / Nightly red-to-signal"
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.simulate_failure }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
       - name: Simulate nightly failure
@@ -87,7 +87,7 @@ jobs:
     name: "Control / Nightly red-to-signal"
     if: ${{ always() && needs.nightly-red-to-signal.result == 'failure' }}
     needs: [nightly-red-to-signal]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
       issues: write

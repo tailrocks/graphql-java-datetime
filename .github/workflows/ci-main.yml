@@ -42,7 +42,7 @@ permissions:
 jobs:
   plan:
     name: "Control / Planning"
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       scope: ${{ steps.plan.outputs.scope }}
       base_sha: ${{ steps.plan.outputs.base_sha }}
@@ -104,7 +104,7 @@ jobs:
   velnor-lane-admission:
     name: "Control / Velnor admission"
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
       - name: Velnor lane omitted for fork
@@ -112,7 +112,7 @@ jobs:
           echo '::notice::Velnor lane omitted for fork pull request; validating GitHub lane only.'
   policy:
     name: Policy
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 20
     # Trust invariant: this job runs the base branch's validator against the
     # audited tree under pull_request_target. It holds `contents: read` only,
@@ -714,7 +714,7 @@ jobs:
     name: ci-required
     if: ${{ always() }}
     needs: [plan, velnor-lane-admission, policy, github-gradle, velnor-gradle, github-gradle-buildsrc, velnor-gradle-buildsrc, github-gradle-graphql-datetime-dgs-autoconfigure, velnor-gradle-graphql-datetime-dgs-autoconfigure, github-gradle-graphql-datetime-dgs-starter, velnor-gradle-graphql-datetime-dgs-starter, github-gradle-graphql-datetime-kickstart-spring-boot-starter, velnor-gradle-graphql-datetime-kickstart-spring-boot-starter, github-gradle-graphql-datetime-spring-boot-autoconfigure, velnor-gradle-graphql-datetime-spring-boot-autoconfigure, github-gradle-graphql-datetime-spring-boot-common, velnor-gradle-graphql-datetime-spring-boot-common, github-gradle-graphql-datetime-spring-boot-starter, velnor-gradle-graphql-datetime-spring-boot-starter, github-gradle-graphql-java-datetime, velnor-gradle-graphql-java-datetime, github-gradle-samples-dgs-webmvc, velnor-gradle-samples-dgs-webmvc, github-gradle-samples-kickstart-webflux, velnor-gradle-samples-kickstart-webflux, github-gradle-samples-kickstart-webmvc, velnor-gradle-samples-kickstart-webmvc, github-gradle-samples-spring-boot-webmvc, velnor-gradle-samples-spring-boot-webmvc]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
       - name: Validate generated stack results
@@ -1177,7 +1177,7 @@ jobs:
     name: "Control / Required"
     if: ${{ always() }}
     needs: [ci-required]
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
     steps:
       - name: Mirror CI / Required
