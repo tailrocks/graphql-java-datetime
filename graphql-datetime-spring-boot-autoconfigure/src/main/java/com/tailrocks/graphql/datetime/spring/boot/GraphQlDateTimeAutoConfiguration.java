@@ -24,7 +24,12 @@ import org.springframework.context.annotation.Bean;
 /**
  * @author Alexey Zhokhov
  */
-@AutoConfiguration(before = {org.springframework.boot.autoconfigure.graphql.GraphQlAutoConfiguration.class})
+@AutoConfiguration(
+        beforeName = {
+                "org.springframework.boot.autoconfigure.graphql.GraphQlAutoConfiguration",
+                "org.springframework.boot.graphql.autoconfigure.GraphQlAutoConfiguration"
+        }
+)
 @ConditionalOnClass({org.springframework.graphql.execution.RuntimeWiringConfigurer.class})
 public class GraphQlDateTimeAutoConfiguration {
 
