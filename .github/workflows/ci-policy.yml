@@ -80,24 +80,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           DEFAULT_BRANCH: main
-          DECLARED_RULESET_CONTEXTS: DCO,Policy,ci-required
         run: |
           set -euo pipefail
-          stderr="$(mktemp)"
-          trap 'rm -f "$stderr"' EXIT
-          if contexts="$(gh api "repos/$GITHUB_REPOSITORY/rulesets?includes_parents=true" 2>"$stderr" \
+          contexts="$(gh api "repos/$GITHUB_REPOSITORY/rulesets?includes_parents=true" \
             | jq -r '.[] | select(.target == "branch" and .enforcement == "active") | .id' \
             | while read -r id; do gh api "repos/$GITHUB_REPOSITORY/rulesets/$id"; done \
             | jq -r --arg branch "refs/heads/$DEFAULT_BRANCH" 'select(.conditions.ref_name.include | any(. == "~DEFAULT_BRANCH" or . == "~ALL" or . == $branch)) | .rules[] | select(.type == "required_status_checks") | .parameters.required_status_checks[].context' \
-            | sort -u | paste -sd, -)"; then
-            :
-          elif grep -qE '(HTTP 403|Upgrade to GitHub Team)' "$stderr"; then
-            echo "::warning::rulesets API returned 403; falling back to declared contexts [$DECLARED_RULESET_CONTEXTS]"
-            contexts="$DECLARED_RULESET_CONTEXTS"
-          else
-            cat "$stderr" >&2
-            exit 1
-          fi
+            | sort -u | paste -sd, -)"
           echo "RULESET_CONTEXTS=$contexts" >> "$GITHUB_ENV"
       - name: Enforce workflow policy
         env:
