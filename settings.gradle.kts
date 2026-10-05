@@ -11,10 +11,9 @@ include(
     "graphql-datetime-spring-boot-common",
     "graphql-datetime-spring-boot-starter",
     "graphql-java-datetime",
-
     // samples
     "samples:kickstart-webflux",
     "samples:kickstart-webmvc",
     "samples:spring-boot-webmvc",
-    "samples:dgs-webmvc"
+    "samples:dgs-webmvc",
 )
