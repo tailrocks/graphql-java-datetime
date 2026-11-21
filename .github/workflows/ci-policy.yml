@@ -113,7 +113,7 @@ jobs:
             --base-sha "$BASE_SHA" \
             --ruleset-contexts "$RULESET_CONTEXTS"
       - name: Set up actionlint
-        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0
         with:
           install_args: actionlint@1.7.12
           cache: false
